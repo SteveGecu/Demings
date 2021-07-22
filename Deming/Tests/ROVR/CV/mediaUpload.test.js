@@ -1,4 +1,4 @@
-const Messenger = require('../../Client/getTopics')
+const Messenger = require('../../../Client/getTopics')
 const dsn = process.env.DSN
 const railId = process.env.RAIL_ID
 

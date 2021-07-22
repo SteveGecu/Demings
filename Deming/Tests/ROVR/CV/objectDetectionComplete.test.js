@@ -1,5 +1,5 @@
-const Consumer = require('../../Client/GatewayConsumer')
-const Messenger = require('../../Client/getTopics')
+const Consumer = require('../../../Client/GatewayConsumer')
+const Messenger = require('../../../Client/getTopics')
 
 const topic = 'deming.object.detection.complete.rovr'
 const dsn = process.env.DSN
