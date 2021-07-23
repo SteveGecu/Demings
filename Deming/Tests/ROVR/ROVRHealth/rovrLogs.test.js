@@ -1,6 +1,6 @@
 require('jest')
 require('dotenv').config()
-const Messenger = require('../../Client/getTopics')
+const Messenger = require('../../../Client/getTopics')
 const dsn = process.env.DSN
 const railId = process.env.RAIL_ID
 const customerId = process.env.CUSTOMERID
