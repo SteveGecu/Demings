@@ -32,6 +32,7 @@ async function getMediaReadyMessage(dsn) {
 
 async function getDetectionReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.object.detection.ready.rovr', 10)
+    console.log(messages);
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }

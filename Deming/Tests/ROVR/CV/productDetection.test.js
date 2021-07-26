@@ -5,23 +5,16 @@ const dsn = process.env.DSN
 const railId = process.env.RAIL_ID
 const customerId = process.env.CUSTOMERID
 const storeId = process.env.STOREID
-const getDnnApi = `https://shared-qa-eastus2.azure-api.net/inference-svc/api/v1/dnn?railId=${ railId }`
-const getFacingsApi = `https://shared.qa.eastus2.deming.spacee.io/api/v1/rail/${ railId }/product-facings`
-const expectedDnnId = 'B5D4868C-C859-4A7E-BCF9-409F1CE90E10'
-const expectedProductFacingIdOne = 470
-const expectedProductFacingIdTwo = 484
+const getDnnApi = process.env.DNNAPI + railId
+const getFacingsApi = process.env.FACINGAPI + railId + '/product-facings'
+const expectedDnnId = process.env.DNN
+const expectedProductFacingIdOne = process.env.PRODUCTFACINGIDONE
+const expectedProductFacingIdTwo = process.env.PRODUCTFACINGIDTWO
 
 jest.setTimeout(60000)
 jest.retryTimes(3)
 
 describe('CV Process Tests', () => {
-
-    test('should pass when ROVR uploads the file', async () => {
-        const uploadMessage = await Messenger.getRovrUploadReportMessage(dsn)
-
-        expect(uploadMessage).toHaveProperty
-        expect(uploadMessage.Key.slice(20, 32)).toEqual(dsn)
-    })
 
     it('should pass when Notification Center unzipped the file', async () => {
         const message = await Messenger.getMediaReadyMessage(dsn)
@@ -35,11 +28,12 @@ describe('CV Process Tests', () => {
     it('should pass when correct DNN is assigned to related RailId', async () => {
         const dnnResponse = await fetch(getDnnApi).then(res => res.json())
 
-        expect(expectedDnnId).toEqual(dnnResponse.DnnId)
+        expect('B5D4868C-C859-4A7E-BCF9-409F1CE90E10').toEqual(dnnResponse.DnnId)
     })
 
     it('should pass when ready for object detection', async () => {
         const message = await Messenger.getDetectionReadyMessage(dsn)
+        console.log(message);
 
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.object.detection.ready.rovr')
@@ -49,7 +43,7 @@ describe('CV Process Tests', () => {
 
     it('should pass when object detection is completed', async () => {
         const detectionCompleteMessage = await Messenger.getDetectionCompleteMessage(dsn)
-
+        console.log(detectionCompleteMessage);
         expect(detectionCompleteMessage).toHaveProperty
         expect(detectionCompleteMessage.data.dsn).toEqual(dsn)
         expect((detectionCompleteMessage.data.railId)).toEqual(railId)
@@ -66,15 +60,16 @@ describe('CV Process Tests', () => {
 
     it('should pass when fetch related facing', async () => {
         const facingResponse = await fetch(getFacingsApi).then(res => res.json())
+        console.log(facingResponse);
 
-        expect(expectedProductFacingIdOne).toEqual(facingResponse[0].ProductFacingID)
-        expect(expectedProductFacingIdTwo).toEqual(facingResponse[1].ProductFacingID)
+        expect(expectedProductFacingIdOne).toEqual('' + facingResponse[0].ProductFacingID)
+        expect(expectedProductFacingIdTwo).toEqual('' + facingResponse[1].ProductFacingID)
         console.log(facingResponse)
     })
 
     it('should pass when product report is generated', async () => {
         const message = await Messenger.getReportCreatedMessage(dsn)
-        console.log(message)
+        console.log(JSON.stringify(message))
 
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
