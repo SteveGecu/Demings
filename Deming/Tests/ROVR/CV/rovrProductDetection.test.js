@@ -1,15 +1,15 @@
 const Messenger = require('../../../Client/getTopics')
 const fetch = require("node-fetch")
 
-const dsn = process.env.DSN
-const railId = process.env.RAIL_ID
-const customerId = process.env.CUSTOMERID
-const storeId = process.env.STOREID
-const getDnnApi = process.env.DNNAPI + railId
-const getFacingsApi = process.env.FACINGAPI + railId + '/product-facings'
-const expectedDnnId = process.env.DNN
-const expectedProductFacingIdOne = process.env.PRODUCTFACINGIDONE
-const expectedProductFacingIdTwo = process.env.PRODUCTFACINGIDTWO
+const dsn = process.env.ROVRDSN
+const railId = process.env.ROVRRAIL_ID
+const customerId = process.env.ROVRCUSTOMERID
+const storeId = process.env.RORVRSTOREID
+const getDnnApi = process.env.ROVRDNNAPI + railId
+const getFacingsApi = process.env.ROVRFACINGAPI + railId + '/product-facings'
+const expectedDnnId = process.env.ROVRDNN
+const expectedProductFacingIdOne = process.env.ROVRPRODUCTFACINGIDONE
+const expectedProductFacingIdTwo = process.env.ROVRPRODUCTFACINGIDTWO
 
 jest.setTimeout(60000)
 jest.retryTimes(3)
@@ -18,6 +18,7 @@ describe('CV Process Tests', () => {
 
     it('should pass when Notification Center unzipped the file', async () => {
         const message = await Messenger.getMediaReadyMessage(dsn)
+        console.log(message);
 
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.rovr.rail.drone.media.uploaded')
@@ -51,6 +52,7 @@ describe('CV Process Tests', () => {
 
     it('should pass when object tracking is complete', async () => {
         const trackingCompleteMessage = await Messenger.getTrackingCompleteMessage(dsn)
+        console.log(trackingCompleteMessage);
 
         expect(trackingCompleteMessage).toHaveProperty
         expect(trackingCompleteMessage.data.dsn).toEqual(dsn)
@@ -64,22 +66,21 @@ describe('CV Process Tests', () => {
 
         expect(expectedProductFacingIdOne).toEqual('' + facingResponse[0].ProductFacingID)
         expect(expectedProductFacingIdTwo).toEqual('' + facingResponse[1].ProductFacingID)
-        console.log(facingResponse)
     })
 
     it('should pass when product report is generated', async () => {
         const message = await Messenger.getReportCreatedMessage(dsn)
         console.log(JSON.stringify(message))
 
+        let a = new Date().valueOf()
+        let b = new Date(message.meta.originEventTimestamp).valueOf()
+
+        console.log(a);
+        console.log(b);
+        expect(a - b).toBeLessThan(60 * 30 * 1000)
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
     })
 })
-
-
-// TODO timestamp assertions
-// var myDate = new Date("2012-02-10T13:19:11+0000");
-// var result = myDate.getTime();
-// console.log(result); = 1328879951000
