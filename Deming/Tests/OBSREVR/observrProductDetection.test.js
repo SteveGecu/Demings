@@ -68,7 +68,7 @@ describe('Obersvr CV Pipeline Tests', () => {
 
         console.log(a);
         console.log(b);
-        expect(a - b).toBeLessThan(60 * 30 * 1000)
+        expect(a - b).toBeLessThan(60 * 60 * 1000)
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
         expect(message.data.dsn).toEqual(dsn)

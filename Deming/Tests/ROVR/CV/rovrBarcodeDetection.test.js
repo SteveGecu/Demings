@@ -26,58 +26,36 @@ describe('CV Process Tests', () => {
         expect((message.data.railId)).toEqual(railId)
     })
 
-    it('should pass when correct DNN is assigned to related RailId', async () => {
-        const dnnResponse = await fetch(getDnnApi).then(res => res.json())
-
-        expect('B5D4868C-C859-4A7E-BCF9-409F1CE90E10').toEqual(dnnResponse.DnnId)
-    })
-
-    it('should pass when ready for object detection', async () => {
-        const message = await Messenger.getDetectionReadyMessage(dsn)
+    it('should pass when ready for barcode detection', async () => {
+        const message = await Messenger.getBarcodeDetectionReadyMessage(dsn)
         console.log(message);
 
         expect(message).toHaveProperty
-        expect(message.meta.type).toEqual('deming.object.detection.ready.rovr')
+        expect(message.meta.type).toEqual('deming.barcode.detection.ready.rovr')
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
     })
 
-    it('should pass when object detection is completed', async () => {
-        const detectionCompleteMessage = await Messenger.getDetectionCompleteMessage(dsn)
+    it('should pass when barcode detection is completed', async () => {
+        const detectionCompleteMessage = await Messenger.getBarcodeDetectionCompleteMessage(dsn)
         console.log(detectionCompleteMessage);
+
         expect(detectionCompleteMessage).toHaveProperty
+        expect(message.meta.type).toEqual('deming.barcode.detection.complete')
         expect(detectionCompleteMessage.data.dsn).toEqual(dsn)
         expect((detectionCompleteMessage.data.railId)).toEqual(railId)
     })
 
-    it('should pass when object tracking is complete', async () => {
-        const trackingCompleteMessage = await Messenger.getTrackingCompleteMessage(dsn)
-        console.log(trackingCompleteMessage);
-
-        expect(trackingCompleteMessage).toHaveProperty
-        expect(trackingCompleteMessage.data.dsn).toEqual(dsn)
-        expect((trackingCompleteMessage.data.railId)).toEqual(railId)
-        expect(trackingCompleteMessage.data.distances).toHaveProperty
-    })
-
-    it('should pass when fetch related facing', async () => {
-        const facingResponse = await fetch(getFacingsApi).then(res => res.json())
-        console.log(facingResponse);
-
-        expect(expectedProductFacingIdOne).toEqual('' + facingResponse[0].ProductFacingID)
-        expect(expectedProductFacingIdTwo).toEqual('' + facingResponse[1].ProductFacingID)
-    })
-
     it('should pass when product report is generated', async () => {
-        const message = await Messenger.getReportCreatedMessage(dsn)
+        const message = await Messenger.getBarcodeReportCreatedMessage(dsn)
         console.log(JSON.stringify(message))
 
         let a = new Date().valueOf()
         let b = new Date(message.meta.originEventTimestamp).valueOf()
 
-        expect(a - b).toBeLessThan(60 * 60 * 1000)
+        expect(a - b).toBeLessThan(60 * 30 * 1000)
         expect(message).toHaveProperty
-        expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
+        expect(message.meta.type).toEqual('deming.rovr.rail.barcode.report.created')
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
     })
