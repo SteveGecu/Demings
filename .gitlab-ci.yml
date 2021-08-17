@@ -1,13 +1,13 @@
-stages:          # List of stages for jobs, and their order of execution
+stages: # List of stages for jobs, and their order of execution
   - build
   - test
 
-build-job:       # This job runs in the build stage, which runs first.
+build-job: # This job runs in the build stage, which runs first.
   stage: build
   script:
     - npm install "Compiling the code..."
 
-test automation-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+test automation-job: # This job runs in the test stage.
+  stage: test # It only starts when the job in the build stage completes successfully.
   script:
-    - npm run test "Running unit tests... This will take about 60 seconds."
+    - npm run qa "Running unit tests... This will take about 60 seconds."
