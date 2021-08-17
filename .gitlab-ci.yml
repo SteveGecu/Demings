@@ -1,6 +1,7 @@
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
+  - report
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
@@ -11,3 +12,9 @@ test automation-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - npm run test "Running unit tests... This will take about 60 seconds."
+
+test automation-report:
+  stage: report
+  script:
+    -jest --ci --reporters=default --reporters=jest-junit
+
