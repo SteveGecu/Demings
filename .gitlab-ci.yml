@@ -3,10 +3,6 @@ stages: # List of stages for jobs, and their order of execution
   - test
   - report
 
-
-  // create docker container
-  // 
-
 build-job: # This job runs in the build stage, which runs first.
   stage: build
   script:
