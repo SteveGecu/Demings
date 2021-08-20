@@ -11,7 +11,7 @@ build-job: # This job runs in the build stage, which runs first.
 test automation-job: # This job runs in the test stage.
   stage: test # It only starts when the job in the build stage completes successfully.
   script:
-    - npm run test "Running unit tests... This will take about 60 seconds."
+    - npm run qa "Running unit tests."
 
 test automation-report:
   stage: report
