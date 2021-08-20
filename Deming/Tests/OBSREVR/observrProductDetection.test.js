@@ -26,11 +26,11 @@ describe('Obersvr CV Pipeline Tests', () => {
         expect((message.data.railId)).toEqual(railId)
     });
 
-    it('should ', async () => {
+    it('should validate dnn Id for OBSERVR', async () => {
         const dnnResponse = await fetch(getDnnApi).then(res => res.json())
         console.log(JSON.stringify(dnnResponse));
 
-        expect('143649AB-2C5E-4840-A864-09CEF1E49F87').toEqual(dnnResponse.DnnId)
+        expect('8B6C2C2C-AD94-42E8-A3D2-ADBE15CB2FDD').toEqual(dnnResponse.DnnId)
     });
 
     it('should pass when ready for object detection', async () => {

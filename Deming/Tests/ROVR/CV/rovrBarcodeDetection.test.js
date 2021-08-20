@@ -41,7 +41,7 @@ describe('CV Process Tests', () => {
         console.log(detectionCompleteMessage);
 
         expect(detectionCompleteMessage).toHaveProperty
-        expect(message.meta.type).toEqual('deming.barcode.detection.complete')
+        expect(detectionCompleteMessage.meta.type).toEqual('deming.barcode.detection.complete')
         expect(detectionCompleteMessage.data.dsn).toEqual(dsn)
         expect((detectionCompleteMessage.data.railId)).toEqual(railId)
     })

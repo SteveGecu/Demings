@@ -1,7 +1,7 @@
 const Consumer = require('../Client/GatewayConsumer')
 
 async function getRovrLogMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('rovr.log', 10)
+    const messages = await Consumer.getKafkacatMessage('rovr.log', 50)
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }

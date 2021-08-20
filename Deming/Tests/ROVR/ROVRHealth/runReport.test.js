@@ -1,8 +1,8 @@
 const Messenger = require('../../../Client/getTopics')
-const dsn = process.env.DSN
-const railId = process.env.RAIL_ID
-const customerId = process.env.CUSTOMERID
-const storeId = process.env.STOREID
+const dsn = process.env.ROVRDSN
+const railId = process.env.ROVRRAIL_ID
+const customerId = process.env.ROVRCUSTOMERID
+const storeId = process.env.ROVRSTOREID
 
 jest.setTimeout(60000)
 jest.retryTimes(3)

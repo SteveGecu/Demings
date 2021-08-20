@@ -1,7 +1,7 @@
 require('jest')
 const { getKafkaAdmin, getKafkaConsumer, getKafkaProducer, } = require('../../Archive/Kafka')
-const dsn = process.env.DSN
-const railId = process.env.RAIL_ID
+const dsn = process.env.ROVRDSN
+const railId = process.env.ROVRRAIL_ID
 // const { wait } = require('./utils');
 // const axios = require('axios');
 // const mqtt = require('async-mqtt');
