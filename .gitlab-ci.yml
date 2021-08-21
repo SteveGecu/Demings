@@ -3,17 +3,19 @@ stages: # List of stages for jobs, and their order of execution
   - test
   - report
 
+tags: qa
+
 build-job: # This job runs in the build stage, which runs first.
   stage: build
-  image: node:15
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   script:
-    - yarn install "Compiling the code..."
+    - npm install "Compiling the code..."
 
 test automation-job: # This job runs in the test stage.
-  image: node:15
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   stage: test # It only starts when the job in the build stage completes successfully.
   script:
-    - yarn run qa "Running unit tests."
+    - npm run qa "Running unit tests."
 
 test automation-report:
   stage: report
