@@ -10,6 +10,7 @@ build-job: # This job runs in the build stage, which runs first.
     - npm install "Compiling the code..."
 
 test automation-job: # This job runs in the test stage.
+  image: node:15
   stage: test # It only starts when the job in the build stage completes successfully.
   script:
     - npm run qa "Running unit tests."
