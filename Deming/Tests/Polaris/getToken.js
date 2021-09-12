@@ -35,19 +35,3 @@ async function getToken() {
 module.exports = {
     getToken
 }
-
-
-
-
-        // body: {
-        //     'data-urlencode': {
-        //         'grant_type': 'client_credentials',
-        //         'redirect_uri': 'http://localhost:8080/authorization-code/callback',
-        //         'scope': 'stores',
-        //         'client_id': client_id,
-        //         'client_secret': client_secret
-        //     }
-        // }
-
-
-       // body: new FormData(body)
