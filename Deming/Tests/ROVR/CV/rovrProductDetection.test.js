@@ -29,7 +29,7 @@ describe('CV Process Tests', () => {
     it('should pass when correct DNN is assigned to related RailId', async () => {
         const dnnResponse = await fetch(getDnnApi).then(res => res.json())
 
-        expect('B5D4868C-C859-4A7E-BCF9-409F1CE90E10').toEqual(dnnResponse.DnnId)
+        expect(expectedDnnId).toEqual(dnnResponse.DnnId)
     })
 
     it('should pass when ready for object detection', async () => {
