@@ -1,4 +1,4 @@
-const Messenger = require('../../../Client/getTopics')
+const Messenger = require('../../Client/getTopics')
 const fetch = require("node-fetch")
 
 const dsn = process.env.ROVRDSN

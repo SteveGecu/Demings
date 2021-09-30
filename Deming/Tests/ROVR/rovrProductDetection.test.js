@@ -1,4 +1,4 @@
-const Messenger = require('../../../Client/getTopics')
+const Messenger = require('../../Client/getTopics')
 const fetch = require("node-fetch")
 
 const dsn = process.env.ROVRDSN
@@ -80,5 +80,13 @@ describe('CV Process Tests', () => {
         expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
+
+        console.log(JSON.stringify(message));
     })
+
+    //TODO
+    it('should validate product report went thru SIS', async () => {
+        const message = await Messenger.getCompleteReport(railId)
+        console.log(JSON.stringify(message));
+    });
 })
