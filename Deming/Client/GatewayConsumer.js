@@ -113,14 +113,29 @@ async function getKafkacatMessage(topic, n = 1) {
     return messages;
 }
 
+async function getConfluentKafkacatMessage(topic, n = 1) {
+    const { stdout, stderr } = await exec('kafkacat -F ~/.config/kafkacatconfluent.conf -L -C -t ' + topic + ' -o -' + n + ' -e ');
+    //console.log(stdout);
 
+    const messages = stdout.split('\n').map(line => {
+        try
+        {
+            return JSON.parse(line)
+        } catch (e)
+        {
+            return null
+        }
+    })
+        .filter(msg => !!msg)
+
+    return messages;
+}
 
 module.exports = {
     fetchMessageForDsn,
     fetchMessageForGivenDsn,
     disconnection,
     fetchOneMessage,
-    getKafkacatMessage
+    getKafkacatMessage,
+    getConfluentKafkacatMessage
 }
-
-//messages[0].data.provisioning == dsn || messages[0].data.dsn == dsn

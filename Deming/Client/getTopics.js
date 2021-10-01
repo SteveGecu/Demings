@@ -120,14 +120,17 @@ async function getBarcodeReportCreatedMessage(dsn) {
     return dsnMessage
 }
 
-async function getCompleteReport(railId) {
-    const messages = await Consumer.getKafkacatMessage('deming.rovr.rail.product.report.compliance.complete', 1)
-    const dsnMessage = messages.reverse().find(m => m.data.RailId == railId)
+async function getCompleteProductReport(railId) {
+    const messages = await Consumer.getConfluentKafkacatMessage('deming.rovr.rail.product.report.compliance.complete', 10)
+    const dsnMessage = messages.reverse().find(m => m.data[0].RailId == railId)
     return dsnMessage
 }
 
-
-// deming.rovr.rail.product.report.compliance.complete
+async function getCompleteBarcodeReport(railId) {
+    const messages = await Consumer.getConfluentKafkacatMessage('deming.rovr.rail.barcode.report.compliance.complete', 10)
+    const dsnMessage = messages.reverse().find(m => m.data[0].RailId == railId)
+    return dsnMessage
+}
 
 module.exports = {
     getRovrLogMessage,
@@ -149,5 +152,6 @@ module.exports = {
     getObservrBarcodeDetectionReadyMessage,
     getBarcodeDetectionCompleteMessage,
     getBarcodeReportCreatedMessage,
-    getCompleteReport
+    getCompleteProductReport,
+    getCompleteBarcodeReport
 }
