@@ -16,7 +16,7 @@ jest.retryTimes(3)
 
 describe('Obersvr CV Pipeline Tests', () => {
 
-    it('should pass when ', async () => {
+    it('should pass when media is uploaded', async () => {
         const message = await Messenger.getObservrMediaReadyMessage(dsn)
         console.log(message);
 
@@ -74,4 +74,10 @@ describe('Obersvr CV Pipeline Tests', () => {
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
     })
+
+    //TODO: add validations
+    it('should validate product report went thru SIS', async () => {
+        const message = await Messenger.getCompleteProductReport(railId)
+        console.log(JSON.stringify(message));
+    });
 })

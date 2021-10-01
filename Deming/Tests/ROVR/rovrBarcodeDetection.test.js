@@ -59,4 +59,10 @@ describe('CV Process Tests', () => {
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
     })
+
+    //TODO
+    it('should validate product report went thru SIS', async () => {
+        const message = await Messenger.getCompleteBarcodeReport('0739633A-0C07-4188-90B5-356D0EEAB88D')
+        console.log(JSON.stringify(message));
+    });
 })

@@ -86,7 +86,7 @@ describe('CV Process Tests', () => {
 
     //TODO
     it('should validate product report went thru SIS', async () => {
-        const message = await Messenger.getCompleteReport(railId)
+        const message = await Messenger.getCompleteProductReport('0739633A-0C07-4188-90B5-356D0EEAB88D')
         console.log(JSON.stringify(message));
     });
 })
