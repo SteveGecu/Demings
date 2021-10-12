@@ -3,20 +3,14 @@ stages: # List of stages for jobs, and their order of execution
 
 workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_COMMIT_BRANCH == "test"
       when: always
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: always
-      
 
 qa:
   stage: qa
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   tags:
     - spacee-org-docker
-  rules:
-    - if: $CI_COMMIT_BRANCH != 'test'
-      when: never
   script:
     - npm install
     # load environment variables from file, ignore commented (#) lines
