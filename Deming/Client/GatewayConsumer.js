@@ -96,7 +96,7 @@ async function disconnection() {
 
 // this function is returning an array of desired topic with 
 async function getKafkacatMessage(topic, n = 1) {
-    const { stdout, stderr } = await exec('kafkacat -b ' + process.env.GATEWAY_HOST + ':30100 -C -t ' + topic + ' -o -' + n + ' -e ');
+    const { stdout, stderr } = await exec('kcat -b ' + process.env.GATEWAY_HOST + ':30100 -C -t ' + topic + ' -o -' + n + ' -e ');
     //console.log(stdout);
 
     const messages = stdout.split('\n').map(line => {
@@ -114,7 +114,7 @@ async function getKafkacatMessage(topic, n = 1) {
 }
 
 async function getConfluentKafkacatMessage(topic, n = 1) {
-    const { stdout, stderr } = await exec('kafkacat -F ~/.config/kafkacatconfluent.conf -L -C -t ' + topic + ' -o -' + n + ' -e ');
+    const { stdout, stderr } = await exec('kcat -F ~/.config/kafkacatconfluent.conf -L -C -t ' + topic + ' -o -' + n + ' -e ');
     //console.log(stdout);
 
     const messages = stdout.split('\n').map(line => {

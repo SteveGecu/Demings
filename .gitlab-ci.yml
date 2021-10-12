@@ -1,0 +1,16 @@
+stages: # List of stages for jobs, and their order of execution
+  - qa
+
+qa:
+  stage: qa
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - spacee-org-docker
+  rules:
+    - if: $CI_COMMIT_BRANCH != 'test'
+      when: never
+  script:
+    - npm install
+    # load environment variables from file, ignore commented (#) lines
+    - export $(grep -v '^#' ./environments/qa-stressTest.env | xargs)
+    - npm run qa
