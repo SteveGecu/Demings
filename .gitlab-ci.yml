@@ -1,6 +1,14 @@
 stages: # List of stages for jobs, and their order of execution
   - qa
 
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+      
+
 qa:
   stage: qa
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
