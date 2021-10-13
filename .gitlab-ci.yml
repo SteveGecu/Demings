@@ -26,13 +26,11 @@ workflow:
     mkdir ~/.config'
 
     echo "Writing kafka config to ~/.config/kafkacatconfluent.conf"
-    cat <<EOT >> ~/.config/kafkacatconfluent.conf
-    bootstrap.servers=${CONFLUENT_URL}
-    security.protocol=SASL_SSL
-    sasl.mechanisms=PLAIN
-    sasl.username=${CONFLUENT_USERNAME}
-    sasl.password=${CONFLUENT_PASSWORD}
-    EOT
+    echo "bootstrap.servers=${CONFLUENT_URL}" >> ~/.config/kafkacatconfluent.conf
+    echo "security.protocol=SASL_SSL" >> ~/.config/kafkacatconfluent.conf
+    echo "sasl.mechanisms=PLAIN" >> ~/.config/kafkacatconfluent.conf
+    echo "sasl.username=${CONFLUENT_USERNAME}" >> ~/.config/kafkacatconfluent.conf
+    echo "sasl.password=${CONFLUENT_PASSWORD}" >> ~/.config/kafkacatconfluent.conf
 
 
 rovrTest:
