@@ -24,7 +24,7 @@ workflow:
     # create kafka configuration file
     kFile='~/.config/kafkacatconfluent.conf'
     echo "Writing kafka config to ${kFile}"
-    echo "bootstrap.servers=${CONFLUENT_URL}" >> $kFile
+    echo "bootstrap.servers=${CONFLUENT_URL}" > $kFile
     echo "security.protocol=SASL_SSL" >> $kFile
     echo "sasl.mechanisms=PLAIN" >> $kFile
     echo "sasl.username=${CONFLUENT_USERNAME}" >> $kFile
