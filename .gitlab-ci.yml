@@ -6,13 +6,24 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
       when: always
 
+.load-environment: &load-environment
+  - |
+    file="./environments/${ENVIRONMENT}.env"
+    if [[ -f "$file" ]]; then
+      echo "Loading ${file} environment"
+      # load environment variables from file, ignore commented (#) lines
+      export $(grep -v '^#' $file | xargs)
+    else
+      echo "ERROR: ${file} does not exist"
+      exit 1
+    fi
+
 rovrTest:
   stage: rovrTest
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   tags:
     - spacee-org-docker
   script:
+    - *load-environment
     - npm install
-    # load environment variables from file, ignore commented (#) lines
-    - export $(grep -v '^#' ./environments/${ENVIRONMENT}.env | xargs)
     - npm run rovr
