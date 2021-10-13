@@ -1,6 +1,9 @@
 stages: # List of stages for jobs, and their order of execution
   - rovrTest
 
+variables:
+  ENVIRONMENT: $ENVIRONMENT
+
 workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
