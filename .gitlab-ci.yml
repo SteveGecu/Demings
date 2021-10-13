@@ -23,14 +23,16 @@ workflow:
 
     # create kafka configuration file
     echo 'creating ~/.config directory to house kafka config file'
-    mkdir ~/.config
-    kFile='~/.config/kafkacatconfluent.conf'
-    echo "Writing kafka config to ${kFile}"
-    echo "bootstrap.servers=${CONFLUENT_URL}" > $kFile
-    echo "security.protocol=SASL_SSL" >> $kFile
-    echo "sasl.mechanisms=PLAIN" >> $kFile
-    echo "sasl.username=${CONFLUENT_USERNAME}" >> $kFile
-    echo "sasl.password=${CONFLUENT_PASSWORD}" >> $kFile
+    mkdir ~/.config'
+
+    echo "Writing kafka config to ~/.config/kafkacatconfluent.conf"
+    cat <<EOT >> ~/.config/kafkacatconfluent.conf
+    bootstrap.servers=${CONFLUENT_URL}
+    security.protocol=SASL_SSL
+    sasl.mechanisms=PLAIN
+    sasl.username=${CONFLUENT_USERNAME}
+    sasl.password=${CONFLUENT_PASSWORD}
+    EOT
 
 
 rovrTest:
