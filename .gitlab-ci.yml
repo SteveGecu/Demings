@@ -9,17 +9,27 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
       when: always
 
-.load-environment: &load-environment
+.configure-environment: &configure-environment
   - |
-    file="./environments/${ENVIRONMENT}.env"
-    if [[ -f "$file" ]]; then
-      echo "Loading ${file} environment"
-      # load environment variables from file, ignore commented (#) lines
-      export $(grep -v '^#' $file | xargs)
-    else
-      echo "ERROR: ${file} does not exist"
+    envFile="./environments/${ENVIRONMENT}.env"
+    if [[ ! -f "$envFile" ]]; then
+      echo "ERROR: ${envFile} does not exist"
       exit 1
     fi
+
+    echo "Loading ${envFile} environment"
+    # load environment variables from file, ignore commented (#) lines
+    export $(grep -v '^#' $envFile | xargs)
+
+    # create kafka configuration file
+    kFile='~/.config/kafkacatconfluent.conf'
+    echo "Writing kafka config to ${kFile}"
+    echo "bootstrap.servers=${CONFLUENT_URL}" >> $kFile
+    echo "security.protocol=SASL_SSL" >> $kFile
+    echo "sasl.mechanisms=PLAIN" >> $kFile
+    echo "sasl.username=${CONFLUENT_USERNAME}" >> $kFile
+    echo "sasl.password=${CONFLUENT_PASSWORD}" >> $kFile
+
 
 rovrTest:
   stage: rovrTest
@@ -27,6 +37,6 @@ rovrTest:
   tags:
     - spacee-org-docker
   script:
-    - *load-environment
+    - *configure-environment
     - npm install
     - npm run rovr
