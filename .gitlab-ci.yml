@@ -23,9 +23,9 @@ workflow:
 
     # create kafka configuration file
     echo 'creating ~/.config directory to house kafka config file'
-    mkdir ~/.config'
+    mkdir ~/.config
 
-    echo "Writing kafka config to ~/.config/kafkacatconfluent.conf"
+    echo 'Writing kafka config to ~/.config/kafkacatconfluent.conf'
     echo "bootstrap.servers=${CONFLUENT_URL}" >> ~/.config/kafkacatconfluent.conf
     echo "security.protocol=SASL_SSL" >> ~/.config/kafkacatconfluent.conf
     echo "sasl.mechanisms=PLAIN" >> ~/.config/kafkacatconfluent.conf
