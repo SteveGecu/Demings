@@ -7,7 +7,7 @@
     "test": "jest --no-cache --verbose --runInBand",
     "stress-test": "node src/stress-test.js",
     "tests": "jest /Rovr/Tests ",
-    "qa": "jest --watchAll Deming/Tests/ROVR --outputFile ./rovr_output.json --json"
+    "rovr": "jest --watchAll Deming/Tests/ROVR --outputFile ./rovr_output.json --json"
   },
   "author": "",
   "license": "ISC",

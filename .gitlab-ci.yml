@@ -1,18 +1,18 @@
 stages: # List of stages for jobs, and their order of execution
-  - qa
+  - rovrTest
 
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH == "test"
       when: always
 
-qa:
-  stage: qa
+rovrTest:
+  stage: rovrTest
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   tags:
     - spacee-org-docker
   script:
     - npm install
     # load environment variables from file, ignore commented (#) lines
-    - export $(grep -v '^#' ./environments/qa-stressTest.env | xargs)
-    - npm run qa
+    - export $(grep -v '^#' ./environments/${ENVIRONMENT}.env | xargs)
+    - npm run rovr
