@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --no-cache --verbose --runInBand",
-    "stress-test": "node src/stress-test.js",
-    "tests": "jest /Rovr/Tests ",
-    "rovr": "jest --watchAll Deming/Tests/ROVR --outputFile ./rovr_output.json --json"
+    "RovrHealthTest": "jest /Users/steve/GitReps/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js"
   },
   "author": "",
   "license": "ISC",

@@ -41,4 +41,4 @@ rovrTest:
   script:
     - *configure-environment
     - npm install
-    - npm run rovr
+    - npm run RovrHealthTest
