@@ -31,4 +31,9 @@ describe('OBSERVR Log Tests', () => {
         expect(telemetryMessage.data.customerId).toEqual(customerId)
         expect(telemetryMessage.data.storeId).toEqual(storeId)
     })
+
+    // TODO
+    // add heat tests
+    // add battery tests
+    // add config test thru telemtry 
 })

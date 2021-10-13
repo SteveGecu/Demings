@@ -35,6 +35,11 @@ describe('ROVR Log Tests', () => {
         expect(data.mqtt.topic).toEqual('rovr/report/telemetry')
         expect(data.parsedJson.data.provisioning.dsn).toEqual(dsn)
     })
+
+    // TODO
+    // add heat tests
+    // add battery tests
+    // add config test thru telemtry 
 })
 
 // TODO: add timestamp test
