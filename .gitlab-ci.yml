@@ -22,6 +22,7 @@ workflow:
     export $(grep -v '^#' $envFile | xargs)
 
     # create kafka configuration file
+    mkdir ~/.config
     kFile='~/.config/kafkacatconfluent.conf'
     echo "Writing kafka config to ${kFile}"
     echo "bootstrap.servers=${CONFLUENT_URL}" > $kFile
