@@ -48,7 +48,7 @@ describe('ROVR Log Tests', () => {
         expect(data.parsedJson.data.provisioning.dsn).toEqual(dsn)
     })
 
-    it('Battery voltage value should be greater than 4', async () => {
+    it('Battery voltage value should be greater than 3', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
