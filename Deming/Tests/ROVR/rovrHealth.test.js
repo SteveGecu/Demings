@@ -20,7 +20,7 @@ describe('ROVR Log Tests', () => {
         expect(data.parsedJson.data.dsn).toEqual(dsn)
     })
 
-    it('should return latest log message for given dsn', async () => {
+    it('should return latest Run Report for given dsn', async () => {
         const logMessage = await Apis.getRovrRunReport(dsn)
         const data = logMessage.body.hits.hits[0]._source
 
@@ -28,12 +28,13 @@ describe('ROVR Log Tests', () => {
         expect(data.parsedJson.data.provisioning.dsn).toEqual(dsn)
     })
 
-    it('should return latest log message for given dsn', async () => {
+    it('should return latest Telemetry Report for given dsn', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
         const data = logMessage.body.hits.hits[0]._source
 
         expect(data.mqtt.topic).toEqual('rovr/report/telemetry')
         expect(data.parsedJson.data.provisioning.dsn).toEqual(dsn)
+        console.log(data);
     })
 
     // TODO
