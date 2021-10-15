@@ -28,7 +28,7 @@ async function getRovrLogs(dsn) {
                             {
                                 "range": {
                                     "@timestamp": {
-                                        "gte": "now-10m"
+                                        "gte": "now-5m"
                                     }
                                 }
                             },
@@ -132,7 +132,7 @@ async function getRovrTelemetryReport(dsn) {
                             {
                                 "range": {
                                     "@timestamp": {
-                                        "gte": "now-60m"
+                                        "gte": "now-5m"
                                     }
                                 }
                             },
