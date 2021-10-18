@@ -60,6 +60,8 @@ workflow:
             }
         ]
     }
+    EOF
+    )
 
     curl --data-urlencode "payload=$body" $SLACK_WEBHOOK_URL
 
