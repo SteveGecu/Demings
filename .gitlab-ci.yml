@@ -44,21 +44,41 @@ workflow:
     fi
 
     details=$(awk 1 ORS='\\n' junit.xml)
+    details=$(echo $details | sed "s/\"/'/g")
     time=$(date +%s)
 
     body=$(cat  << EOF
     {
-        "attachments": [
+      "blocks": [
+        {
+          "type": "header",
+          "text": {
+            "type": "plain_text",
+            "text": "${ENVIRONMENT} Deming Test Suite Automation"
+          }
+        },
+        {
+          "type": "section",
+          "fields": [
             {
-                "color": "${color}",
-                "author_name": "Deming Test Suite Automation Pipeline",
-                "author_link": "https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/$CI_PIPELINE_ID",
-                "title": "${ENVIRONMENT} Environment Tests ${result}",
-                "text": "${details}",
-                "footer": "GitLab CI Pipeline",
-                "ts": ${time}
+              "type": "mrkdwn",
+              "text": "*Status:*\n${result}"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Pipeline:*\n<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${CI_PIPELINE_ID}|${CI_PIPELINE_ID}>"
             }
-        ]
+          ]
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "verbatim": true,
+            "text": "*Details:*\n${details}"
+          }
+        }
+      ]
     }
     EOF
     )
