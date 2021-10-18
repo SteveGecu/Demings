@@ -2,8 +2,7 @@ stages: # List of stages for jobs, and their order of execution
   - rovrTest
 
 variables:
-  ENVIRONMENT: 
-    value: $ENVIRONMENT
+  ENVIRONMENT:
     description: 'The environment variable file (without extension) to use for this test'
 
 workflow:
