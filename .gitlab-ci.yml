@@ -63,6 +63,8 @@ workflow:
     EOF
     )
 
+    echo "payload: ${body}"
+
     echo "sending request to '${SLACK_WEBHOOK_URL}'"
 
     curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
