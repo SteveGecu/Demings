@@ -56,14 +56,16 @@ workflow:
                 "title": "${ENVIRONMENT} Environment Tests ${result}",
                 "text": "${details}",
                 "footer": "GitLab CI Pipeline",
-                "ts": $time
+                "ts": ${time}
             }
         ]
     }
     EOF
     )
 
-    curl --data-urlencode "payload=$body" $SLACK_WEBHOOK_URL
+    echo "sending request to '${SLACK_WEBHOOK_URL}'"
+
+    curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
 
 
 rovrTest:
