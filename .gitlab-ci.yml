@@ -43,7 +43,7 @@ workflow:
       color='#aa3333'
     fi
 
-    details=$(cat ./junit.xml)
+    details=$(cat ./junit.xml | sed 's/\n/\\n/')
     time=$(date +%s)
 
     body=$(cat  << EOF
