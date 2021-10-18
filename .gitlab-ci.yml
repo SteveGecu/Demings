@@ -3,6 +3,7 @@ stages: # List of stages for jobs, and their order of execution
 
 variables:
   ENVIRONMENT: $ENVIRONMENT
+    description: 'The environment variable file (without extension) to use for this test'
 
 workflow:
   rules:
@@ -31,6 +32,38 @@ workflow:
     echo "sasl.mechanisms=PLAIN" >> ~/.config/kafkacatconfluent.conf
     echo "sasl.username=${CONFLUENT_USERNAME}" >> ~/.config/kafkacatconfluent.conf
     echo "sasl.password=${CONFLUENT_PASSWORD}" >> ~/.config/kafkacatconfluent.conf
+
+.slack-test-results: &slack-test-results
+  - |
+    if [ $CI_JOB_STATUS = "success" ]
+    then
+    result='Succeeded'
+    color='#36a64f'
+    else
+    result='Failed'
+    color='#aa3333'
+    EOF
+    )
+    fi
+
+    details=$(cat ./junit.xml)
+
+    body=$(cat  << EOF
+    {
+        "attachments": [
+            {
+                "color": "${color}",
+                "author_name": "Deming Test Suite Automation Pipeline",
+                "author_link": "https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/$CI_PIPELINE_ID",
+                "title": "${ENVIRONMENT} Environment Tests ${result}",
+                "text": "${details}",
+                "footer": "GitLab CI Pipeline",
+                "ts": 123456789
+            }
+        ]
+    }
+
+    curl --data-urlencode "payload=$body" $SLACK_WEBHOOK_URL
 
 
 rovrTest:
