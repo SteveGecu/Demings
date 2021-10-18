@@ -36,18 +36,16 @@ workflow:
 
 .slack-test-results: &slack-test-results
   - |
-    if [ $CI_JOB_STATUS = "success" ]
-    then
-    result='Succeeded'
-    color='#36a64f'
+    if [[ $CI_JOB_STATUS = "success" ]]; then
+      result='Succeeded'
+      color='#36a64f'
     else
-    result='Failed'
-    color='#aa3333'
-    EOF
-    )
+      result='Failed'
+      color='#aa3333'
     fi
 
     details=$(cat ./junit.xml)
+    time=$(date +%s)
 
     body=$(cat  << EOF
     {
@@ -59,7 +57,7 @@ workflow:
                 "title": "${ENVIRONMENT} Environment Tests ${result}",
                 "text": "${details}",
                 "footer": "GitLab CI Pipeline",
-                "ts": 123456789
+                "ts": $time
             }
         ]
     }
