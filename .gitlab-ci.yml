@@ -76,3 +76,4 @@ rovrTest:
     - *configure-environment
     - npm install
     - npm run RovrHealthTest
+    - *slack-test-results
