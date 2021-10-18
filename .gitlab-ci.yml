@@ -38,9 +38,11 @@ workflow:
     if [[ $CI_JOB_STATUS = "success" ]]; then
       result='Succeeded'
       color='#36a64f'
+      emoji=':tada:'
     else
       result='Failed'
       color='#aa3333'
+      emoji=':skull_and_crossbones:'
     fi
 
     details=$(awk 1 ORS='\\n' junit.xml)
@@ -62,7 +64,7 @@ workflow:
           "fields": [
             {
               "type": "mrkdwn",
-              "text": "*Status:*\n${result}"
+              "text": "*Status:*\n${emoji} ${result}"
             },
             {
               "type": "mrkdwn",
@@ -82,10 +84,6 @@ workflow:
     }
     EOF
     )
-
-    echo "payload: ${body}"
-
-    echo "sending request to '${SLACK_WEBHOOK_URL}'"
 
     curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
 
