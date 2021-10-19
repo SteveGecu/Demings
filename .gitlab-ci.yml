@@ -35,7 +35,7 @@ workflow:
 
 .slack-test-results: &slack-test-results
   - |
-    lastExitCode = $?
+    lastExitCode=$?
     testCount=$(xmllint --xpath "string(//testsuites/@tests)" junit.xml)
     errorCount=$(xmllint --xpath "string(//testsuites/@errors)" junit.xml)
     failureCount=$(xmllint --xpath "string(//testsuites/@failures)" junit.xml)
