@@ -57,7 +57,7 @@ async function getObservrMediaReadyMessage(dsn) {
 
 async function getDetectionReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.object.detection.ready.rovr', 10)
-    console.log(messages);
+    // console.log(messages);
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
@@ -109,7 +109,7 @@ async function getTrackingCompleteMessage(dsn) {
 
 
 async function getReportCreatedMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.rovr.rail.product.report.created', 1)
+    const messages = await Consumer.getKafkacatMessage('deming.rovr.rail.product.report.created', 10)
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
