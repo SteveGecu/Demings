@@ -16,7 +16,7 @@ const expectedProductFacingIdTwo = process.env.ROVRPRODUCTFACINGIDTWO
 jest.setTimeout(60000)
 jest.retryTimes(3)
 
-describe('CV Process Tests', () => {
+describe('ROVR Product Detection E2E Tests', () => {
 
     it('should pass when Notification Center unzipped the file', async () => {
         const message = await Messenger.getMediaReadyMessage(dsn)

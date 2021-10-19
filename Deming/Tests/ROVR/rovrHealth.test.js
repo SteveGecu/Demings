@@ -11,7 +11,7 @@ const storeId = process.env.ROVRSTOREID
 jest.setTimeout(60000)
 jest.retryTimes(3)
 
-describe('ROVR Log Tests', () => {
+describe('ROVR Health Tests', () => {
 
     it('Given ROVR should produce logs', async () => {
         const logMessage = await Apis.getRovrLogs(dsn)
