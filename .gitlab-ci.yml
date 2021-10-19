@@ -92,6 +92,11 @@ rovrTest:
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   tags:
     - spacee-org-docker
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
   script:
     - *configure-environment
     - npm install
