@@ -35,19 +35,20 @@ workflow:
 
 .slack-test-results: &slack-test-results
   - |
-    if [[ $? = 0 ]]; then
+    lastExitCode = $?
+    testCount=$(xmllint --xpath "string(//testsuites/@tests)" junit.xml)
+    errorCount=$(xmllint --xpath "string(//testsuites/@errors)" junit.xml)
+    failureCount=$(xmllint --xpath "string(//testsuites/@failures)" junit.xml)
+    problemCount=$(($errorCount + $failureCount))
+    execTime=$(xmllint --xpath "string(//testsuites/@time)" junit.xml)
+
+    if [[ $lastExitCode = 0 && $problemCount = 0 ]]; then
       result='Succeeded'
       emoji=':tada:'
     else
       result='Failed'
       emoji=':skull_and_crossbones:'
     fi
-
-    testCount=$(xmllint --xpath "string(//testsuites/@tests)" junit.xml)
-    errorCount=$(xmllint --xpath "string(//testsuites/@errors)" junit.xml)
-    failureCount=$(xmllint --xpath "string(//testsuites/@failures)" junit.xml)
-    problemCount=$(($errorCount + $failureCount))
-    execTime=$(xmllint --xpath "string(//testsuites/@time)" junit.xml)
 
     details=$(awk 1 ORS='\\n' junit.xml)
     details=$(echo $details | sed "s/\"/'/g")
@@ -89,17 +90,9 @@ workflow:
             },
             {
               "type": "mrkdwn",
-              "text": "*Execution Time:*\n${execTime}"
+              "text": "*Execution Time:*\n${execTime} sec."
             }
           ]
-        },
-        {
-          "type": "section",
-          "text": {
-            "type": "mrkdwn",
-            "verbatim": true,
-            "text": "*Details:*\n${details}"
-          }
         }
       ]
     }
