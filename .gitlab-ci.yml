@@ -35,7 +35,7 @@ workflow:
 
 .slack-test-results: &slack-test-results
   - |
-    if [[ $CI_JOB_STATUS = "success" ]]; then
+    if [[ $? = 0 ]]; then
       result='Succeeded'
       color='#36a64f'
       emoji=':tada:'
@@ -86,7 +86,6 @@ workflow:
     )
 
     curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
-
 
 rovrTest:
   stage: rovrTest
