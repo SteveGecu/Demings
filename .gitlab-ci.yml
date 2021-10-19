@@ -64,7 +64,7 @@ workflow:
           "fields": [
             {
               "type": "mrkdwn",
-              "text": "*Status:*\n${emoji} ${CI_JOB_STATUS}"
+              "text": "*Status:*\n${emoji} ${result}"
             },
             {
               "type": "mrkdwn",
