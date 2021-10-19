@@ -37,13 +37,17 @@ workflow:
   - |
     if [[ $? = 0 ]]; then
       result='Succeeded'
-      color='#36a64f'
       emoji=':tada:'
     else
       result='Failed'
-      color='#aa3333'
       emoji=':skull_and_crossbones:'
     fi
+
+    testCount=$(xmllint --xpath "string(//testsuites/@tests)" junit.xml)
+    errorCount=$(xmllint --xpath "string(//testsuites/@errors)" junit.xml)
+    failureCount=$(xmllint --xpath "string(//testsuites/@failures)" junit.xml)
+    problemCount=$(($errorCount + $failureCount))
+    execTime=$(xmllint --xpath "string(//testsuites/@time)" junit.xml)
 
     details=$(awk 1 ORS='\\n' junit.xml)
     details=$(echo $details | sed "s/\"/'/g")
@@ -64,11 +68,28 @@ workflow:
           "fields": [
             {
               "type": "mrkdwn",
-              "text": "*Status:*\n${emoji} ${result}"
+              "text": "*Overall Status:*\n${emoji} ${result}"
             },
             {
               "type": "mrkdwn",
               "text": "*Pipeline:*\n<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${CI_PIPELINE_ID}|${CI_PIPELINE_ID}>"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Total Tests:*\n${testCount}"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Errors:*\n${problemCount}"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Execution Time:*\n${execTime}"
             }
           ]
         },
