@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "RovrHealthTest": "jest ./Deming/Tests/ROVR/rovrHealth.test.js",
-    "RovrProductDetectionTest": "jest ./Deming/Tests/ROVR/rovrProductDetection.test.js"
+    "RovrProductDetectionTest": "jest ./Deming/Tests/ROVR/rovrProductDetection.test.js",
+    "RovrTests": "jest ./Deming/Tests/ROVR"
   },
   "author": "",
   "license": "ISC",

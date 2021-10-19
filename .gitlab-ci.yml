@@ -114,5 +114,5 @@ rovrTest:
   script:
     - *configure-environment
     - npm install
-    - npm run RovrHealthTest
+    - npm run RovrTests
     - *slack-test-results

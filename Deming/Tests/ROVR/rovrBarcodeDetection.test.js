@@ -18,7 +18,6 @@ describe('CV Process Tests', () => {
 
     it('should pass when Notification Center unzipped the file', async () => {
         const message = await Messenger.getMediaReadyMessage(dsn)
-        console.log(message);
 
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.rovr.rail.drone.media.uploaded')
@@ -28,7 +27,6 @@ describe('CV Process Tests', () => {
 
     it('should pass when ready for barcode detection', async () => {
         const message = await Messenger.getBarcodeDetectionReadyMessage(dsn)
-        console.log(message);
 
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.barcode.detection.ready.rovr')
@@ -38,7 +36,6 @@ describe('CV Process Tests', () => {
 
     it('should pass when barcode detection is completed', async () => {
         const detectionCompleteMessage = await Messenger.getBarcodeDetectionCompleteMessage(dsn)
-        console.log(detectionCompleteMessage);
 
         expect(detectionCompleteMessage).toHaveProperty
         expect(detectionCompleteMessage.meta.type).toEqual('deming.barcode.detection.complete')
@@ -48,7 +45,6 @@ describe('CV Process Tests', () => {
 
     it('should pass when product report is generated', async () => {
         const message = await Messenger.getBarcodeReportCreatedMessage(dsn)
-        console.log(JSON.stringify(message))
 
         let a = new Date().valueOf()
         let b = new Date(message.meta.originEventTimestamp).valueOf()
@@ -61,8 +57,8 @@ describe('CV Process Tests', () => {
     })
 
     //TODO
-    it('should validate product report went thru SIS', async () => {
-        const message = await Messenger.getCompleteBarcodeReport('0739633A-0C07-4188-90B5-356D0EEAB88D')
-        console.log(JSON.stringify(message));
-    });
+    // it('should validate product report went thru SIS', async () => {
+    //     const message = await Messenger.getCompleteBarcodeReport('0739633A-0C07-4188-90B5-356D0EEAB88D')
+    //     console.log(JSON.stringify(message));
+    // });
 })

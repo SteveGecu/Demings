@@ -20,7 +20,6 @@ describe('CV Process Tests', () => {
 
     it('should pass when Notification Center unzipped the file', async () => {
         const message = await Messenger.getMediaReadyMessage(dsn)
-        console.log(message);
 
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.rovr.rail.drone.media.uploaded')
@@ -30,21 +29,20 @@ describe('CV Process Tests', () => {
 
     it('should pass when correct DNN is assigned to related RailId', async () => {
         const dnnResponse = await fetch(getDnnApi).then(res => res.json())
-        console.log(dnnResponse);
         const expectedDnnId = process.env.ROVRDNN
+
         expect(dnnResponse.DnnId).toEqual(expectedDnnId)
     })
 
     it('should validate dnn id', async () => {
         const dnnResponse = await fetch(getDnnIdApi).then(res => res.json())
-        console.log(dnnResponse.DnnTraining.Metadata.prod_map_id);
+
         expect(dnnResponse.DnnTraining.Metadata.prod_map_id).toBe(dnnId)
 
     });
 
     it('should pass when ready for object detection', async () => {
         const message = await Messenger.getDetectionReadyMessage(dsn)
-        console.log(message);
 
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.object.detection.ready.rovr')
@@ -54,7 +52,7 @@ describe('CV Process Tests', () => {
 
     it('should pass when object detection is completed', async () => {
         const detectionCompleteMessage = await Messenger.getDetectionCompleteMessage(dsn)
-        console.log(detectionCompleteMessage);
+
         expect(detectionCompleteMessage).toHaveProperty
         expect(detectionCompleteMessage.data.dsn).toEqual(dsn)
         expect((detectionCompleteMessage.data.railId)).toEqual(railId)
@@ -62,7 +60,6 @@ describe('CV Process Tests', () => {
 
     it('should pass when object tracking is complete', async () => {
         const trackingCompleteMessage = await Messenger.getTrackingCompleteMessage(dsn)
-        console.log(trackingCompleteMessage);
 
         expect(trackingCompleteMessage).toHaveProperty
         expect(trackingCompleteMessage.data.dsn).toEqual(dsn)
@@ -72,7 +69,6 @@ describe('CV Process Tests', () => {
 
     it('should pass when fetch related facing', async () => {
         const facingResponse = await fetch(getFacingsApi).then(res => res.json())
-        console.log(facingResponse);
 
         // expect(expectedProductFacingIdOne).toEqual('' + facingResponse[0].ProductFacingID)
         // expect(expectedProductFacingIdTwo).toEqual('' + facingResponse[1].ProductFacingID)
@@ -80,7 +76,6 @@ describe('CV Process Tests', () => {
 
     it('should pass when product report is generated', async () => {
         const message = await Messenger.getReportCreatedMessage(dsn)
-        console.log(JSON.stringify(message))
 
         let a = new Date().valueOf()
         let b = new Date(message.meta.originEventTimestamp).valueOf()
@@ -94,8 +89,8 @@ describe('CV Process Tests', () => {
     })
 
     //TODO
-    it('should validate product report went thru SIS', async () => {
-        const message = await Messenger.getCompleteProductReport(railId)
-        console.log(JSON.stringify(message));
-    });
+    // it('should validate product report went thru SIS', async () => {
+    //     const message = await Messenger.getCompleteProductReport(railId)
+    //     console.log(JSON.stringify(message));
+    // });
 })

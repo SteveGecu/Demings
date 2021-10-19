@@ -57,52 +57,48 @@ async function getObservrMediaReadyMessage(dsn) {
 
 async function getDetectionReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.object.detection.ready.rovr', 10)
-    // console.log(messages);
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
 
 async function getBarcodeDetectionReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.barcode.detection.ready.rovr', 10)
-    console.log(messages);
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
 
 async function getObservrDetectionReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.object.detection.ready.observr', 10)
-    console.log(messages);
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
 
 async function getObservrBarcodeDetectionReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.barcode.detection.ready.observr', 10)
-    console.log(messages);
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
 
 async function getDetectionCompleteMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.object.detection.complete.rovr', 1)
+    const messages = await Consumer.getKafkacatMessage('deming.object.detection.complete.rovr', 10)
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
 
 async function getBarcodeDetectionCompleteMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.barcode.detection.complete', 1)
+    const messages = await Consumer.getKafkacatMessage('deming.barcode.detection.complete', 10)
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
 
 async function getObservrDetectionCompleteMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.object.detection.complete.observr', 1)
+    const messages = await Consumer.getKafkacatMessage('deming.object.detection.complete.observr', 10)
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
 
 async function getTrackingCompleteMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.object.detection.tracking.complete', 1)
+    const messages = await Consumer.getKafkacatMessage('deming.object.detection.tracking.complete', 10)
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
@@ -115,7 +111,7 @@ async function getReportCreatedMessage(dsn) {
 }
 
 async function getBarcodeReportCreatedMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.rovr.rail.barcode.report.created', 1)
+    const messages = await Consumer.getKafkacatMessage('deming.rovr.rail.barcode.report.created', 10)
     const dsnMessage = messages.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
