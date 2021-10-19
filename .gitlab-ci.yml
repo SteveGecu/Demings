@@ -1,0 +1,118 @@
+stages: # List of stages for jobs, and their order of execution
+  - rovrTest
+
+variables:
+  ENVIRONMENT:
+    description: 'The environment variable file (without extension) to use for this test'
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
+      when: always
+
+.configure-environment: &configure-environment
+  - |
+    envFile="./environments/${ENVIRONMENT}.env"
+    if [[ ! -f "$envFile" ]]; then
+      echo "ERROR: ${envFile} does not exist"
+      exit 1
+    fi
+
+    echo "Loading ${envFile} environment"
+    # load environment variables from file, ignore commented (#) lines
+    export $(grep -v '^#' $envFile | xargs)
+
+    # create kafka configuration file
+    echo 'creating ~/.config directory to house kafka config file'
+    mkdir ~/.config
+
+    echo 'Writing kafka config to ~/.config/kafkacatconfluent.conf'
+    echo "bootstrap.servers=${CONFLUENT_URL}" >> ~/.config/kafkacatconfluent.conf
+    echo "security.protocol=SASL_SSL" >> ~/.config/kafkacatconfluent.conf
+    echo "sasl.mechanisms=PLAIN" >> ~/.config/kafkacatconfluent.conf
+    echo "sasl.username=${CONFLUENT_USERNAME}" >> ~/.config/kafkacatconfluent.conf
+    echo "sasl.password=${CONFLUENT_PASSWORD}" >> ~/.config/kafkacatconfluent.conf
+
+.slack-test-results: &slack-test-results
+  - |
+    lastExitCode=$?
+    testCount=$(xmllint --xpath "string(//testsuites/@tests)" junit.xml)
+    errorCount=$(xmllint --xpath "string(//testsuites/@errors)" junit.xml)
+    failureCount=$(xmllint --xpath "string(//testsuites/@failures)" junit.xml)
+    problemCount=$(($errorCount + $failureCount))
+    execTime=$(xmllint --xpath "string(//testsuites/@time)" junit.xml)
+
+    if [[ $lastExitCode = 0 && $problemCount = 0 ]]; then
+      result='Succeeded'
+      emoji=':tada:'
+    else
+      result='Failed'
+      emoji=':skull_and_crossbones:'
+    fi
+
+    details=$(awk 1 ORS='\\n' junit.xml)
+    details=$(echo $details | sed "s/\"/'/g")
+    time=$(date +%s)
+
+    body=$(cat  << EOF
+    {
+      "blocks": [
+        {
+          "type": "header",
+          "text": {
+            "type": "plain_text",
+            "text": "${ENVIRONMENT} Deming Test Suite Automation"
+          }
+        },
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Overall Status:*\n${emoji} ${result}"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Pipeline:*\n<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${CI_PIPELINE_ID}|${CI_PIPELINE_ID}>"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Total Tests:*\n${testCount}"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Errors:*\n${problemCount}"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Execution Time:*\n${execTime} sec."
+            }
+          ]
+        }
+      ]
+    }
+    EOF
+    )
+
+    curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
+
+rovrTest:
+  stage: rovrTest
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - spacee-org-docker
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  script:
+    - *configure-environment
+    - npm install
+    - npm run RovrHealthTest
+    - *slack-test-results

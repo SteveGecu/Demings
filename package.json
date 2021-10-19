@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "RovrHealthTest": "jest /Users/steve/GitReps/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js"
+    "RovrHealthTest": "jest ./Deming/Tests/ROVR/rovrHealth.test.js"
   },
   "author": "",
   "license": "ISC",
