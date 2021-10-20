@@ -18,7 +18,7 @@ describe('ROVR Health Tests', () => {
         const data = logMessage.body.hits.hits[0]._source
 
         expect(data.mqtt.topic).toEqual('rovr/log')
-        expect(data.parsedJson.data.dsn).toEqual(dsn)
+        expect(data.parsedJson.data.dsn).toEqual('123')
     })
 
     it('Given ROVR should produce Run Report after run', async () => {
