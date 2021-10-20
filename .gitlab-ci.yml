@@ -152,7 +152,7 @@ rovrTest:
   script:
     - *configure-environment
     - npm install
-    - npm run RovrTests
+    - npm run RovrTests 2>/dev/null
     - *slack-test-results
   after_script:
     - *slack-pipeline-failure
