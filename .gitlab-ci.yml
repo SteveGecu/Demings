@@ -26,12 +26,12 @@ workflow:
     echo 'creating ~/.config directory to house kafka config file'
     mkdir ~/.config
 
-    echo 'Writing kafka config to ~/.config/kafkacatconfluent.conf'
-    echo "bootstrap.servers=${CONFLUENT_URL}" >> ~/.config/kafkacatconfluent.conf
-    echo "security.protocol=SASL_SSL" >> ~/.config/kafkacatconfluent.conf
-    echo "sasl.mechanisms=PLAIN" >> ~/.config/kafkacatconfluent.conf
-    echo "sasl.username=${CONFLUENT_USERNAME}" >> ~/.config/kafkacatconfluent.conf
-    echo "sasl.password=${CONFLUENT_PASSWORD}" >> ~/.config/kafkacatconfluent.conf
+    echo 'Writing kafka config to ~/.config/kafkacat${ENVIRONMENT}.conf'
+    echo "bootstrap.servers=${BOOTSTRAP.SERVERS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "security.protocol=SASL_SSL" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.mechanisms=${SASL.MECHANISMS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.username=${SASL.USERNAME}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.password=${SASL.PASSWORD}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
 
 .slack-test-results: &slack-test-results
   - |
