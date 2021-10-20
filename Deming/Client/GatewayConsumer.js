@@ -96,7 +96,8 @@ async function disconnection() {
 
 // this function is returning an array of desired topic with 
 async function getKafkacatMessage(topic, n = 1) {
-    const { stdout, stderr } = await exec('kcat -F ~/.config/kafkacatqa-stressTest.conf -C -t ' + topic + ' -o -' + n + ' -e ');
+    console.log(`Loading Kafka config file: ~/.config/kafkacat${process.env.TEST_ENVIRONMENT}.conf for accesss to topic ${topic} and offset -${n}`)
+    const { stdout, stderr } = await exec('kcat -F ~/.config/kafkacat' + process.env.TEST_ENVIRONMENT +'.conf -C -t ' + topic + ' -o -' + n + ' -e ');
     const messages = stdout.split('\n').map(line => {
         try
         {
@@ -112,7 +113,8 @@ async function getKafkacatMessage(topic, n = 1) {
 }
 
 async function getConfluentKafkacatMessage(topic, n = 1) {
-    const { stdout, stderr } = await exec('kcat -F ~/.config/kafkacatmorrison.conf -C -t ' + topic + ' -o -' + n + ' -e ');
+    console.log(`Loading Kafka config file: ~/.config/kafkacat${process.env.TEST_ENVIRONMENT}.conf for accesss to topic ${topic} and offset -${n}`)
+    const { stdout, stderr } = await exec('kcat -F ~/.config/kafkacat' + process.env.TEST_ENVIRONMENT +'.conf -C -t ' + topic + ' -o -' + n + ' -e ');
     const messages = stdout.split('\n').map(line => {
         try
         {

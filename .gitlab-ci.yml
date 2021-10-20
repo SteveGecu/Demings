@@ -1,5 +1,6 @@
 stages: # List of stages for jobs, and their order of execution
   - rovrTest
+  - .post
 
 variables:
   ENVIRONMENT:
@@ -18,6 +19,9 @@ workflow:
       exit 1
     fi
 
+    # remove .env from to avoid conflict
+    rm ./.env
+
     echo "Loading ${envFile} environment"
     # load environment variables from file, ignore commented (#) lines
     export $(grep -v '^#' $envFile | xargs)
@@ -26,12 +30,13 @@ workflow:
     echo 'creating ~/.config directory to house kafka config file'
     mkdir ~/.config
 
-    echo 'Writing kafka config to ~/.config/kafkacat${ENVIRONMENT}.conf'
+    echo "Writing kafka config to ~/.config/kafkacat${ENVIRONMENT}.conf"
     echo "bootstrap.servers=${BOOTSTRAPSERVERS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
     echo "security.protocol=SASL_SSL" >> ~/.config/kafkacat${ENVIRONMENT}.conf
     echo "sasl.mechanisms=${SASLMECHANISMS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
     echo "sasl.username=${SASLUSERNAME}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
     echo "sasl.password=${SASLPASSWORD}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "enable.ssl.certificate.verification=false" >> ~/.config/kafkacat${ENVIRONMENT}.conf
 
 .slack-test-results: &slack-test-results
   - |
@@ -73,7 +78,7 @@ workflow:
             },
             {
               "type": "mrkdwn",
-              "text": "*Pipeline:*\n<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${CI_PIPELINE_ID}|${CI_PIPELINE_ID}>"
+              "text": "*Test Summary:*\n<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${CI_PIPELINE_ID}/test_report|${CI_PIPELINE_ID}>"
             }
           ]
         },
@@ -90,7 +95,7 @@ workflow:
             },
             {
               "type": "mrkdwn",
-              "text": "*Execution Time:*\n${execTime} sec."
+              "text": "*Execution Time:*\n${execTime} sec"
             }
           ]
         }
@@ -101,11 +106,44 @@ workflow:
 
     curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
 
+
+.slack-pipeline-failure: &slack-pipeline-failure
+  - |    
+    if [[ $CI_JOB_STATUS = 'failed' ]]; then
+
+      body=$(cat  << EOF
+      {
+        "blocks": [
+          {
+            "type": "header",
+            "text": {
+              "type": "plain_text",
+              "text": "${ENVIRONMENT} Deming Test Suite Automation Pipeline Failure"
+            }
+          },
+          {
+            "type": "section",
+            "fields": [
+              {
+                "type": "mrkdwn",
+                "text": "*Details:*\n<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${CI_PIPELINE_ID}|${CI_PIPELINE_ID}>"
+              }
+            ]
+          }
+        ]
+      }
+    EOF
+      )
+
+      curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
+    fi
+
+
 rovrTest:
   stage: rovrTest
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   tags:
-    - spacee-org-docker
+    - deming-rovr-gateway-qa-stress-test
   artifacts:
     when: always
     reports:
@@ -116,3 +154,7 @@ rovrTest:
     - npm install
     - npm run RovrTests
     - *slack-test-results
+  after_script:
+    - *slack-pipeline-failure
+    
+
