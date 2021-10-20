@@ -27,11 +27,11 @@ workflow:
     mkdir ~/.config
 
     echo 'Writing kafka config to ~/.config/kafkacat${ENVIRONMENT}.conf'
-    echo "bootstrap.servers=${BOOTSTRAP.SERVERS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "bootstrap.servers=${BOOTSTRAPSERVERS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
     echo "security.protocol=SASL_SSL" >> ~/.config/kafkacat${ENVIRONMENT}.conf
-    echo "sasl.mechanisms=${SASL.MECHANISMS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
-    echo "sasl.username=${SASL.USERNAME}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
-    echo "sasl.password=${SASL.PASSWORD}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.mechanisms=${SASLMECHANISMS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.username=${SASLUSERNAME}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.password=${SASLPASSWORD}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
 
 .slack-test-results: &slack-test-results
   - |
