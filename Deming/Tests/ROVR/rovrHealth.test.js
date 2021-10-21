@@ -72,6 +72,14 @@ describe('ROVR Health Tests', () => {
         expect(parseInt(telemetryMessage.data.diskUsagePercent)).not.toBeGreaterThan(50)
     });
 
+    it('Wifi Signal Level should not be lower the -86', async () => {
+        const logMessage = await Apis.getRovrTelemetryReport(dsn)
+        const message = logMessage.body.hits.hits[0]._source.message
+        const telemetryMessage = JSON.parse(message)
+
+        expect(parseInt(telemetryMessage.data.wifiMetrics.signalLevel)).not.toBeLessThan(-86)
+    });
+
     // TODO
     // add config test thru telemtry 
     // upload tests
