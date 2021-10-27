@@ -10,7 +10,7 @@ const storeId = process.env.OBSERVRSTOREID
 jest.setTimeout(60000)
 jest.retryTimes(3)
 
-describe('OBSERVR Log Tests', () => {
+describe('OBSERVR Tests', () => {
 
     it('Given OBSERVR should produce logs', async () => {
         const logMessage = await Apis.getObservrLogs(dsn)

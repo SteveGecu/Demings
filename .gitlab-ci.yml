@@ -41,7 +41,6 @@ workflow:
 .slack-test-results: &slack-test-results
   - |
     lastExitCode=$?
-    testName=$(xmllint --xpath "string(//testsuites/testsuite/@name)" junit.xml)
     testCount=$(xmllint --xpath "string(//testsuites/@tests)" junit.xml)
     errorCount=$(xmllint --xpath "string(//testsuites/@errors)" junit.xml)
     failureCount=$(xmllint --xpath "string(//testsuites/@failures)" junit.xml)
@@ -67,7 +66,7 @@ workflow:
           "type": "header",
           "text": {
             "type": "plain_text",
-            "text": "${testName} Test Automation"
+            "text": "${TEST_NAME} Test Automation"
           }
         },
         {
@@ -162,6 +161,7 @@ rovrTest:
     - npm install
     - npm run RovrTests || true
   after_script:
+    - export TEST_NAME='ROVR Tests'
     - *slack-test-results
 
 observrTest:
@@ -179,4 +179,5 @@ observrTest:
     - npm install
     - npm run ObservrTests || true
   after_script:
+    - export TEST_NAME='OBSERVR Tests'
     - *slack-test-results
