@@ -41,6 +41,7 @@ workflow:
 .slack-test-results: &slack-test-results
   - |
     lastExitCode=$?
+    testName=$(xmllint --xpath "string(//testsuites/testsuite/@name)" junit.xml)
     testCount=$(xmllint --xpath "string(//testsuites/@tests)" junit.xml)
     errorCount=$(xmllint --xpath "string(//testsuites/@errors)" junit.xml)
     failureCount=$(xmllint --xpath "string(//testsuites/@failures)" junit.xml)
@@ -66,7 +67,7 @@ workflow:
           "type": "header",
           "text": {
             "type": "plain_text",
-            "text": "${ENVIRONMENT} Deming Test Suite Automation"
+            "text": "${testName} Test Automation"
           }
         },
         {
@@ -78,7 +79,20 @@ workflow:
             },
             {
               "type": "mrkdwn",
+              "text": "*Environment:*\n${ENVIRONMENT}"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
               "text": "*Test Summary:*\n<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${CI_PIPELINE_ID}/test_report|${CI_PIPELINE_ID}>"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Execution Time:*\n${execTime} sec"
             }
           ]
         },
@@ -92,10 +106,6 @@ workflow:
             {
               "type": "mrkdwn",
               "text": "*Errors:*\n${problemCount}"
-            },
-            {
-              "type": "mrkdwn",
-              "text": "*Execution Time:*\n${execTime} sec"
             }
           ]
         }
