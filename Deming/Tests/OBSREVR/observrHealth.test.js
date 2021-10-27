@@ -1,6 +1,7 @@
 require('jest')
 require('dotenv').config()
 const Messenger = require('../../Client/getTopics')
+const Apis = require('../../Client/getElastic')
 const dsn = process.env.OBSERVRDSN
 const railId = process.env.OBSERVRRAIL_ID
 const customerId = process.env.OBSERVRCUSTOMERID
@@ -11,29 +12,40 @@ jest.retryTimes(3)
 
 describe('OBSERVR Log Tests', () => {
 
-    // TODO change to api calls
-    it('should return latest log message for given OBSERVR dsn', async () => {
-        const logMessage = await Messenger.getObservrLogMessage(dsn)
-        console.log(logMessage)
-        expect(logMessage.meta.type).toEqual('observr.log')
-        expect(logMessage.data.dsn).toEqual(dsn)
-        expect(logMessage.data.railId).toEqual(railId)
-        expect(logMessage.data.customerId).toEqual(customerId)
-        expect(logMessage.data.storeId).toEqual(storeId)
+    it('Given OBSERVR should produce logs', async () => {
+        const logMessage = await Apis.getObservrLogs(dsn)
+        const data = logMessage.body.hits.hits[0]._source
+
+        expect(data.mqtt.topic).toEqual('observr/log')
+        expect(data.parsedJson.data.dsn).toEqual(dsn)
     })
 
-    it('should get telemetry message', async () => {
-        const telemetryMessage = await Messenger.getObservrTelemetryReportMessage(dsn)
-        console.log(telemetryMessage)
-        expect(telemetryMessage.meta.type).toEqual('observr.report.telemetry')
-        expect(telemetryMessage.data.provisioning.dsn).toEqual(dsn)
-        expect(telemetryMessage.data.provisioning.railId).toEqual(railId)
-        expect(telemetryMessage.data.customerId).toEqual(customerId)
-        expect(telemetryMessage.data.storeId).toEqual(storeId)
+    it('Given OBSERVR should produce Telemetry report', async () => {
+        const logMessage = await Apis.getObservrTelemetryReport(dsn)
+        const data = logMessage.body.hits.hits[0]._source
+        const message = logMessage.body.hits.hits[0]._source.message
+        const telemetryMessage = JSON.parse(message)
+        let a = new Date().valueOf()
+        let b = new Date(telemetryMessage.meta.originEventTimestamp).valueOf()
+
+        expect(a - b).toBeLessThan(5 * 60 * 1000)
+        expect(data.mqtt.topic).toEqual('observr/report/telemetry')
+        expect(data.parsedJson.data.provisioning.dsn).toEqual(dsn)
     })
 
-    // TODO
-    // add heat tests
-    // add battery tests
-    // add config test thru telemtry 
+    it('Temperature value should be lower then 85', async () => {
+        const logMessage = await Apis.getObservrTelemetryReport(dsn)
+        const message = logMessage.body.hits.hits[0]._source.message
+        const telemetryMessage = JSON.parse(message)
+
+        expect(telemetryMessage.data.os.temperature).not.toBeGreaterThan(85)
+    });
+
+    it('Given OBSERVR disc usage should not be over 50 ', async () => {
+        const logMessage = await Apis.getObservrTelemetryReport(dsn)
+        const message = logMessage.body.hits.hits[0]._source.message
+        const telemetryMessage = JSON.parse(message)
+
+        expect(parseInt(telemetryMessage.data.os.diskUsagePercent)).not.toBeGreaterThan(50)
+    });
 })
