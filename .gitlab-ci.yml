@@ -1,5 +1,5 @@
 stages: # List of stages for jobs, and their order of execution
-  - rovrTest
+  - testSuite
   - .post
 
 variables:
@@ -138,7 +138,7 @@ workflow:
     fi
 
 rovrTest:
-  stage: rovrTest
+  stage: testSuite
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   tags:
     - deming-rovr-gateway-qa-stress-test
@@ -151,8 +151,22 @@ rovrTest:
     - *configure-environment
     - npm install
     - npm run RovrTests || true
-    - npm run ObservrTests || true
-    # - *slack-test-results
   after_script:
     - *slack-test-results
-  #   - *slack-pipeline-failure
+
+observrTest:
+  stage: testSuite
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - deming-rovr-gateway-qa-stress-test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  script:
+    - *configure-environment
+    - npm install
+    - npm run ObservrTests || true
+  after_script:
+    - *slack-test-results
