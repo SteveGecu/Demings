@@ -161,7 +161,7 @@ rovrTest:
     - npm install
     - npm run RovrTests || true
   after_script:
-    - export TEST_NAME='ROVR Tests'
+    - export TEST_NAME='ROVR'
     - *slack-test-results
 
 observrTest:
@@ -179,5 +179,5 @@ observrTest:
     - npm install
     - npm run ObservrTests || true
   after_script:
-    - export TEST_NAME='OBSERVR Tests'
+    - export TEST_NAME='OBSERVR'
     - *slack-test-results
