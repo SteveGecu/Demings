@@ -106,9 +106,8 @@ workflow:
 
     curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
 
-
 .slack-pipeline-failure: &slack-pipeline-failure
-  - |    
+  - |
     if [[ $CI_JOB_STATUS = 'failed' ]]; then
 
       body=$(cat  << EOF
@@ -138,7 +137,6 @@ workflow:
       curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
     fi
 
-
 rovrTest:
   stage: rovrTest
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
@@ -153,9 +151,8 @@ rovrTest:
     - *configure-environment
     - npm install
     - npm run RovrTests || true
+    - npm run ObservrTests || true
     # - *slack-test-results
   after_script:
     - *slack-test-results
   #   - *slack-pipeline-failure
-    
-
