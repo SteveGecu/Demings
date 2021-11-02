@@ -185,6 +185,16 @@ async function getCompleteBarcodeReport(railId) {
     return dsnMessage
 }
 
+async function getEventStreamMessage(dsn) {
+    const messages = await Consumer.getKafkacatMessage('deming.event.stream', 100)
+    const sortedMessage = messages.sort((a, b) => {
+        return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
+    })
+    const dsnMessage = sortedMessage.reverse().find(m => m.data.payload.dsn == dsn)
+
+    return dsnMessage
+}
+
 module.exports = {
     getRovrLogMessage,
     getRovrTelemetryReportMessage,
@@ -206,5 +216,6 @@ module.exports = {
     getBarcodeDetectionCompleteMessage,
     getBarcodeReportCreatedMessage,
     getCompleteProductReport,
-    getCompleteBarcodeReport
+    getCompleteBarcodeReport,
+    getEventStreamMessage
 }
