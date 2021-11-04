@@ -4,7 +4,7 @@ stages: # List of stages for jobs, and their order of execution
 
 variables:
   ENVIRONMENT:
-    default: qa-stressTest
+    value: qa-stressTest
     description: 'The environment variable file (without extension) to use for this test'
 
 workflow:
