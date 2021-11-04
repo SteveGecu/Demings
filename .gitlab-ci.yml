@@ -4,6 +4,7 @@ stages: # List of stages for jobs, and their order of execution
 
 variables:
   ENVIRONMENT:
+    default: qa-stressTest
     description: 'The environment variable file (without extension) to use for this test'
 
 workflow:
@@ -146,8 +147,12 @@ workflow:
       curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
     fi
 
-rovrTest:
+qaRovrTest:
   stage: testSuite
+  rules:
+    - if: $ENVIRONMENT == 'qa-stressTest'
+      when: always
+    - when: never
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   tags:
     - deming-rovr-gateway-qa-stress-test
@@ -164,8 +169,12 @@ rovrTest:
     - export TEST_NAME='ROVR'
     - *slack-test-results
 
-observrTest:
+qaObservrTest:
   stage: testSuite
+  rules:
+    - if: $ENVIRONMENT == 'qa-stressTest'
+      when: always
+    - when: never
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
   tags:
     - deming-rovr-gateway-qa-stress-test
@@ -181,3 +190,25 @@ observrTest:
   after_script:
     - export TEST_NAME='OBSERVR'
     - *slack-test-results
+
+bunningsRovrTest:
+  stage: testSuite
+  rules:
+    - if: $ENVIRONMENT == 'bunnings'
+      when: always
+    - when: never
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - deming-rovr-gateway-prod
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  script:
+    - *configure-environment
+    - npm install
+    - npm run RovrTests || true
+  after_script:
+    - export TEST_NAME='OBSERVR'
+    # - *slack-test-results
