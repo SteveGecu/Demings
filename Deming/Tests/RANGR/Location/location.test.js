@@ -3,7 +3,6 @@ const areaApis = require('../Area/areaApis')
 const areaName = 'autoArea'
 const locationDescription = 'autoDescription'
 const locationLabel = 'autoLabel'
-const locationName = 'testAutomationLocation'
 let areaId
 let locationId
 
@@ -52,7 +51,7 @@ describe('RANGR Location Tests', () => {
         expect(response.body.area.areaId).toEqual(areaId)
     });
 
-    it('should delete locationcreateLocation with given id', async () => {
+    it('should delete Location with given id', async () => {
         const response = await lacationApis.deleteLocation(locationId)
 
         expect(response.status).toBe(200)
