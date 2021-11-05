@@ -1,5 +1,5 @@
 const DeviceApi = require('./deviceApis')
-const dsn = 556
+const dsn = 888
 let deviceId
 
 jest.setTimeout(60000)
@@ -41,7 +41,7 @@ describe('RANGR Device Tests', () => {
     });
     // BUG: DEL NOT WORKING
     it('should delete store with given id', async () => {
-        const response = await DeviceApi.deleteDevice(dsn)
+        const response = await DeviceApi.deleteDevice(deviceId)
 
         expect(response.status).toBe(200)
         //expect(response.body.affected).toEqual(1)
