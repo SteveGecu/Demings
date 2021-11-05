@@ -14,6 +14,7 @@ describe('RANGR Shelf Tests', () => {
 
         const response = await shelfApis.createShelf(depthSize, emptyDistanceSize)
         shelfId = response.body.shelfSizeId
+        console.log(shelfId);
 
         expect(response.status).toBe(201)
         expect(response.body.depth).toEqual(depthSize)
@@ -35,12 +36,13 @@ describe('RANGR Shelf Tests', () => {
 
     it('should update Shelf with given Shelf id', async () => {
         const response = await shelfApis.updateShelf(shelfId, newDepthSize, newEmptyDistanceSize)
+        console.log(response);
 
         expect(response.status).toBe(200)
-        expect(response.body.locationId).toEqual(shelfId)
-        expect(response.body.description).toEqual('Updated Spacee Store')
-        expect(response.body.label).toEqual('test label')
-        expect(response.body.area.areaId).toEqual(areaId)
+        expect(response.body.shelfSizeId).toEqual(shelfId)
+        expect(response.body.depth).toEqual(newDepthSize)
+        expect(response.body.emptyDistance).toEqual(newEmptyDistanceSize)
+
     });
 
     it('should delete Shelf with given Shelf id', async () => {
