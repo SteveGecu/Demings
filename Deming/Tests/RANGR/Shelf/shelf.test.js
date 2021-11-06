@@ -14,7 +14,6 @@ describe('RANGR Shelf Tests', () => {
 
         const response = await shelfApis.createShelf(depthSize, emptyDistanceSize)
         shelfId = response.body.shelfSizeId
-        console.log(shelfId);
 
         expect(response.status).toBe(201)
         expect(response.body.depth).toEqual(depthSize)
