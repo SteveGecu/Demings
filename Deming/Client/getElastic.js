@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
-const elasticURL = 'https://7ea136898a864522af7be4a25f161508.eastus2.azure.elastic-cloud.com:9243/qa/_search'
+require('dotenv').config();
+const elasticURL = process.env.ELASTIC_URL
 let username = 'elastic';
 let password = 'tlvtACRv9JLkDn1AFFOWmdQF';
 
