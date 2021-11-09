@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# Usage
-#  ./run_orchestrator.sh
-
 echo "Writing kafka config to ~/.config/kafkacatorchestrator.conf"
-echo "bootstrap.servers=${BOOTSTRAPSERVERS}" >> ~/.config/kafkacatorchestrator.conf
+echo "bootstrap.servers=${BOOTSTRAPSERVERS}" > ~/.config/kafkacatorchestrator.conf
 echo "security.protocol=SASL_SSL" >> ~/.config/kafkacatorchestrator.conf
 echo "sasl.mechanisms=${SASLMECHANISMS}" >> ~/.config/kafkacatorchestrator.conf
 echo "sasl.username=${SASLUSERNAME}" >> ~/.config/kafkacatorchestrator.conf
