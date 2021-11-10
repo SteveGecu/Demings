@@ -124,15 +124,17 @@ async function runDroneTest(drone) {
   report.totalPassedTests = result.results.numPassedTests;
   report.totalFailedTests = result.results.numFailedTests;
 
-  let failingTests = [];
+  report.failures = {};
   result.results.testResults.forEach(lvl1 => {
     if(lvl1.numFailingTests > 0) {
       lvl1.testResults.forEach(tr => {
-        failingTests.push(tr.title);
+        let suite = tr.ancestorTitles.pop();
+        if(!report.failures[suite]) { report.failures[suite] = []; }
+        report.failures[suite].push(tr.title);
       });
     }
   });
-  report.failingTests = failingTests.filter(_distinct);
+  // report.failures = failures.filter(_distinct);
   
   return report;
 }
@@ -140,7 +142,13 @@ async function runDroneTest(drone) {
 
 // Send slack alert to channel based on environment variable
 async function sendSlackAlert(report) {
-  if(!SlackWebHookUrl) { return; }
+  if(!SlackWebHookUrl) { 
+    console.log('SLACK_WEBHOOK_URL is not configured');
+    return; 
+  }
+
+  let evaluation = _evaluateAlert(report);
+  if(!evaluation.isAlarm) { return; }
 
   let body = {
     blocks: [
@@ -148,7 +156,7 @@ async function sendSlackAlert(report) {
         type: "header",
         text: {
           type: "plain_text",
-          text: `${Env} Automation Alert`
+          text: `${Env.toUpperCase()} Automation Alert`
         }
       },
       {
@@ -156,39 +164,60 @@ async function sendSlackAlert(report) {
         fields: [
           {
             type: "mrkdwn",
-            text: `*Failed Tests:*\n${report.summary.skippedDrones}`
-          },
-          {
-            type: "mrkdwn",
-            text: `*Total Tests:*\n${report.summary.testedDrones}`
-          },
-          {
-            type: "mrkdwn",
             text: `*Total Drones:*\n${report.summary.totalDrones}`
+          },
+          {
+            type: "mrkdwn",
+            text: `*Total Tests:*\n${report.summary.totalDroneTests}`
+          },
+          {
+            type: "mrkdwn",
+            text: `*Total Failures:*\n${report.summary.totalFailedTests}`
+          }
+        ]
+      },
+      {
+        type: "section",
+        fields: [
+          {
+            type: "mrkdwn",
+            text: `*${evaluation.severity} Alert*:\n*${evaluation.message}`
           }
         ]
       }
     ]
   };
 
-  let response = await axios.post(SlackWebHookUrl, body);
+  await axios.post(SlackWebHookUrl, body);
 }
 
 // The rules for sending alerts, right now this is just a boolean response but
 // this could be changed to an object to determine serverity, etc
 // Seperating this into it's own function because it may get rather large/complex as we build the rules
-function _shouldAlert(report) {
+function _evaluateAlert(report) {
   // alert when skipping more than 10% of assigned drones
-  if (report.summary.skippedDrones / report.summary.totalDrones > .1) {
-    return true;
+  let skippedPct = report.summary.skippedDrones / report.summary.totalDrones;
+  if (skippedPct > .1) {
+    return {
+      isAlarm: true,
+      severity: 'P3',
+      message: `${Math.round(skippedPct * 100)}% of drones skipped testing.  This happens when no DNN has been assigned.`
+    };
   }
 
   // alert when more than 10% of drone tests failed
-  if (report.summary.totalFailedTests / report.summary.totalDroneTests > .1) {
-    return true;
+  let droneTestFailurePct = report.summary.totalFailedTests / report.summary.totalDroneTests;
+  if (droneTestFailurePct > .1) {
+    return {
+      isAlarm: true,
+      severity: 'P3',
+      message: `${Math.round(droneTestFailurePct * 100)}% of drone tests failed.`
+    };
   }
 
-  return false;
+  return {
+    isAlarm: false
+  };
 }
 
 
@@ -209,37 +238,36 @@ function _shouldAlert(report) {
   };
 
   for (let key in drones) {
-      let drone = drones[key];
+    let drone = drones[key];
 
-      if(drone.railId != '72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C') {
-        continue;
-      }
+    if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
+      continue;
+    }
 
-      let droneType = drone.railId in ObservrRails ? 'OBSERVR' : 'ROVR';
-      drones[key].droneType = droneType;
-      drones[key].dnn = await getDNN(drone);
-      
-      let droneTestReport = await runDroneTest(drone);
-      if(droneTestReport.isTested) {
-        report.summary.testedDrones++;
-        report.summary.totalDroneTests  += droneTestReport.totalTests;
-        report.summary.totalPassedTests += droneTestReport.totalPassedTests;
-        report.summary.totalFailedTests += droneTestReport.totalFailedTests;
-      } else {
-        report.summary.skippedDrones++;
-      }
-      report.drones.push(droneTestReport);
+    let droneType = ObservrRails.includes(drone.railId) ? 'OBSERVR' : 'ROVR';
+    drones[key].droneType = droneType;
+    drones[key].dnn = await getDNN(drone);
+    
+    let droneTestReport = await runDroneTest(drone);
+    if(droneTestReport.isTested) {
+      report.summary.testedDrones++;
+      report.summary.totalDroneTests  += droneTestReport.totalTests;
+      report.summary.totalPassedTests += droneTestReport.totalPassedTests;
+      report.summary.totalFailedTests += droneTestReport.totalFailedTests;
+    } else {
+      report.summary.skippedDrones++;
+    }
+    report.drones.push(droneTestReport);
   }
 
   console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
   console.log('########################################################################################');
-  console.log(report);
+  console.info(report.summary);
+  report.drones.forEach(x => console.log(x));
   console.log('########################################################################################');
   console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 
-  if(_shouldAlert(report)) {
-    await sendSlackAlert(report);
-  }
+  await sendSlackAlert(report);
 })();
 
   // FACING ID ???
