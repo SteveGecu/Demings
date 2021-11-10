@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir ~/.config
+
 echo "Writing kafka config to ~/.config/kafkacatorchestrator.conf"
 echo "bootstrap.servers=${BOOTSTRAPSERVERS}" > ~/.config/kafkacatorchestrator.conf
 echo "security.protocol=SASL_SSL" >> ~/.config/kafkacatorchestrator.conf

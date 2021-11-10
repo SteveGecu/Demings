@@ -1,7 +1,11 @@
 const axios = require('axios').default;
-const jest = require('jest')
+const jest = require('jest');
+const stdout = require('mute-stdout');
+const qs = require('qs');
 
-const token = 'eyJraWQiOiJRVEZqTEZTYjZOUHY4WGU0LWRDN2E0V2NTYUZLWml3VVdhcUo1ZWJtcWd3IiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULnRUMDJMa2Y1b21YM1k4WlhSazBRTDRiYWh4VHhUdDVDRDVmWE81ZkkyVGsiLCJpc3MiOiJodHRwczovL3NwYWNlZS5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2MzY0OTQxODcsImV4cCI6MTYzNjU4MDU4NywiY2lkIjoiMG9hYWx3azhlNHV6Q21SOEQzNTciLCJzY3AiOlsic3RvcmVzIl0sInN1YiI6IjBvYWFsd2s4ZTR1ekNtUjhEMzU3In0.bn8jUU1B-ArfWp9tAkpYB141epfpcF5Q2A9l4FCTrxp8s4IKK9-lL_rXAEQRqqM5PsWx1_R3nWYYC_ZTkWNyDrLFws-3UGIDzJETUljscvbtG9djOR9mf36i-B7xCVGyVkTsNdNv0mCyN4zEwumCQ2GYwL9kNWjTARlgBbvALhvdEA-go5taqRDUjLRlDJlQ4YX01gKwgvQOWtbqeiw_BiYY7nx1YmZi82R-x7TMZVV9UYS4R3kqFG01YIXtwOf1LDciG7Il_q7V15lp_t29I9a_HSMrOZvn8cqeS5ZsThMjWX1SU6JEaz-1ANTHA1_fudnK5y2Dv3TWJ_BQtCcK9Q'
+const OktaBaseUrl = 'https://spacee.okta.com/';
+const OKTA_CLIENT_ID = '0oaalwk8e4uzCmR8D357';
+const OKTA_CLIENT_SECRET = 'aDtPC4o2NtglSyy6_RAcP4ef4fMYpQ2UPOII7AIf';
 
 const Env = process.env.ENV
 const StoreId = process.env.STORE_ID;
@@ -12,37 +16,56 @@ const SISBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`
 const SlackWebHookUrl = process.env.SLACK_WEBHOOK_URL;
 
 
+// Retreive Okta access token for use with Provisioning service
+async function getOktaToken() {
+  const oktaRequests = axios.create({
+      baseURL: OktaBaseUrl
+  });
+  oktaRequests.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
+
+  let body = {
+    grant_type: 'client_credentials',
+    scope: 'stores',
+    client_id: OKTA_CLIENT_ID,
+    client_secret: OKTA_CLIENT_SECRET
+  };
+  let response = await oktaRequests.post('/oauth2/default/v1/token', qs.stringify(body));
+  return response.data.access_token;
+};
+
+
 // Retrieve drones from the Provisioning service based on the StoreId environment variable
 async function getDrones(storeId) {
-    const provisioningRequests = axios.create({
-        baseURL: ProvisioningBaseUrl
-    });
+  let oktaToken = await getOktaToken();
+  const provisioningRequests = axios.create({
+      baseURL: ProvisioningBaseUrl
+  });
 
-    provisioningRequests.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    let response = await provisioningRequests.get(`/drone-provision?storeId=${StoreId}`)
+  provisioningRequests.defaults.headers.common['Authorization'] = `Bearer ${oktaToken}`;
+  let response = await provisioningRequests.get(`/drone-provision?storeId=${StoreId}`)
 
-    if(response.status != 200) {
-        return Promise.reject(`Unable to retrieve drones for store ${StoreId} from ${provisioningUrl}.  Received ${response.status} instead of expected 200.`)
-    }
+  if(response.status != 200) {
+      return Promise.reject(`Unable to retrieve drones for store ${StoreId} from ${provisioningUrl}.  Received ${response.status} instead of expected 200.`)
+  }
 
-    return response.data;
+  return response.data;
 }
 
 
 // Retrieve active DNN from the Shared Inference Service based on the drone's Rail Id
 async function getDNN(drone) {
-    let response = null;
-    try {
-      response = await axios.get(`${SISBaseUrl}api/v1/dnn/provision?railId=${drone.railId}`);
-      return response.data.DnnId;
-    } catch (err) {
-      if (err.response) {
-        console.error(`Unable to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${SISBaseUrl}.  Received ${err.response.status} instead of expected 200.`)
-      } else {
-        console.error(`Error when trying to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${SISBaseUrl}: ${err}`);
-      }
+  let response = null;
+  try {
+    response = await axios.get(`${SISBaseUrl}api/v1/dnn/provision?railId=${drone.railId}`);
+    return response.data.DnnId;
+  } catch (err) {
+    if (err.response) {
+      console.error(`Unable to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${SISBaseUrl}.  Received ${err.response.status} instead of expected 200.`)
+    } else {
+      console.error(`Error when trying to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${SISBaseUrl}: ${err}`);
     }
-    return null;
+  }
+  return null;
 }
 
 
@@ -60,8 +83,6 @@ function _setEnvironmentVariables(drone) {
   process.env[`${drone.droneType}DSN`] = drone.dsn;
   process.env[`${drone.droneType}RAIL_ID`] = drone.railId;
   process.env[`${drone.droneType}DNN`] = drone.dnn;
-  process.env[`${drone.droneType}PRODUCTFACINGIDONE`] = 486;
-  process.env[`${drone.droneType}PRODUCTFACINGIDTWO`] = 487;
 
   process.env['ELASTIC_URL'] = `https://7ea136898a864522af7be4a25f161508.eastus2.azure.elastic-cloud.com:9243/${Env}/_search`
   process.env['ROVRDNNAPI'] = `https://shared-${Env}-eastus2.azure-api.net/inference-svc/api/v1/dnn?railId=`
@@ -76,18 +97,17 @@ function _setEnvironmentVariables(drone) {
 // Parse the output (very verbose) the details we care about and return them as a 'report' object
 async function runDroneTest(drone) {
   let report = Object.assign({}, drone);
+  delete report.id;
+  delete report.createdAt;
 
   if(!drone.dnn) {
     report.isTested = false;
     return report;
   }
 
-  report.isTested = true;
-  report.testSummary = {};
-
   _setEnvironmentVariables(drone);
   
-  config = {
+  jestConfig = {
     silent: true,
     json: true,
     useStderr: false,
@@ -95,27 +115,26 @@ async function runDroneTest(drone) {
     roots: [`./Deming/Tests/${drone.droneType}/`]
   }
 
-  let result = await jest.runCLI(config, config.roots);
+  stdout.mute();
+  let result = await jest.runCLI(jestConfig, jestConfig.roots);
+  stdout.unmute();
 
-  report.testSummary.isSuccess = true;
-  report.testSummary.totalTests = result.results.numTotalTests;
-  report.testSummary.passedTests = result.results.numPassedTests;
-  report.testSummary.failedTests = result.results.numFailedTests;
-  report.testSummary.failingSuites = [];
+  report.isTested = true;
+  report.totalTests = result.results.numTotalTests;
+  report.totalPassedTests = result.results.numPassedTests;
+  report.totalFailedTests = result.results.numFailedTests;
 
-  let failingSuites = [];
+  let failingTests = [];
   result.results.testResults.forEach(lvl1 => {
     if(lvl1.numFailingTests > 0) {
       lvl1.testResults.forEach(tr => {
-        tr.ancestorTitles.forEach(x => {
-          failingSuites.push(x);
-        });
+        failingTests.push(tr.title);
       });
     }
   });
-  report.testSummary.failingSuites = failingSuites.filter(_distinct);
+  report.failingTests = failingTests.filter(_distinct);
   
-  return report
+  return report;
 }
 
 
@@ -142,7 +161,7 @@ async function sendSlackAlert(report) {
           {
             type: "mrkdwn",
             text: `*Total Tests:*\n${report.summary.testedDrones}`
-          }
+          },
           {
             type: "mrkdwn",
             text: `*Total Drones:*\n${report.summary.totalDrones}`
@@ -152,50 +171,75 @@ async function sendSlackAlert(report) {
     ]
   };
 
-  let response = await axios.post(SlackWebHookUrl, body)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  let response = await axios.post(SlackWebHookUrl, body);
+}
+
+// The rules for sending alerts, right now this is just a boolean response but
+// this could be changed to an object to determine serverity, etc
+// Seperating this into it's own function because it may get rather large/complex as we build the rules
+function _shouldAlert(report) {
+  // alert when skipping more than 10% of assigned drones
+  if (report.summary.skippedDrones / report.summary.totalDrones > .1) {
+    return true;
+  }
+
+  // alert when more than 10% of drone tests failed
+  if (report.summary.totalFailedTests / report.summary.totalDroneTests > .1) {
+    return true;
+  }
+
+  return false;
 }
 
 
 // Main function to handle the workflow
 (async() => {
-    let drones = await getDrones(storeId);
-    let report = {
-      summary: {
-        totalDrones: drones.length,
-        testedDrones: 0,
-        skippedDrones: 0
-      },
-      testResults: []
-    };
+  let drones = await getDrones(StoreId);
+  
+  let report = {
+    summary: {
+      totalDrones: drones.length,
+      testedDrones: 0,
+      skippedDrones: 0,
+      totalDroneTests: 0,
+      totalPassedTests: 0,
+      totalFailedTests: 0
+    },
+    drones: []
+  };
 
-    for (let key in drones) {
-        let drone = drones[key];
-        let droneType = drone.railId in ObservrRails ? 'OBSERVR' : 'ROVR';
-        drones[key].droneType = droneType;
-        drones[key].dnn = await getDNN(drone);
-        
-        let testReport = await runDroneTest(drone);
-        if(testReport.isTested) {
-          report.summary.testedDrones++;
-        } else {
-          report.summary.skippedDrones++;
-        }
-        report.testResults.push(testReport);
-    }
+  for (let key in drones) {
+      let drone = drones[key];
 
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-    console.log('########################################################################################');
-    console.log(report);
-    console.log('########################################################################################');
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+      if(drone.railId != '72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C') {
+        continue;
+      }
 
+      let droneType = drone.railId in ObservrRails ? 'OBSERVR' : 'ROVR';
+      drones[key].droneType = droneType;
+      drones[key].dnn = await getDNN(drone);
+      
+      let droneTestReport = await runDroneTest(drone);
+      if(droneTestReport.isTested) {
+        report.summary.testedDrones++;
+        report.summary.totalDroneTests  += droneTestReport.totalTests;
+        report.summary.totalPassedTests += droneTestReport.totalPassedTests;
+        report.summary.totalFailedTests += droneTestReport.totalFailedTests;
+      } else {
+        report.summary.skippedDrones++;
+      }
+      report.drones.push(droneTestReport);
+  }
+
+  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+  console.log('########################################################################################');
+  console.log(report);
+  console.log('########################################################################################');
+  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+
+  if(_shouldAlert(report)) {
     await sendSlackAlert(report);
+  }
 })();
 
   // FACING ID ???
