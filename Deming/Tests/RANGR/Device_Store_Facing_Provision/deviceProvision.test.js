@@ -76,5 +76,7 @@ describe('RANGR', () => {
         await ShelfApis.deleteShelf(shelfSizeId)
         await AreaApis.deleteArea(areaId)
         await DeviceApi.deleteDevice(deviceId)
+        await FacingApis.deleteFacing(facingId)
+
     })
 })
