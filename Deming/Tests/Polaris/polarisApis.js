@@ -1,11 +1,19 @@
 const getToken = require('./getToken');
 const fetch = require("node-fetch");
+const FormData = require("form-data");
+const axios = require("axios");
+const fs = require("fs"); 
+const { fileURLToPath } = require('url');
 const planogramUrl = 'https://qa.planogram.demingrobotics.com/planogram/';
 const planogramProvisionURL = "https://qa.planogram.demingrobotics.com/planogram-provision/";
-const productURL = 'https://qa.planogram.demingrobotics.com/product/'
-const productFacingURL = "https://qa.planogram.demingrobotics.com/product-facing"
-const stichedImageURL = "https://qa.planogram.demingrobotics.com/stiched-image"
+const productURL = 'https://qa.planogram.demingrobotics.com/product/';
+const productFacingURL = "https://qa.planogram.demingrobotics.com/product-facing";
+const sticthedImageURL = "https://qa.planogram.demingrobotics.com/stitched-image/";
+const healthCheckUrl = 'https://qa.planogram.demingrobotics.com/health';
 
+//PLANOGRAM 
+
+//create planogram
 async function createPlanogram(token) {
     const response = await fetch(planogramUrl, {
         method: 'POST',
@@ -24,6 +32,7 @@ async function createPlanogram(token) {
     }
 }
 
+//get planograms
 async function getPlanograms(token) {
     let response = await fetch(planogramUrl, {
         method: 'GET',
@@ -41,6 +50,7 @@ async function getPlanograms(token) {
     }
 }
 
+//get planogram with a specific id
 async function getPlanogram(token, planogramId) {
     let response = await fetch(planogramUrl + planogramId, {
         method: 'GET',
@@ -57,6 +67,24 @@ async function getPlanogram(token, planogramId) {
         headers: response.headers
     }
 }
+
+// update planogram
+async function updatePlanogram(token, planogramId) {
+    let response = await fetch(planogramUrl + planogramId, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`
+        }
+    });
+    return {
+        body: await response.json(),
+        status: response.status,
+        headers: response.headers
+    }
+}
+
 // delete function for planogram
 async function deletePlanogram(planogramId) {
     const response = await fetch(planogramUrl, {
@@ -91,23 +119,26 @@ async function deleteData(planogramId) {
     console.log(data)
 }
 
-// PLANOGRAM-PROVISION NO ACCEESS
-// POST
+// PLANOGRAM-PROVISION 
+// POST need rail id and planogram id
 async function createPlanogramProvision(token) {
     const response = await fetch(planogramProvisionURL, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ token }`
+            'Authorization': `Bearer ${ token }`     
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({
+            'railId': '5C86F287-AF14-4ECB-8EDE-EA762397D9C3',
+            'planogramId':0
+        })
     })
 
     return {
         body: await response.json(),
         status: response.status,
-        headers: response.statusText
+        headers: response.headersThis 
     }
 }
 
@@ -138,7 +169,6 @@ async function getPlanogramProvision(token, id) {
             'Authorization': `Bearer ${ token }`
         }
     });
-
     return {
         body: await response.json(),
         status: response.status,
@@ -146,16 +176,15 @@ async function getPlanogramProvision(token, id) {
     }
 }
 
-// delete id
-async function deletePlanogramProvision(id) {
-    const response = await fetch(planogramProvisionURL, {
-        method: 'DELETE',
+//patch id S
+async function patchPlanogramProvision(token, id) {
+    const response = await fetch(planogramProvisionURL + id, {
+        method: 'PATCH',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ id }`
-        },
-        body: JSON.stringify({ id })
+            'Authorization': `Bearer ${ token }`
+        }
     })
     return {
         body: await response.json(),
@@ -163,6 +192,25 @@ async function deletePlanogramProvision(id) {
         headers: response.statusText
     }
 }
+
+// delete id
+async function deletePlanogramProvision(token,id) {
+    const response = await fetch(planogramProvisionURL +id, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`
+        }
+    })
+    return {
+        body: await response.json(),
+        status: response.status,
+        headers: response.statusText
+    }
+}
+
+//get deleted id => no need to write new function
 
 //PRODUCT
 //POST
@@ -174,7 +222,12 @@ async function createProduct(token) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${ token }`
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({
+            "name": "product",
+            "friendlyName": "friendlyName",
+            "upc": "asdf",
+            "barcode": "fdsa"
+        })
     })
 
     return {
@@ -220,7 +273,7 @@ async function getProduct(token, id) {
     }
 }
 
-// delete id
+// delete product 
 async function deleteProduct(id) {
     const response = await fetch(productURL, {
         method: 'DELETE',
@@ -237,10 +290,11 @@ async function deleteProduct(id) {
         headers: response.statusText
     }
 }
+// get deleted id => no function required for this
 
 //PRODUCT-FACINGS
 
-//Post 
+//Post Product Facing
 async function createProductFacing(token, planogramId) {
     console.log(productFacingURL + "?planogramId=" + planogramId);
     const response = await fetch(productFacingURL + "?planogramId=" + planogramId, {
@@ -250,7 +304,16 @@ async function createProductFacing(token, planogramId) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${ token }`
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({
+            "productFacings": [
+        {
+            "productId": 99,
+            "x": 0.8892,
+            "y": 0.3334,
+            "width": 0.1,
+            "height": 0.1
+         } ]
+        })
     })
     return {
         body: await response.json(),
@@ -278,15 +341,14 @@ async function getAllProductFacing(token) {
 
 
 //Get by Planogram Id 
-async function getProductFacing(token, planogramId) {
-    const response = await fetch(productFacingURL + "?planogramId=" + planogramId, {
+async function getProductFacingByPlanogramId(token, planogramId) {
+    const response = await fetch(productFacingURL + "/?planogramId=" + planogramId, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${ token }`
-        },
-        body: JSON.stringify({})
+        }
     })
     return {
         body: await response.json(),
@@ -296,15 +358,14 @@ async function getProductFacing(token, planogramId) {
 }
 
 //Get By RailId 
-async function getRailId(token, railId) {
-    const response = await fetch(productFacingURL + "?railId=" + railId + "&latest=true", {
+async function getProductFacingByRailId(token, railId) {
+    const response = await fetch(productFacingURL + "/?railId=" + railId + "&latest=true", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${ token }`
-        },
-        body: JSON.stringify({})
+        }
     })
     return {
         body: await response.json(),
@@ -330,19 +391,93 @@ async function getFacing(token, facingId) {
     }
 }
 
-//STICHED-IMAGE
-//upload the image
-async function uploadStichedImage(token) {
-    const response = await fetch(stichedImageURL, {
+//patch  prodcut facing 
+
+async function updateProductFacing(token, prodcutFacingId){
+    let response = await fetch(productFacingURL + '/' + prodcutFacingId, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`
+        },
+        body: JSON.stringify({ 
+            "x": 0.3334,
+            "y": 0.8892
+         })
+    });
+    return {
+        body: await response.json(),
+        status: response.status,
+        headers: response.headers
+    }
+}
+
+//delete product facing
+async function deleteProductFacing(token, prodcutFacingId){
+    let response = await fetch(productFacingURL + '/' + prodcutFacingId, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`
+        }
+    })
+    return {
+        body: await response.json(),
+        status: response.status,
+        headers: response.headers
+    }
+}
+// delete product facing by planogram id
+async function deleteProductFacingByPlanogramId(token, planogramId){
+    let response = await fetch(productFacingURL + '/' + planogramId, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`
+        }
+    })
+    return {
+        body: await response.json(),
+        status: response.status,
+        headers: response.headers
+    }
+}
+
+//delete product
+async function deleteProductFacingByProductId(token, productId){
+    let response = await fetch(productFacingURL + '/' + productId, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`
+        }
+    })
+    return {
+        body: await response.json(),
+        status: response.status,
+        headers: response.headers
+    }
+}
+
+//STITCHED-IMAGE
+//upload the image //
+async function createStitchImage(token){
+    const response = await fetch(sticthedImageURL, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${ token }`
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({ 
+            "fileName": "somefile.txt",
+            "fileContents" : "SOMETEXT"
+         })
     })
-
     return {
         body: await response.json(),
         status: response.status,
@@ -351,21 +486,58 @@ async function uploadStichedImage(token) {
 }
 
 
+//get stitched image
+async function getSticthedImage(token) {
+    const response = await fetch(sticthedImageURL, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`
+        },
+    })
+    return {
+        body: await response.json(),
+        status: response.status,
+        headers: response.statusText
+    }
+}
+
+//download
+//delete
+
 
 //HEALTH
 
-
+//get 
+async function getHealth(token) { 
+const response = await fetch(healthCheckUrl, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ token }`
+        },
+    });
+    return {
+        body: await response.json(),
+        status: response.status,
+        headers: response.statusText
+    }
+}
 
 
 module.exports = {
-    createPlanogram,
+    //createPlanogram,
     getPlanograms,
     getPlanogram,
+    updatePlanogram,
     deletePlanogram,
     deleteData,
     createPlanogramProvision,
     getAllPlanogramProvision,
     getPlanogramProvision,
+    patchPlanogramProvision,
     deletePlanogramProvision,
     createProduct,
     getAllProduct,
@@ -373,8 +545,14 @@ module.exports = {
     deleteProduct,
     createProductFacing,
     getAllProductFacing,
-    getProductFacing,
-    getRailId,
+    getProductFacingByPlanogramId,
+    getProductFacingByRailId,
     getFacing,
-    uploadStichedImage
+    updateProductFacing,
+    deleteProductFacing,
+    deleteProductFacingByPlanogramId,
+    deleteProductFacingByProductId,
+    createStitchImage,
+    getSticthedImage,
+    getHealth
 }
