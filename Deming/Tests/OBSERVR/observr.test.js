@@ -1,5 +1,6 @@
 require('jest')
 require('dotenv').config()
+const fetch = require("node-fetch")
 const Messenger = require('../../Client/getTopics')
 const Apis = require('../../Client/getElastic')
 const dsn = process.env.OBSERVRDSN
@@ -27,13 +28,13 @@ describe('OBSERVR Product Detection E2E Tests', () => {
         expect((message.data.railId)).toEqual(railId)
     });
 
-    // it('should pass when correct DNN is assigned to related RailId', async () => {
-    //     const dnnResponse = await fetch(getDnnApi).then(res => res.json())
-    //     const expectedDnnId = process.env.OBSERVRDNN
-    //     console.log(dnnResponse);
+    it('should pass when correct DNN is assigned to related RailId', async () => {
+        const dnnResponse = await fetch(getDnnApi).then(res => res.json())
+        const expectedDnnId = process.env.OBSERVRDNN
+        console.log(dnnResponse);
 
-    //     expect(dnnResponse.DnnId).toEqual(expectedDnnId)
-    // })
+        expect(dnnResponse.DnnId).toEqual(expectedDnnId)
+    })
 
     it('should pass when ready for object detection', async () => {
         const message = await Messenger.getObservrDetectionReadyMessage(dsn)
@@ -52,12 +53,13 @@ describe('OBSERVR Product Detection E2E Tests', () => {
         expect((detectionCompleteMessage.data.railId)).toEqual(railId)
     })
 
-    // it('should pass when fetch related facing', async () => {
-    //     const facingResponse = await fetch(getFacingsApi).then(res => res.json())
+    it('should pass when fetch related facing', async () => {
+        const facingResponse = await fetch(getFacingsApi).then(res => res.json())
+        console.log(facingResponse);
 
-    //     expect(expectedProductFacingIdOne).toEqual('' + facingResponse[0].ProductFacingID)
-    //     expect(expectedProductFacingIdTwo).toEqual('' + facingResponse[1].ProductFacingID)
-    // })
+        // expect(expectedProductFacingIdOne).toEqual('' + facingResponse[0].ProductFacingID)
+        // expect(expectedProductFacingIdTwo).toEqual('' + facingResponse[1].ProductFacingID)
+    })
 
     it('should pass when product report is generated', async () => {
         const message = await Messenger.getReportCreatedMessage(dsn)
