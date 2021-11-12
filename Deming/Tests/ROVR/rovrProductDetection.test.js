@@ -76,7 +76,6 @@ describe('ROVR Product Detection E2E Tests', () => {
 
     it('should pass when product report is generated', async () => {
         const message = await Messenger.getReportCreatedMessage(dsn)
-        console.log(JSON.stringify(message));
 
         let a = new Date().valueOf()
         let b = new Date(message.meta.originEventTimestamp).valueOf()

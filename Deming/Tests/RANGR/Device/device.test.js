@@ -39,11 +39,12 @@ describe('RANGR Device Tests', () => {
         expect(response.body.deviceId).toEqual(deviceId)
         expect(response.body.deviceSerialNumber).toEqual(dsn)
     });
-    // BUG: DEL NOT WORKING
+
     it('should delete store with given id', async () => {
         const response = await DeviceApi.deleteDevice(deviceId)
 
         expect(response.status).toBe(200)
-        //expect(response.body.affected).toEqual(1)
+        expect(response.body.affected).toEqual(1)
     });
 })
+

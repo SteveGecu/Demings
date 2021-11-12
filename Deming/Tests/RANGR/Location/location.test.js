@@ -1,5 +1,5 @@
 const lacationApis = require('./locationApis')
-const areaApis = require('../Area/areaApis')
+const AreaApis = require('../Area/areaApis')
 const areaName = 'autoArea'
 const locationDescription = 'autoDescription'
 const locationLabel = 'autoLabel'
@@ -12,7 +12,7 @@ jest.retryTimes(3)
 describe('RANGR Location Tests', () => {
 
     beforeAll(async () => {
-        const response = await areaApis.createArea(areaName)
+        const response = await AreaApis.createArea(areaName)
         areaId = response.body.areaId
     })
 
@@ -59,7 +59,7 @@ describe('RANGR Location Tests', () => {
     });
 
     afterAll(async () => {
-        await areaApis.deleteArea(areaName)
+        await AreaApis.deleteArea(areaName)
     })
 
 })
