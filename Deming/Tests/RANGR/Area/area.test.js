@@ -14,7 +14,7 @@ describe('RANGR Area Tests', () => {
 
         expect(response.status).toBe(201)
         expect(response.body.name).toEqual(areaName)
-        expect(response.areaId).toHaveProperty
+        expect(response.body.areaId).toHaveProperty
     });
 
     it('should return all areas', async () => {
