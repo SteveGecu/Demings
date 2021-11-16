@@ -93,32 +93,13 @@ async function deletePlanogramProvision(token,id) {
     }
 }
 
-//get deleted id => no need to write new function
+//return deleted id => no need to write new function
 
-//create planogram
-async function createPlanogram(token) {
-    const response = await fetch(planogramUrl, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ token }`
-        },
-        body: JSON.stringify({})
-    })
-
-    return {
-        body: await response.json(),
-        status: response.status,
-        headers: response.statusText
-    }
-}
 
 module.exports = {
     createPlanogramProvision,
     getAllPlanogramProvision,
     getPlanogramProvision,
     patchPlanogramProvision,
-    deletePlanogramProvision,
-    createPlanogram
+    deletePlanogramProvision
 }

@@ -1,7 +1,6 @@
 const getToken = require('../../getToken');
 const fetch = require("node-fetch");
 const productURL = 'https://qa.planogram.demingrobotics.com/product/';
-const planogramUrl = 'https://qa.planogram.demingrobotics.com/planogram/';
 
 //PRODUCT
 
@@ -66,15 +65,14 @@ async function getProduct(token, id) {
 }
 
 // delete product 
-async function deleteProduct(id) {
-    const response = await fetch(productURL, {
+async function deleteProduct(token, id) {
+    const response = await fetch(productURL + id, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ id }`
-        },
-        body: JSON.stringify({ id })
+            'Authorization': `Bearer ${ token }`
+        }
     })
     return {
         body: await response.json(),
@@ -83,29 +81,10 @@ async function deleteProduct(id) {
     }
 }
 // get deleted id => no function required for this
-//create planogram
-async function createPlanogram(token) {
-    const response = await fetch(planogramUrl, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ token }`
-        },
-        body: JSON.stringify({})
-    })
-
-    return {
-        body: await response.json(),
-        status: response.status,
-        headers: response.statusText
-    }
-}
 
 module.exports = {
     createProduct,
     getAllProduct,
     getProduct,
-    deleteProduct,
-    createPlanogram
+    deleteProduct
 }
