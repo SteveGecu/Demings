@@ -8,7 +8,8 @@
     "RovrProductDetectionTest": "jest ./Deming/Tests/ROVR/rovrProductDetection.test.js",
     "RovrTests": "jest ./Deming/Tests/ROVR",
     "ObservrTests": "jest ./Deming/Tests/OBSERVR",
-    "RangrTests": "jest ./Deming/Tests/RANGR"
+    "RangrTests": "jest ./Deming/Tests/RANGR",
+    "PolarisTests" : "jest ./Deming/Tests/POLARIS/PLANOGRAM"
   },
   "author": "",
   "license": "ISC",
