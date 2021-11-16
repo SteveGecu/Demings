@@ -35,7 +35,6 @@ describe('RANGR Shelf Tests', () => {
 
     it('should update Shelf with given Shelf id', async () => {
         const response = await shelfApis.updateShelf(shelfId, newDepthSize, newEmptyDistanceSize)
-        console.log(response);
 
         expect(response.status).toBe(200)
         expect(response.body.shelfSizeId).toEqual(shelfId)

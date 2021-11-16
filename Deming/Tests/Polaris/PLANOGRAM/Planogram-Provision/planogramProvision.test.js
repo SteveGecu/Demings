@@ -11,30 +11,30 @@ describe('Planogram-Provision tests, creates new Planogram-Provision, returns al
         token = await getToken.getToken()
     })
     it('should create new planogram-provision', async () => {
-        const newPlanogramAndProvision = await planogram.createPlanogramProvision(token)
-        bodyId = newPlanogramAndProvision.body.id;
-        expect(newPlanogramAndProvision.status).toBe(201);
+        const response = await planogram.createPlanogramProvision(token)
+        bodyId = response.body.id;
+        expect(response.status).toBe(201);
     });
-    it('should return all planogram-provision', async() => {
-        let response = await planogram.getAllPlanogramProvision(token);
+    it('should return all planogram-provision', async () => {
+        const response = await planogram.getAllPlanogramProvision(token);
         expect(response.status).toEqual(200);
-        foundElement = response.body.find( element => element.id == bodyId);
+        foundElement = response.body.find(element => element.id == bodyId);
         expect(foundElement.id).toEqual(bodyId);
     })
-    it('should return a specific planogram-provision by id', async() => {
-        const returningPP = await planogram.getPlanogramProvision(token, bodyId);
-        expect(returningPP.body.id).toEqual(bodyId);
+    it('should return a specific planogram-provision by id', async () => {
+        const response = await planogram.getPlanogramProvision(token, bodyId);
+        expect(response.body.id).toEqual(bodyId);
     })
     it("should update planogram-provision by id", async () => {
-        const patchedId = await planogram.patchPlanogramProvision(token, bodyId);
-        expect(patchedId.status).toEqual(200);
+        const response = await planogram.patchPlanogramProvision(token, bodyId);
+        expect(response.status).toEqual(200);
     })
-    it('should delete planogram-provision', async() => {
-        const deletedPP = await planogram.deletePlanogramProvision(token, bodyId);
-        expect(deletedPP.status).toEqual(200);  
+    it('should delete planogram-provision', async () => {
+        const response = await planogram.deletePlanogramProvision(token, bodyId);
+        expect(response.status).toEqual(200);
     })
-    it('should NOT returned requested planogram-provision id', async()=> {
-        const returningPP = await planogram.getPlanogramProvision(token, bodyId);
-        expect(returningPP.status).toEqual(404);
+    it('should NOT returned requested planogram-provision id', async () => {
+        const response = await planogram.getPlanogramProvision(token, bodyId);
+        expect(response.status).toEqual(404);
     })
 })

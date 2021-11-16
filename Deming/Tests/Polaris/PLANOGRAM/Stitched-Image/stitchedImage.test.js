@@ -7,8 +7,8 @@ describe('planogram tests', () => {
     beforeAll(async () => {
         token = await getToken.getToken()
     })
-     // STICHED IMAGE 
-    
+    // STICHED IMAGE 
+
     // upload image --error- unknown
     // it('should upload stitiched image', async()=> {
     //     const uploadedFile = await planogram.createStitchImage(token);
@@ -16,19 +16,19 @@ describe('planogram tests', () => {
     // })
 
     //get stitched images
-    it('should return a stiched image status 200', async() => {
-        const stichImage = await planogram.getSticthedImage(token);
-        expect(stichImage.status).toBe(200);
+    it('should return a stiched image status 200', async () => {
+        const response = await planogram.getSticthedImage(token);
+        expect(response.status).toBe(200);
     })
-    it('should return a specific image', async() => {
-      const fileName = "Drones.xlsx";  
-      const downloadedImages = await planogram.getSticthedImage(token);
-      expect(downloadedImages.body).toContain(fileName);
+    it('should return a specific image', async () => {
+        const fileName = "Drones.xlsx";
+        const response = await planogram.getSticthedImage(token);
+        expect(response.body).toContain(fileName);
     })
-    it('should delete a speicific image', async() => {
-        const fileName = "foo.txt";  
-        const found = await planogram.getSticthedImage(token);
-        const deletedItem = await planogram.deleteImage(token, fileName);
-        expect(found.body).toContain("Drones.xlsx");
+    it('should delete a speicific image', async () => {
+        const fileName = "foo.txt";
+        const response = await planogram.getSticthedImage(token);
+        await planogram.deleteImage(token, fileName);
+        expect(response.body).toContain("Drones.xlsx");
     })
 })
