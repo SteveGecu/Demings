@@ -80,12 +80,12 @@ describe('ROVR Health Tests', () => {
         expect(parseInt(telemetryMessage.data.wifiMetrics.signalLevel)).not.toBeLessThan(-80)
     });
 
-    it('Battery reported capacity should not be lower then 1250', async () => {
+    it('Battery reported capacity should not be lower then 500', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
 
-        expect(parseInt(telemetryMessage.data.battery.reportedCapacity.rawNumericValue)).not.toBeLessThan(1250)
+        expect(parseInt(telemetryMessage.data.battery.reportedCapacity.rawNumericValue)).not.toBeLessThan(500)
     });
 
     // TODO
