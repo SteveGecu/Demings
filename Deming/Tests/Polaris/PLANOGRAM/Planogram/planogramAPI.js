@@ -94,27 +94,11 @@ async function deletePlanogram(planogramId) {
     }
 
 }
-// delete function for  planogram
-async function deleteData(planogramId) {
-    const response = await fetch(planogramUrl, {
-        method: 'DELETE',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ planogramId }`
-        },
-        body: JSON.stringify({ planogramId })
-    })
-
-    const data = await response.json();
-    console.log(data)
-}
 
 module.exports = {
     createPlanogram,
     getPlanograms,
     getPlanogram,
     updatePlanogram,
-    deletePlanogram,
-    deleteData
+    deletePlanogram
 }
