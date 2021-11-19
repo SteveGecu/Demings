@@ -88,7 +88,11 @@ describe('ROVR Health Tests', () => {
         expect(parseInt(telemetryMessage.data.battery.reportedCapacity.rawNumericValue)).not.toBeLessThan(500)
     });
 
-    // TODO
-    // add config test thru telemtry 
-    // upload tests
+    it('Camera remperature should be lower then 60', async () => {
+        const logMessage = await Apis.getRovrTelemetryReport(dsn)
+        const message = logMessage.body.hits.hits[0]._source.message
+        const telemetryMessage = JSON.parse(message)
+
+        expect(parseInt(telemetryMessage.data.cameraTemperature)).not.toBeGreaterThan(60)
+    });
 })
