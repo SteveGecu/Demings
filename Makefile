@@ -1,4 +1,4 @@
-VERSION=0.0.0
+VERSION = 0.0.1
 
 build:
 	docker build -t test-suite-automation:latest .
