@@ -12,6 +12,7 @@ variables:
 #     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
 #       when: always
 
+
 .configure-environment: &configure-environment
   - |
     envFile="./environments/${ENVIRONMENT}.env"
@@ -178,58 +179,7 @@ qaRangrTest:
     - export TEST_NAME='RANGR'
     - *slack-test-results
 
-# Build steps for orchestration container
-docker-build:
-  stage: docker-build
-  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
-  rules:
-    - if: $CI_COMMIT_MESSAGE !~ /\[bump version\]/
-      when: on_success
-    - when: never
-  tags:
-    - spacee-org-docker
-  services:
-    - docker:19.03.14-dind
-  variables:
-    <<: *docker-variables
-  script:
-    - *git-configure
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
-    - docker build -f Dockerfile --cache-from $CI_REGISTRY_IMAGE:latest . -t $CI_REGISTRY_IMAGE
-    - docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-    - >
-      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
-        docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:main;
-        docker push $CI_REGISTRY_IMAGE:main;
-      fi;
-      if [[ ! -z "$CI_COMMIT_TAG" ]]; then
-        docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:latest;
-        docker push $CI_REGISTRY_IMAGE:latest;
-        docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG;
-        docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG;
-      fi;
-
-tag:
-  stage: tag
-  rules:
-    - if: $CI_COMMIT_TAG && $CI_COMMIT_MESSAGE =~ /^\[bump version\]/
-      when: always
-    - when: never
-  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
-  tags:
-    - spacee-org-docker
-  services:
-    - docker:19.03.14-dind
-  variables:
-    <<: *docker-variables
-  script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
-    - SHA_TO_TAG=`echo $CI_COMMIT_MESSAGE | cut -d " " -f 4`
-    - echo "Tagging docker version $SHA_TO_TAG to $CI_COMMIT_TAG"
-    - docker pull $CI_REGISTRY_IMAGE:$SHA_TO_TAG
-    - docker tag $CI_REGISTRY_IMAGE:$SHA_TO_TAG $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG;
+# \/ \/ \/ Build steps for orchestration container \/ \/ \/
 
 .version: &version
   - git switch $CI_COMMIT_BRANCH
@@ -283,6 +233,75 @@ tag:
     git tag $newVersion
     git push origin $newVersion
     git push origin $CI_COMMIT_BRANCH
+
+.git-configure: &git-configure
+  - mkdir -p ~/.ssh
+  - echo "$GIT_SSH_PK" | base64 -d > ~/.ssh/id_rsa
+  - chmod 400 ~/.ssh/id_rsa
+  - cp ~/.ssh/id_rsa id_rsa
+  - cp known_hosts ~/.ssh/known_hosts
+  - git config --global user.name "$GITLAB_USER_NAME"
+  - git config --global user.email "$GITLAB_USER_EMAIL"
+  - git remote set-url origin git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git
+
+.docker-variables: &docker-variables
+  DOCKER_TLS_CERTDIR: '/certs'
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_CERT_PATH: '$DOCKER_TLS_CERTDIR/client'
+
+docker-build:
+  stage: docker-build
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
+  rules:
+    - if: $CI_COMMIT_MESSAGE !~ /\[bump version\]/ && $CI_PIPELINE_SOURCE == "pushes"
+      when: on_success
+    - when: never
+  tags:
+    - spacee-org-docker
+  services:
+    - docker:19.03.14-dind
+  variables:
+    <<: *docker-variables
+  script:
+    - *git-configure
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - docker build -f Dockerfile --cache-from $CI_REGISTRY_IMAGE:latest . -t $CI_REGISTRY_IMAGE
+    - docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - >
+      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+        docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:main;
+        docker push $CI_REGISTRY_IMAGE:main;
+      fi;
+      if [[ ! -z "$CI_COMMIT_TAG" ]]; then
+        docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:latest;
+        docker push $CI_REGISTRY_IMAGE:latest;
+        docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG;
+        docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG;
+      fi;
+
+tag:
+  stage: tag
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_MESSAGE =~ /^\[bump version\]/
+      when: always
+    - when: never
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
+  tags:
+    - spacee-org-docker
+  services:
+    - docker:19.03.14-dind
+  variables:
+    <<: *docker-variables
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - SHA_TO_TAG=`echo $CI_COMMIT_MESSAGE | cut -d " " -f 4`
+    - echo "Tagging docker version $SHA_TO_TAG to $CI_COMMIT_TAG"
+    - docker pull $CI_REGISTRY_IMAGE:$SHA_TO_TAG
+    - docker tag $CI_REGISTRY_IMAGE:$SHA_TO_TAG $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG;
 
 patch:
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
