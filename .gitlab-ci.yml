@@ -311,7 +311,7 @@ patch:
       when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[patch\]/i
       when: on_success
-    - when: manual && ($CI_PIPELINE_SOURCE == "pushes" || $CI_PIPELINE_SOURCE == "web")
+    - when: manual
       allow_failure: true
   tags:
     - spacee-org-docker
@@ -328,7 +328,7 @@ minor:
       when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[minor\]/i
       when: on_success
-    - when: manual && ($CI_PIPELINE_SOURCE == "pushes" || $CI_PIPELINE_SOURCE == "web")
+    - when: manual
       allow_failure: true
   tags:
     - spacee-org-docker
@@ -345,7 +345,7 @@ major:
       when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[major\]/i
       when: on_success
-    - when: manual && $CI_PIPELINE_SOURCE == "pushes"
+    - when: manual
       allow_failure: true
   tags:
     - spacee-org-docker
