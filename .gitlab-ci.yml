@@ -283,7 +283,7 @@ docker-build:
   rules:
     - if: $CI_COMMIT_BRANCH != 'main'
       when: never
-    - if: $CI_COMMIT_MESSAGE !~ /\[bump version\]/ && $CI_PIPELINE_SOURCE == "pushes"
+    - if: $CI_COMMIT_MESSAGE !~ /\[bump version\]/ && $CI_PIPELINE_SOURCE == "push"
       when: on_success
     - when: never
   tags:
