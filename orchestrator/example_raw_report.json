@@ -1,0 +1,829 @@
+{
+    "results": {
+        "numFailedTestSuites": 4,
+        "numFailedTests": 21,
+        "numPassedTestSuites": 0,
+        "numPassedTests": 0,
+        "numPendingTestSuites": 0,
+        "numPendingTests": 0,
+        "numRuntimeErrorTestSuites": 0,
+        "numTodoTests": 0,
+        "numTotalTestSuites": 4,
+        "numTotalTests": 21,
+        "openHandles": [],
+        "snapshot": {
+            "added": 0,
+            "didUpdate": false,
+            "failure": false,
+            "filesAdded": 0,
+            "filesRemoved": 0,
+            "filesRemovedList": [],
+            "filesUnmatched": 0,
+            "filesUpdated": 0,
+            "matched": 0,
+            "total": 0,
+            "unchecked": 0,
+            "uncheckedKeysByFile": [],
+            "unmatched": 0,
+            "updated": 0
+        },
+        "startTime": 1636410203382,
+        "success": false,
+        "testResults": [
+            {
+                "leaks": false,
+                "numFailingTests": 1,
+                "numPassingTests": 0,
+                "numPendingTests": 0,
+                "numTodoTests": 0,
+                "openHandles": [],
+                "perfStats": {
+                    "end": 1636410205479,
+                    "runtime": 1783,
+                    "slow": false,
+                    "start": 1636410203696
+                },
+                "skipped": false,
+                "snapshot": {
+                    "added": 0,
+                    "fileDeleted": false,
+                    "matched": 0,
+                    "unchecked": 0,
+                    "unmatched": 0,
+                    "updated": 0,
+                    "uncheckedKeys": []
+                },
+                "testFilePath": "/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrEventStream.test.js",
+                "testResults": [
+                    {
+                        "ancestorTitles": [
+                            "Rovr Event Stream Tests"
+                        ],
+                        "duration": 46,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.event.stream -o -100 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.event.stream -o -100 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.event.stream -o -100 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.event.stream -o -100 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                        ],
+                        "fullName": "Rovr Event Stream Tests should ",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should "
+                    }
+                ],
+                "console": [
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.event.stream and offset -100",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getEventStreamMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:189:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrEventStream.test.js:13:41)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    }
+                ],
+                "failureMessage": "\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mRovr Event Stream Tests › should \u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.event.stream -o -100 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n",
+                "displayName": {
+                    "color": "white",
+                    "name": "ROVR 001f7b3b4d02"
+                }
+            },
+            {
+                "leaks": false,
+                "numFailingTests": 4,
+                "numPassingTests": 0,
+                "numPendingTests": 0,
+                "numTodoTests": 0,
+                "openHandles": [],
+                "perfStats": {
+                    "end": 1636410205588,
+                    "runtime": 1894,
+                    "slow": false,
+                    "start": 1636410203694
+                },
+                "skipped": false,
+                "snapshot": {
+                    "added": 0,
+                    "fileDeleted": false,
+                    "matched": 0,
+                    "unchecked": 0,
+                    "unmatched": 0,
+                    "updated": 0,
+                    "uncheckedKeys": []
+                },
+                "testFilePath": "/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrBarcodeDetection.test.js",
+                "testResults": [
+                    {
+                        "ancestorTitles": [
+                            "ROVR Barcode Detection E2E Tests"
+                        ],
+                        "duration": 56,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                        ],
+                        "fullName": "ROVR Barcode Detection E2E Tests should pass when Notification Center unzipped the file",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when Notification Center unzipped the file"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Barcode Detection E2E Tests"
+                        ],
+                        "duration": 42,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.ready.rovr -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                        ],
+                        "fullName": "ROVR Barcode Detection E2E Tests should pass when ready for barcode detection",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when ready for barcode detection"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Barcode Detection E2E Tests"
+                        ],
+                        "duration": 19,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.complete -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.complete -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.complete -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.complete -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                        ],
+                        "fullName": "ROVR Barcode Detection E2E Tests should pass when barcode detection is completed",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when barcode detection is completed"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Barcode Detection E2E Tests"
+                        ],
+                        "duration": 18,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.barcode.report.created -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.barcode.report.created -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.barcode.report.created -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.barcode.report.created -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                        ],
+                        "fullName": "ROVR Barcode Detection E2E Tests should pass when product report is generated",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when product report is generated"
+                    }
+                ],
+                "console": [
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.notification.media.ready.rovr and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getMediaReadyMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:68:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrBarcodeDetection.test.js:20:41)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    },
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.barcode.detection.ready.rovr and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getBarcodeDetectionReadyMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:95:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrBarcodeDetection.test.js:29:41)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    },
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.barcode.detection.complete and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getBarcodeDetectionCompleteMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:131:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrBarcodeDetection.test.js:38:58)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    },
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.rovr.rail.barcode.report.created and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getBarcodeReportCreatedMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:168:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrBarcodeDetection.test.js:47:41)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    }
+                ],
+                "failureMessage": "\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Barcode Detection E2E Tests › should pass when Notification Center unzipped the file\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Barcode Detection E2E Tests › should pass when ready for barcode detection\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.ready.rovr -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Barcode Detection E2E Tests › should pass when barcode detection is completed\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.barcode.detection.complete -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Barcode Detection E2E Tests › should pass when product report is generated\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.barcode.report.created -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n",
+                "displayName": {
+                    "color": "white",
+                    "name": "ROVR 001f7b3b4d02"
+                }
+            },
+            {
+                "leaks": false,
+                "numFailingTests": 8,
+                "numPassingTests": 0,
+                "numPendingTests": 0,
+                "numTodoTests": 0,
+                "openHandles": [],
+                "perfStats": {
+                    "end": 1636410206286,
+                    "runtime": 2590,
+                    "slow": false,
+                    "start": 1636410203696
+                },
+                "skipped": false,
+                "snapshot": {
+                    "added": 0,
+                    "fileDeleted": false,
+                    "matched": 0,
+                    "unchecked": 0,
+                    "unmatched": 0,
+                    "updated": 0,
+                    "uncheckedKeys": []
+                },
+                "testFilePath": "/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js",
+                "testResults": [
+                    {
+                        "ancestorTitles": [
+                            "ROVR Product Detection E2E Tests"
+                        ],
+                        "duration": 45,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                        ],
+                        "fullName": "ROVR Product Detection E2E Tests should pass when Notification Center unzipped the file",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when Notification Center unzipped the file"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Product Detection E2E Tests"
+                        ],
+                        "duration": 315,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "matcherResult": {
+                                        "actual": "ADB5CF45-D622-434B-9A98-756771422903",
+                                        "expected": "85F5E714-F860-489D-AEEC-79D7E6D56C07",
+                                        "name": "toEqual",
+                                        "pass": false
+                                    }
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"85F5E714-F860-489D-AEEC-79D7E6D56C07\"\u001b[39m\nReceived: \u001b[31m\"ADB5CF45-D622-434B-9A98-756771422903\"\u001b[39m",
+                                "passed": false,
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"85F5E714-F860-489D-AEEC-79D7E6D56C07\"\u001b[39m\nReceived: \u001b[31m\"ADB5CF45-D622-434B-9A98-756771422903\"\u001b[39m\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:34:35)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"85F5E714-F860-489D-AEEC-79D7E6D56C07\"\u001b[39m\nReceived: \u001b[31m\"ADB5CF45-D622-434B-9A98-756771422903\"\u001b[39m\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:34:35)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Product Detection E2E Tests should pass when correct DNN is assigned to related RailId",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when correct DNN is assigned to related RailId"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Product Detection E2E Tests"
+                        ],
+                        "duration": 147,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property 'Metadata' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property 'Metadata' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:40:40)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property 'Metadata' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:40:40)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Product Detection E2E Tests should validate dnn id",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should validate dnn id"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Product Detection E2E Tests"
+                        ],
+                        "duration": 19,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.ready.rovr -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.ready.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                        ],
+                        "fullName": "ROVR Product Detection E2E Tests should pass when ready for object detection",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when ready for object detection"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Product Detection E2E Tests"
+                        ],
+                        "duration": 17,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.complete.rovr -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.complete.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.complete.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.complete.rovr -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                        ],
+                        "fullName": "ROVR Product Detection E2E Tests should pass when object detection is completed",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when object detection is completed"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Product Detection E2E Tests"
+                        ],
+                        "duration": 16,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.tracking.complete -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.tracking.complete -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.tracking.complete -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.tracking.complete -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+                        ],
+                        "fullName": "ROVR Product Detection E2E Tests should pass when object tracking is complete",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when object tracking is complete"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Product Detection E2E Tests"
+                        ],
+                        "duration": 237,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "matcherResult": {
+                                        "actual": "486",
+                                        "expected": "1069",
+                                        "name": "toEqual",
+                                        "pass": false
+                                    }
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"1069\"\u001b[39m\nReceived: \u001b[31m\"486\"\u001b[39m",
+                                "passed": false,
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"1069\"\u001b[39m\nReceived: \u001b[31m\"486\"\u001b[39m\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:73:44)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"1069\"\u001b[39m\nReceived: \u001b[31m\"486\"\u001b[39m\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:73:44)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Product Detection E2E Tests should pass when fetch related facing",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when fetch related facing"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Product Detection E2E Tests"
+                        ],
+                        "duration": 23,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {
+                                    "killed": false,
+                                    "code": 1,
+                                    "signal": null,
+                                    "cmd": "kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.product.report.created -o -10 -e ",
+                                    "stdout": "",
+                                    "stderr": "% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n"
+                                },
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.product.report.created -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n",
+                                "passed": false,
+                                "stack": "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.product.report.created -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "Error: Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.product.report.created -o -10 -e \n% ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\n    at ChildProcess.exithandler (child_process.js:383:12)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Socket.<anonymous> (internal/child_process.js:443:11)\n    at Socket.emit (events.js:400:28)\n    at Pipe.<anonymous> (net.js:686:12)"
+                        ],
+                        "fullName": "ROVR Product Detection E2E Tests should pass when product report is generated",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "should pass when product report is generated"
+                    }
+                ],
+                "console": [
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.notification.media.ready.rovr and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getMediaReadyMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:68:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:22:41)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    },
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.object.detection.ready.rovr and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getDetectionReadyMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:86:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:45:41)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    },
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.object.detection.complete.rovr and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getDetectionCompleteMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:122:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:54:58)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    },
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.object.detection.tracking.complete and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getTrackingCompleteMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:149:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:62:57)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    },
+                    {
+                        "message": "Loading Kafka config file: ~/.config/kafkacatbunnings.conf for accesss to topic deming.rovr.rail.product.report.created and offset -10",
+                        "origin": "    at Object.getKafkacatMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/GatewayConsumer.js:99:13)\n    at Object.getReportCreatedMessage (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Client/getTopics.js:159:37)\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrProductDetection.test.js:78:41)\n    at Object.asyncJestTest (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+                        "type": "log"
+                    }
+                ],
+                "failureMessage": "\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Product Detection E2E Tests › should pass when Notification Center unzipped the file\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.notification.media.ready.rovr -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Product Detection E2E Tests › should pass when correct DNN is assigned to related RailId\u001b[39m\u001b[22m\n\n    \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n    Expected: \u001b[32m\"85F5E714-F860-489D-AEEC-79D7E6D56C07\"\u001b[39m\n    Received: \u001b[31m\"ADB5CF45-D622-434B-9A98-756771422903\"\u001b[39m\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 32 |\u001b[39m         \u001b[36mconst\u001b[39m expectedDnnId \u001b[33m=\u001b[39m process\u001b[33m.\u001b[39menv\u001b[33m.\u001b[39m\u001b[33mROVRDNN\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 33 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 34 |\u001b[39m         expect(dnnResponse\u001b[33m.\u001b[39m\u001b[33mDnnId\u001b[39m)\u001b[33m.\u001b[39mtoEqual(expectedDnnId)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 35 |\u001b[39m     })\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 36 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 37 |\u001b[39m     it(\u001b[32m'should validate dnn id'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrProductDetection.test.js\u001b[39m\u001b[0m\u001b[2m:34:35)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Product Detection E2E Tests › should validate dnn id\u001b[39m\u001b[22m\n\n    TypeError: Cannot read property 'Metadata' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 38 |\u001b[39m         \u001b[36mconst\u001b[39m dnnResponse \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m fetch(getDnnIdApi)\u001b[33m.\u001b[39mthen(res \u001b[33m=>\u001b[39m res\u001b[33m.\u001b[39mjson())\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 39 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 40 |\u001b[39m         expect(dnnResponse\u001b[33m.\u001b[39m\u001b[33mDnnTraining\u001b[39m\u001b[33m.\u001b[39m\u001b[33mMetadata\u001b[39m\u001b[33m.\u001b[39mprod_map_id)\u001b[33m.\u001b[39mtoBe(dnnId)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 41 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 42 |\u001b[39m     })\u001b[33m;\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 43 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrProductDetection.test.js\u001b[39m\u001b[0m\u001b[2m:40:40)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Product Detection E2E Tests › should pass when ready for object detection\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.ready.rovr -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Product Detection E2E Tests › should pass when object detection is completed\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.complete.rovr -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Product Detection E2E Tests › should pass when object tracking is complete\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.object.detection.tracking.complete -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Product Detection E2E Tests › should pass when fetch related facing\u001b[39m\u001b[22m\n\n    \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n    Expected: \u001b[32m\"1069\"\u001b[39m\n    Received: \u001b[31m\"486\"\u001b[39m\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 71 |\u001b[39m         \u001b[36mconst\u001b[39m facingResponse \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m fetch(getFacingsApi)\u001b[33m.\u001b[39mthen(res \u001b[33m=>\u001b[39m res\u001b[33m.\u001b[39mjson())\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 72 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 73 |\u001b[39m         expect(expectedProductFacingIdOne)\u001b[33m.\u001b[39mtoEqual(\u001b[32m''\u001b[39m \u001b[33m+\u001b[39m facingResponse[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m\u001b[33mProductFacingID\u001b[39m)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 74 |\u001b[39m         expect(expectedProductFacingIdTwo)\u001b[33m.\u001b[39mtoEqual(\u001b[32m''\u001b[39m \u001b[33m+\u001b[39m facingResponse[\u001b[35m1\u001b[39m]\u001b[33m.\u001b[39m\u001b[33mProductFacingID\u001b[39m)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 75 |\u001b[39m     })\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 76 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrProductDetection.test.js\u001b[39m\u001b[0m\u001b[2m:73:44)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Product Detection E2E Tests › should pass when product report is generated\u001b[39m\u001b[22m\n\n    Command failed: kcat -F ~/.config/kafkacatbunnings.conf -C -t deming.rovr.rail.product.report.created -o -10 -e \n    % ERROR: Failed to open /Users/hampton/.config/kafkacatbunnings.conf: No such file or directory\n\u001b[2m\u001b[22m\n\u001b[2m\u001b[22m\n",
+                "displayName": {
+                    "color": "white",
+                    "name": "ROVR 001f7b3b4d02"
+                }
+            },
+            {
+                "leaks": false,
+                "numFailingTests": 8,
+                "numPassingTests": 0,
+                "numPendingTests": 0,
+                "numTodoTests": 0,
+                "openHandles": [],
+                "perfStats": {
+                    "end": 1636410207091,
+                    "runtime": 3397,
+                    "slow": false,
+                    "start": 1636410203694
+                },
+                "skipped": false,
+                "snapshot": {
+                    "added": 0,
+                    "fileDeleted": false,
+                    "matched": 0,
+                    "unchecked": 0,
+                    "unmatched": 0,
+                    "updated": 0,
+                    "uncheckedKeys": []
+                },
+                "testFilePath": "/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js",
+                "testResults": [
+                    {
+                        "ancestorTitles": [
+                            "ROVR Health Tests"
+                        ],
+                        "duration": 265,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property '_source' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:18:51)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:18:51)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Health Tests Given ROVR should produce logs",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "Given ROVR should produce logs"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Health Tests"
+                        ],
+                        "duration": 184,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property '_source' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:26:51)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:26:51)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Health Tests Given ROVR should produce Run Report after run",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "Given ROVR should produce Run Report after run"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Health Tests"
+                        ],
+                        "duration": 191,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property '_source' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:40:51)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:40:51)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Health Tests Given ROVR should produce Telemetry report",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "Given ROVR should produce Telemetry report"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Health Tests"
+                        ],
+                        "duration": 191,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property '_source' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:53:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:53:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Health Tests Battery voltage value should be greater than 3",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "Battery voltage value should be greater than 3"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Health Tests"
+                        ],
+                        "duration": 189,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property '_source' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:61:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:61:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Health Tests Temperature value should be lower then 85",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "Temperature value should be lower then 85"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Health Tests"
+                        ],
+                        "duration": 178,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property '_source' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:69:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:69:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Health Tests Given ROVR disc usage should not be over 50 ",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "Given ROVR disc usage should not be over 50 "
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Health Tests"
+                        ],
+                        "duration": 204,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property '_source' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:77:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:77:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Health Tests Wifi Signal Level should not be lower the -86",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "Wifi Signal Level should not be lower the -86"
+                    },
+                    {
+                        "ancestorTitles": [
+                            "ROVR Health Tests"
+                        ],
+                        "duration": 195,
+                        "failureDetails": [
+                            {
+                                "actual": "",
+                                "error": {},
+                                "expected": "",
+                                "matcherName": "",
+                                "message": "TypeError: Cannot read property '_source' of undefined",
+                                "passed": false,
+                                "stack": "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:85:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                            }
+                        ],
+                        "failureMessages": [
+                            "TypeError: Cannot read property '_source' of undefined\n    at Object.<anonymous> (/Users/hampton/src/spacee/Deming/Rovr/Gateway/test-suite-automation/Deming/Tests/ROVR/rovrHealth.test.js:85:54)\n    at processTicksAndRejections (internal/process/task_queues.js:95:5)"
+                        ],
+                        "fullName": "ROVR Health Tests Battery reported capacity should not be lower then 1250",
+                        "location": null,
+                        "numPassingAsserts": 0,
+                        "status": "failed",
+                        "title": "Battery reported capacity should not be lower then 1250"
+                    }
+                ],
+                "failureMessage": "\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Health Tests › Given ROVR should produce logs\u001b[39m\u001b[22m\n\n    TypeError: Cannot read property '_source' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 16 |\u001b[39m     it(\u001b[32m'Given ROVR should produce logs'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 17 |\u001b[39m         \u001b[36mconst\u001b[39m logMessage \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mApis\u001b[39m\u001b[33m.\u001b[39mgetRovrLogs(dsn)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 18 |\u001b[39m         \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 19 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 20 |\u001b[39m         expect(data\u001b[33m.\u001b[39mmqtt\u001b[33m.\u001b[39mtopic)\u001b[33m.\u001b[39mtoEqual(\u001b[32m'rovr/log'\u001b[39m)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 21 |\u001b[39m         expect(data\u001b[33m.\u001b[39mparsedJson\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mdsn)\u001b[33m.\u001b[39mtoEqual(dsn)\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrHealth.test.js\u001b[39m\u001b[0m\u001b[2m:18:51)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Health Tests › Given ROVR should produce Run Report after run\u001b[39m\u001b[22m\n\n    TypeError: Cannot read property '_source' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 24 |\u001b[39m     it(\u001b[32m'Given ROVR should produce Run Report after run'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 25 |\u001b[39m         \u001b[36mconst\u001b[39m logMessage \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mApis\u001b[39m\u001b[33m.\u001b[39mgetRovrRunReport(dsn)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 26 |\u001b[39m         \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 27 |\u001b[39m         \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[33m.\u001b[39mmessage\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 28 |\u001b[39m         \u001b[36mconst\u001b[39m telemetryMessage \u001b[33m=\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mparse(message)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 29 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrHealth.test.js\u001b[39m\u001b[0m\u001b[2m:26:51)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Health Tests › Given ROVR should produce Telemetry report\u001b[39m\u001b[22m\n\n    TypeError: Cannot read property '_source' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 38 |\u001b[39m     it(\u001b[32m'Given ROVR should produce Telemetry report'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 39 |\u001b[39m         \u001b[36mconst\u001b[39m logMessage \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mApis\u001b[39m\u001b[33m.\u001b[39mgetRovrTelemetryReport(dsn)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 40 |\u001b[39m         \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 41 |\u001b[39m         \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[33m.\u001b[39mmessage\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 42 |\u001b[39m         \u001b[36mconst\u001b[39m telemetryMessage \u001b[33m=\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mparse(message)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 43 |\u001b[39m         \u001b[36mlet\u001b[39m a \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDate\u001b[39m()\u001b[33m.\u001b[39mvalueOf()\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrHealth.test.js\u001b[39m\u001b[0m\u001b[2m:40:51)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Health Tests › Battery voltage value should be greater than 3\u001b[39m\u001b[22m\n\n    TypeError: Cannot read property '_source' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 51 |\u001b[39m     it(\u001b[32m'Battery voltage value should be greater than 3'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 52 |\u001b[39m         \u001b[36mconst\u001b[39m logMessage \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mApis\u001b[39m\u001b[33m.\u001b[39mgetRovrTelemetryReport(dsn)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 53 |\u001b[39m         \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[33m.\u001b[39mmessage\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 54 |\u001b[39m         \u001b[36mconst\u001b[39m telemetryMessage \u001b[33m=\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mparse(message)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 55 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 56 |\u001b[39m         expect(telemetryMessage\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mbattery\u001b[33m.\u001b[39mvoltage\u001b[33m.\u001b[39mrawNumericValue)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m3\u001b[39m)\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrHealth.test.js\u001b[39m\u001b[0m\u001b[2m:53:54)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Health Tests › Temperature value should be lower then 85\u001b[39m\u001b[22m\n\n    TypeError: Cannot read property '_source' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 59 |\u001b[39m     it(\u001b[32m'Temperature value should be lower then 85'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 60 |\u001b[39m         \u001b[36mconst\u001b[39m logMessage \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mApis\u001b[39m\u001b[33m.\u001b[39mgetRovrTelemetryReport(dsn)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 61 |\u001b[39m         \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[33m.\u001b[39mmessage\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 62 |\u001b[39m         \u001b[36mconst\u001b[39m telemetryMessage \u001b[33m=\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mparse(message)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 63 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 64 |\u001b[39m         expect(telemetryMessage\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mtemperature)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m85\u001b[39m)\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrHealth.test.js\u001b[39m\u001b[0m\u001b[2m:61:54)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Health Tests › Given ROVR disc usage should not be over 50 \u001b[39m\u001b[22m\n\n    TypeError: Cannot read property '_source' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 67 |\u001b[39m     it(\u001b[32m'Given ROVR disc usage should not be over 50 '\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 68 |\u001b[39m         \u001b[36mconst\u001b[39m logMessage \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mApis\u001b[39m\u001b[33m.\u001b[39mgetRovrTelemetryReport(dsn)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 69 |\u001b[39m         \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[33m.\u001b[39mmessage\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 70 |\u001b[39m         \u001b[36mconst\u001b[39m telemetryMessage \u001b[33m=\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mparse(message)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 71 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 72 |\u001b[39m         expect(parseInt(telemetryMessage\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mdiskUsagePercent))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m50\u001b[39m)\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrHealth.test.js\u001b[39m\u001b[0m\u001b[2m:69:54)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Health Tests › Wifi Signal Level should not be lower the -86\u001b[39m\u001b[22m\n\n    TypeError: Cannot read property '_source' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 75 |\u001b[39m     it(\u001b[32m'Wifi Signal Level should not be lower the -86'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 76 |\u001b[39m         \u001b[36mconst\u001b[39m logMessage \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mApis\u001b[39m\u001b[33m.\u001b[39mgetRovrTelemetryReport(dsn)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 77 |\u001b[39m         \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[33m.\u001b[39mmessage\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 78 |\u001b[39m         \u001b[36mconst\u001b[39m telemetryMessage \u001b[33m=\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mparse(message)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 79 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 80 |\u001b[39m         expect(parseInt(telemetryMessage\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mwifiMetrics\u001b[33m.\u001b[39msignalLevel))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeLessThan(\u001b[33m-\u001b[39m\u001b[35m86\u001b[39m)\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrHealth.test.js\u001b[39m\u001b[0m\u001b[2m:77:54)\u001b[22m\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[22m\u001b[1mROVR Health Tests › Battery reported capacity should not be lower then 1250\u001b[39m\u001b[22m\n\n    TypeError: Cannot read property '_source' of undefined\n\u001b[2m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 83 |\u001b[39m     it(\u001b[32m'Battery reported capacity should not be lower then 1250'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 84 |\u001b[39m         \u001b[36mconst\u001b[39m logMessage \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mApis\u001b[39m\u001b[33m.\u001b[39mgetRovrTelemetryReport(dsn)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[2m\u001b[39m\u001b[90m 85 |\u001b[39m         \u001b[36mconst\u001b[39m message \u001b[33m=\u001b[39m logMessage\u001b[33m.\u001b[39mbody\u001b[33m.\u001b[39mhits\u001b[33m.\u001b[39mhits[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39m_source\u001b[33m.\u001b[39mmessage\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[2m\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 86 |\u001b[39m         \u001b[36mconst\u001b[39m telemetryMessage \u001b[33m=\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mparse(message)\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 87 |\u001b[39m\u001b[0m\u001b[22m\n\u001b[2m    \u001b[0m \u001b[90m 88 |\u001b[39m         expect(parseInt(telemetryMessage\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mbattery\u001b[33m.\u001b[39mreportedCapacity\u001b[33m.\u001b[39mrawNumericValue))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m1250\u001b[39m)\u001b[0m\u001b[22m\n\u001b[2m\u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[22m\u001b[2m\u001b[0m\u001b[36mDeming/Tests/ROVR/rovrHealth.test.js\u001b[39m\u001b[0m\u001b[2m:85:54)\u001b[22m\u001b[2m\u001b[22m\n",
+                "displayName": {
+                    "color": "white",
+                    "name": "ROVR 001f7b3b4d02"
+                }
+            }
+        ],
+        "wasInterrupted": false
+    }
+}

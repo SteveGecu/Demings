@@ -1,0 +1,208 @@
+{
+    "summary": {
+        "totalDrones": 15,
+        "testedDrones": 3,
+        "skippedDrones": 12,
+        "totalDroneTests": 63,
+        "totalPassedTests": 28,
+        "totalFailedTests": 35,
+        "durationSeconds": 26.5
+    },
+    "drones": [
+        {
+            "railId": "EAF44C72-A021-4A97-8F1E-FDE9FDDD6AF3",
+            "dsn": "001f7b3b4cf8",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "8ECACD86-81A9-42B0-8265-FD9A18EBB898",
+            "dsn": "001f7b3b4be0",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "FB708D7F-DF5D-4F1B-95C1-0B2E62AAEED3",
+            "dsn": "demo-dsn",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "997B484E-D212-43FF-AFAF-FEF4EB0206C6",
+            "dsn": "001f7b3b3482",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "0E46FCA3-1F72-4659-B78A-FF68FD6ED933",
+            "dsn": "001f7b3b4b58",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "5BB2B47E-418D-416A-BD5B-FD39559C3960",
+            "dsn": "001f7b1e128d",
+            "droneType": "ROVR",
+            "dnn": "17F9CFFD-6022-480F-ACEA-F3239C563921",
+            "isTested": true,
+            "totalTests": 21,
+            "totalPassedTests": 2,
+            "totalFailedTests": 19,
+            "failures": {
+                "Rovr Event Stream Tests": [
+                    "should "
+                ],
+                "ROVR Barcode Detection E2E Tests": [
+                    "should pass when Notification Center unzipped the file",
+                    "should pass when ready for barcode detection",
+                    "should pass when barcode detection is completed",
+                    "should pass when product report is generated"
+                ],
+                "ROVR Health Tests": [
+                    "Given ROVR should produce logs",
+                    "Given ROVR should produce Run Report after run",
+                    "Given ROVR should produce Telemetry report",
+                    "Battery voltage value should be greater than 3",
+                    "Temperature value should be lower then 85",
+                    "Given ROVR disc usage should not be over 50 ",
+                    "Wifi Signal Level should not be lower the -86",
+                    "Battery reported capacity should not be lower then 1250"
+                ],
+                "ROVR Product Detection E2E Tests": [
+                    "should pass when Notification Center unzipped the file",
+                    "should pass when correct DNN is assigned to related RailId",
+                    "should validate dnn id",
+                    "should pass when ready for object detection",
+                    "should pass when object detection is completed",
+                    "should pass when object tracking is complete",
+                    "should pass when fetch related facing",
+                    "should pass when product report is generated"
+                ]
+            }
+        },
+        {
+            "railId": "72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C",
+            "dsn": "001f7b3b4d02",
+            "droneType": "ROVR",
+            "dnn": "85F5E714-F860-489D-AEEC-79D7E6D56C07",
+            "isTested": true,
+            "totalTests": 21,
+            "totalPassedTests": 19,
+            "totalFailedTests": 2,
+            "failures": {
+                "ROVR Health Tests": [
+                    "Given ROVR should produce logs",
+                    "Given ROVR should produce Run Report after run",
+                    "Given ROVR should produce Telemetry report",
+                    "Battery voltage value should be greater than 3",
+                    "Temperature value should be lower then 85",
+                    "Given ROVR disc usage should not be over 50 ",
+                    "Wifi Signal Level should not be lower the -86",
+                    "Battery reported capacity should not be lower then 1250"
+                ],
+                "ROVR Product Detection E2E Tests": [
+                    "should pass when Notification Center unzipped the file",
+                    "should pass when correct DNN is assigned to related RailId",
+                    "should validate dnn id",
+                    "should pass when ready for object detection",
+                    "should pass when object detection is completed",
+                    "should pass when object tracking is complete",
+                    "should pass when fetch related facing",
+                    "should pass when product report is generated"
+                ]
+            }
+        },
+        {
+            "railId": "0739633A-0C07-4188-90B5-356D0EEAB88D",
+            "dsn": "001f7b319370",
+            "droneType": "OBSERVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "50B83C6B-F97D-447D-B539-C993D07B249F",
+            "dsn": "001f7b319c42",
+            "droneType": "ROVR",
+            "dnn": "73956A34-121A-4E5E-B7A1-F73A048CFC3F",
+            "isTested": true,
+            "totalTests": 21,
+            "totalPassedTests": 7,
+            "totalFailedTests": 14,
+            "failures": {
+                "ROVR Health Tests": [
+                    "Given ROVR should produce logs",
+                    "Given ROVR should produce Run Report after run",
+                    "Given ROVR should produce Telemetry report",
+                    "Battery voltage value should be greater than 3",
+                    "Temperature value should be lower then 85",
+                    "Given ROVR disc usage should not be over 50 ",
+                    "Wifi Signal Level should not be lower the -86",
+                    "Battery reported capacity should not be lower then 1250"
+                ],
+                "ROVR Barcode Detection E2E Tests": [
+                    "should pass when Notification Center unzipped the file",
+                    "should pass when ready for barcode detection",
+                    "should pass when barcode detection is completed",
+                    "should pass when product report is generated"
+                ],
+                "ROVR Product Detection E2E Tests": [
+                    "should pass when Notification Center unzipped the file",
+                    "should pass when correct DNN is assigned to related RailId",
+                    "should validate dnn id",
+                    "should pass when ready for object detection",
+                    "should pass when object detection is completed",
+                    "should pass when object tracking is complete",
+                    "should pass when fetch related facing",
+                    "should pass when product report is generated"
+                ]
+            }
+        },
+        {
+            "railId": "264CA294-F1DA-4EA6-9651-FEA6D751FFB9",
+            "dsn": "001f7b3b4bc8",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "185163D0-E9F1-4D04-BC87-B8EC76DBDDEE",
+            "dsn": "001f7b319a14",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "1AA697A1-30F8-4FA8-AB43-FDD0B8FBED2C",
+            "dsn": "001f7b3b4c00",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "806F9BD2-3192-4B64-AA8C-00EB89E7B65B",
+            "dsn": "001f7b3b32ce",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "D949092E-CA1C-40D2-A11B-64CE127DB3E9",
+            "dsn": "001f7b3b4cf6",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        },
+        {
+            "railId": "F087B76A-697F-4957-829A-FD2AD682D8B1",
+            "dsn": "001f7b3b4c12",
+            "droneType": "ROVR",
+            "dnn": null,
+            "isTested": false
+        }
+    ]
+}
