@@ -1,5 +1,8 @@
 stages: # List of stages for jobs, and their order of execution
   - testSuite
+  - docker-build
+  - tag
+  - version
   - .post
 
 variables:
