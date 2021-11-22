@@ -39,9 +39,9 @@ COPY ./package.json .
 COPY ./jest.config.js .
 COPY ./orchestrator/orchestrator.js .
 COPY ./orchestrator/run_orchestrator.sh .
-COPY ./node_modules/ ./node_modules/
+# COPY ./node_modules/ ./node_modules/
 
-# RUN npm install .
+RUN npm install .
 
 RUN touch /root/.bashrc
 RUN echo "alias kcat='kafkacat'" > /root/.bashrc
