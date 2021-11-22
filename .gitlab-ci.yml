@@ -258,6 +258,8 @@ docker-build:
   stage: docker-build
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
   rules:
+    - if: $CI_COMMIT_BRANCH != 'main'
+      when: never
     - if: $CI_COMMIT_MESSAGE !~ /\[bump version\]/ && $CI_PIPELINE_SOURCE == "pushes"
       when: on_success
     - when: never
@@ -310,6 +312,8 @@ patch:
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
   stage: version
   rules:
+    - if: $CI_COMMIT_BRANCH != 'main'
+      when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[bump version\]/i
       when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[patch\]/i
@@ -327,6 +331,8 @@ minor:
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
   stage: version
   rules:
+    - if: $CI_COMMIT_BRANCH != 'main'
+      when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[bump version\]/i
       when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[minor\]/i
@@ -344,6 +350,8 @@ major:
   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:v0.0.17
   stage: version
   rules:
+    - if: $CI_COMMIT_BRANCH != 'main'
+      when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[bump version\]/i
       when: never
     - if: $CI_COMMIT_MESSAGE =~ /\[major\]/i
