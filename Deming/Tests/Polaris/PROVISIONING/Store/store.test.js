@@ -4,6 +4,7 @@ const storeAPI = require('./storeAPI');
 describe('Store tests, it creates new store, gets all store lists and created store, updates and deletes created store', () => {
     let token;
     let id;
+    
     beforeAll(async () => {
         token = await getToken.getToken()
     })
@@ -22,7 +23,6 @@ describe('Store tests, it creates new store, gets all store lists and created st
     })
     it('should update store', async()=> {
         const response = await storeAPI.updateStore(token, id);
-        console.log(response);
         expect(response.status).toEqual(200);
     })
     it('should delete specific store', async()=> {

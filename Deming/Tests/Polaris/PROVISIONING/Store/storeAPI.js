@@ -4,16 +4,6 @@ const storeURL ='https://qa.provisioning.demingrobotics.com/store';
 
 
 //create store
-// {
-//     "id": 0,
-//     "storeCode": 0,
-//     "name": "string",
-//     "address": "string",
-//     "city": "string",
-//     "state": "string",
-//     "postalCode": "string",
-//     "customerId": 0
-//   }
 
 async function createStore(token){
   const response = await fetch(storeURL, {
