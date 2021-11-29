@@ -3,6 +3,7 @@ stages: # List of stages for jobs, and their order of execution
   - docker-build
   - tag
   - version
+  - bridge
   - .post
 
 variables:
