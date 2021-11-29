@@ -1,0 +1,16 @@
+name: test-suite-automation
+
+image:
+  repository: registry.gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation
+  pullPolicy: IfNotPresent
+  tag: 0.0.0
+
+env:
+  name: ''
+
+testSuiteAutomation:
+  customerId: ''
+  storeId: ''
+  cronSchedule: ''
+  observrRails: ''
+  slackWebhookUrl: ''

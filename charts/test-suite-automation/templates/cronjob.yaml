@@ -1,0 +1,29 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels:
+    name: {{ .Values.name }}
+  name: {{ .Values.name }}
+spec:
+  schedule: {{ .Values.testSuiteAutomation.cronSchedule | quote }}
+  concurrencyPolicy: Replace
+  Suspend: {{ .Values.testSuiteAutomation.suspendJob | false }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: test-suite-automation
+              image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+              imagePullPolicy: Always
+              env:
+              - name: APP_VERSION
+                value: {{.Values.image.tag}}
+              envFrom:
+              - configMapRef:
+                  name: {{.Values.name}}
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: gitlab-registry
+
+15 19-23,0-10 * * *
