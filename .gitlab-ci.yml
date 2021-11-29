@@ -11,6 +11,8 @@ variables:
   ENVIRONMENT:
     value: build
     description: 'The environment variable file (without extension) to use for this test'
+  # enable helm registry login
+  HELM_EXPERIMENTAL_OCI: 1
 
 # workflow:
 #   rules:
@@ -411,7 +413,6 @@ helm-publish:
 
     - echo "Getting ChartMuseum connection details from vault"
     - |
-      export VAULT_ADDR=$VAULT_HOST
       CHART_MUSEUM_SECRET=`vault kv get -format=json spacee/shared/chartmuseum/sdlcprod`
       read -r CM_URL CM_USER CM_PASS <<< $(echo ${CHART_MUSEUM_SECRET} | jq '.data.data|.BASE_URL,.BASIC_AUTH_USER,.BASIC_AUTH_PASS' | xargs)
 
