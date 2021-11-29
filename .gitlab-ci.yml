@@ -421,6 +421,7 @@ helm-publish:
 
 bridge:
   stage: bridge
+  variables:
     APP_NAME: test-suite-automation
     APP_VERSION: $CI_COMMIT_TAG
   rules:
