@@ -129,6 +129,8 @@ async function getConfluentKafkacatMessage(topic, n = 1) {
     return messages;
 }
 
+
+
 module.exports = {
     fetchMessageForDsn,
     fetchMessageForGivenDsn,

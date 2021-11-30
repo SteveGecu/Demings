@@ -2,7 +2,6 @@ const getToken = require('../../getToken');
 const fetch = require("node-fetch");
 const aisleURL ='https://qa.provisioning.demingrobotics.com/aisle';
 
-//create aisle - use store id 123
 async function createAisle(token){
     const response = await fetch(aisleURL, {
         method:'POST',
@@ -21,7 +20,7 @@ async function createAisle(token){
       status: response.status,
       headers: response.statusText
   }}
-//get aisles
+
 async function getAisles(token){
     const response = await fetch(aisleURL, {
         method:'GET',
@@ -37,7 +36,7 @@ async function getAisles(token){
         headers: response.statusText
     }
 } 
-//get aisle 
+
 async function getAisle(token, id){
     const response = await fetch(aisleURL + "/" + id, {
         method:'GET',
@@ -53,7 +52,7 @@ async function getAisle(token, id){
         headers: response.statusText
     }
 }
-//update aisle
+
 async function updateAisle(token, id){
     const response = await fetch(aisleURL + "/" + id, {
         method:'PATCH',
@@ -69,7 +68,7 @@ async function updateAisle(token, id){
         headers: response.statusText
     }
 }
-//delete aisle
+
 async function deleteAisle(token, id){
     const response = await fetch(aisleURL + "/" + id, {
         method:'DELETE',

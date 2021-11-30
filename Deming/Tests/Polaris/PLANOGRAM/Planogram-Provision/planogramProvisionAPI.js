@@ -2,8 +2,6 @@ const getToken = require('../../getToken');
 const fetch = require("node-fetch");
 const planogramProvisionURL = "https://qa.planogram.demingrobotics.com/planogram-provision/";
 
-// PLANOGRAM-PROVISION 
-// POST need rail id and planogram id
 async function createPlanogramProvision(token) {
     const response = await fetch(planogramProvisionURL, {
         method: 'POST',
@@ -24,8 +22,6 @@ async function createPlanogramProvision(token) {
         headers: response.headersThis 
     }
 }
-
-// Get all 
 async function getAllPlanogramProvision(token) {
     let response = await fetch(planogramProvisionURL, {
         method: 'GET',
@@ -42,7 +38,6 @@ async function getAllPlanogramProvision(token) {
         headers: response.headers
     }
 }
-//Get specific id
 async function getPlanogramProvision(token, id) {
     let response = await fetch(planogramProvisionURL + id, {
         method: 'GET',
@@ -58,8 +53,6 @@ async function getPlanogramProvision(token, id) {
         headers: response.headers
     }
 }
-
-//patch id S
 async function patchPlanogramProvision(token, id) {
     const response = await fetch(planogramProvisionURL + id, {
         method: 'PATCH',
@@ -76,7 +69,6 @@ async function patchPlanogramProvision(token, id) {
     }
 }
 
-// delete id
 async function deletePlanogramProvision(token,id) {
     const response = await fetch(planogramProvisionURL +id, {
         method: 'DELETE',
@@ -92,9 +84,6 @@ async function deletePlanogramProvision(token,id) {
         headers: response.statusText
     }
 }
-
-//return deleted id => no need to write new function
-
 
 module.exports = {
     createPlanogramProvision,

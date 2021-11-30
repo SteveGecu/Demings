@@ -195,6 +195,19 @@ async function getEventStreamMessage(dsn) {
     return dsnMessage
 }
 
+////////
+
+async function getRangersPushCheckInMessage(dsn) {
+    const messages = await Consumer.getConfluentKafkacatMessage('pushr.check-in', 10)
+    return messages;
+}
+
+async function getRangersPushStatusReport(dsn) {
+    const messages = await Consumer.getConfluentKafkacatMessage('pushr.status-report', 10)
+    const  pushStatusReportMessage = messages.reverse().find(m => m.statusReportEvent.message.header.deviceSerialNumber == dsn)
+    return pushStatusReportMessage; 
+}
+
 module.exports = {
     getRovrLogMessage,
     getRovrTelemetryReportMessage,
@@ -217,5 +230,7 @@ module.exports = {
     getBarcodeReportCreatedMessage,
     getCompleteProductReport,
     getCompleteBarcodeReport,
-    getEventStreamMessage
+    getEventStreamMessage,
+    getRangersPushCheckInMessage,
+    getRangersPushStatusReport
 }

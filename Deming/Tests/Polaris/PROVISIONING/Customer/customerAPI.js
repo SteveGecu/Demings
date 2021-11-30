@@ -1,6 +1,5 @@
 const getToken = require('../../getToken');
 const fetch = require("node-fetch");
-//const customerURL = 'https://rangr-api.deming.qa.eastus2.spacee.io/customer';
 const customerURL = 'https://qa.provisioning.demingrobotics.com/customer';
 
 
