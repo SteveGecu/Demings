@@ -6,7 +6,6 @@ metadata:
   name: {{ .Values.name }}
 spec:
   schedule: {{ .Values.testSuiteAutomation.cronSchedule | quote }}
-  concurrencyPolicy: Replace
   jobTemplate:
     spec:
       template:
