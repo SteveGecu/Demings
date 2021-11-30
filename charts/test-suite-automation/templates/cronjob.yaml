@@ -7,7 +7,6 @@ metadata:
 spec:
   schedule: {{ .Values.testSuiteAutomation.cronSchedule | quote }}
   concurrencyPolicy: Replace
-  suspend: {{ .Values.testSuiteAutomation.suspendJob | false }}
   jobTemplate:
     spec:
       template:
