@@ -25,5 +25,3 @@ spec:
           restartPolicy: OnFailure
           imagePullSecrets:
             - name: gitlab-registry
-
-15 19-23,0-10 * * *
