@@ -41,6 +41,14 @@ describe('OBSERVR Tests', () => {
         expect(telemetryMessage.data.os.temperature).not.toBeGreaterThan(85)
     });
 
+    it('Camera Temperature value should be lower then 65', async () => {
+        const logMessage = await Apis.getObservrTelemetryReport(dsn)
+        const message = logMessage.body.hits.hits[0]._source.message
+        const telemetryMessage = JSON.parse(message)
+
+        expect(telemetryMessage.data.os.cameraTemperature).not.toBeGreaterThan(65)
+    });
+
     it('Given OBSERVR disc usage should not be over 50 ', async () => {
         const logMessage = await Apis.getObservrTelemetryReport(dsn)
         const message = logMessage.body.hits.hits[0]._source.message
