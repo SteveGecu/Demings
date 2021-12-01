@@ -68,7 +68,7 @@ describe('OBSERVR Product Detection E2E Tests', () => {
 
         expect(a - b).toBeLessThan(60 * 60 * 1000)
         expect(message).toHaveProperty
-        //expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
+        expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
     })
