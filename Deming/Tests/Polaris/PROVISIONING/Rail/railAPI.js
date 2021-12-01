@@ -88,9 +88,6 @@ async function deleteRail(token, id){
     }
 }
 
-
-
-
 module.exports = {
    createRail,
    getRails,

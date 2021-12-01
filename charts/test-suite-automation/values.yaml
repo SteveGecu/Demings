@@ -1,0 +1,16 @@
+name: test-suite-automation
+
+image:
+  repository: registry.gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation
+  pullPolicy: IfNotPresent
+  tag: 0.0.0
+
+env:
+  name: ''
+
+testSuiteAutomation:
+  customerId: ''        # should be pulled from gateway labels
+  storeId: ''           # should be pulled from gateway labels
+  cronSchedule: ''
+  observrRails_1_1: ''  # comma separated string of rail ids for the observers.  The 1_1 indicates customer id and then store id
+  slackWebhookUrl: ''   # webhook url for alert notifications, if nothing is specified no alerts will be sent

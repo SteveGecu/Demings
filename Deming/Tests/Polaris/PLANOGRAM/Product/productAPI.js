@@ -2,9 +2,6 @@ const getToken = require('../../getToken');
 const fetch = require("node-fetch");
 const productURL = 'https://qa.planogram.demingrobotics.com/product/';
 
-//PRODUCT
-
-//Post
 async function createProduct(token) {
     const response = await fetch(productURL, {
         method: 'POST',
@@ -28,7 +25,6 @@ async function createProduct(token) {
     }
 }
 
-// Get all 
 async function getAllProduct(token) {
     let response = await fetch(productURL, {
         method: 'GET',
@@ -46,7 +42,6 @@ async function getAllProduct(token) {
     }
 }
 
-//Get specific id
 async function getProduct(token, id) {
     let response = await fetch(productURL + id, {
         method: 'GET',
@@ -64,7 +59,6 @@ async function getProduct(token, id) {
     }
 }
 
-// delete product 
 async function deleteProduct(token, id) {
     const response = await fetch(productURL + id, {
         method: 'DELETE',
@@ -80,7 +74,6 @@ async function deleteProduct(token, id) {
         headers: response.statusText
     }
 }
-// get deleted id => no function required for this
 
 module.exports = {
     createProduct,

@@ -3,12 +3,16 @@ stages: # List of stages for jobs, and their order of execution
   - docker-build
   - tag
   - version
+  - publish
+  - bridge
   - .post
 
 variables:
   ENVIRONMENT:
     value: build
     description: 'The environment variable file (without extension) to use for this test'
+  # enable helm registry login
+  HELM_EXPERIMENTAL_OCI: 1
 
 # workflow:
 #   rules:
@@ -387,3 +391,45 @@ major:
     - UPDATE_TYPE=major
     - *git-configure
     - *version
+
+# Publishes the helm chart, after substituting the CI_COMMIT_TAG where appropriate
+helm-publish:
+  stage: publish
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-helm:1.0.4
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: on_success
+    - when: never
+  tags:
+    - spacee-org-docker
+  script:
+    - *git-configure
+    - helm registry login -u $GITLAB_USER -p $GITLAB_TOKEN registry.gitlab.com
+    - echo "Publishing helm chart version $CI_COMMIT_TAG"
+    - |
+      echo "Updating chart versions"
+      sed -ri "s/0.0.0/$CI_COMMIT_TAG/" ./charts/test-suite-automation/Chart.yaml
+      sed -ri "s/0.0.0/$CI_COMMIT_TAG/" ./charts/test-suite-automation/values.yaml
+
+    - echo "Getting ChartMuseum connection details from vault"
+    - |
+      CHART_MUSEUM_SECRET=`vault kv get -format=json spacee/shared/chartmuseum/sdlcprod`
+      read -r CM_URL CM_USER CM_PASS <<< $(echo ${CHART_MUSEUM_SECRET} | jq '.data.data|.BASE_URL,.BASIC_AUTH_USER,.BASIC_AUTH_PASS' | xargs)
+
+    - echo "Pushing chart to ChartMuseum"
+    - helm repo add spacee $CM_URL --username $CM_USER --password $CM_PASS
+    - helm push ./charts/test-suite-automation/ spacee
+    - echo "Successfully pushed to spacee chart museum"
+
+bridge:
+  stage: bridge
+  variables:
+    APP_NAME: test-suite-automation
+    APP_VERSION: $CI_COMMIT_TAG
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: on_success
+    - when: never
+  trigger:
+    project: spacee/shared/rancher-deployments
+    branch: main

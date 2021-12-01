@@ -5,7 +5,6 @@ const productURL = 'https://qa.planogram.demingrobotics.com/product/';
 const planogramUrl = 'https://qa.planogram.demingrobotics.com/planogram/';
 
 
-//Post Product Facing
 async function createProductFacing(token, planogramId) {
     console.log(productFacingURL + "?planogramId=" + planogramId);
     const response = await fetch(productFacingURL + "?planogramId=" + planogramId, {
@@ -33,7 +32,6 @@ async function createProductFacing(token, planogramId) {
     }
 }
 
-// Get all 
 async function getAllProductFacing(token) {
     let response = await fetch(productFacingURL, {
         method: 'GET',
@@ -50,8 +48,6 @@ async function getAllProductFacing(token) {
     }
 }
 
-
-//Get by Planogram Id 
 async function getProductFacingByPlanogramId(token, planogramId) {
     const response = await fetch(productFacingURL + "/?planogramId=" + planogramId, {
         method: 'GET',
@@ -68,7 +64,6 @@ async function getProductFacingByPlanogramId(token, planogramId) {
     }
 }
 
-//Get By RailId 
 async function getProductFacingByRailId(token, railId) {
     const response = await fetch(productFacingURL + "/?railId=" + railId + "&latest=true", {
         method: 'GET',
@@ -85,7 +80,6 @@ async function getProductFacingByRailId(token, railId) {
     }
 }
 
-//Get by Facing Id 
 async function getFacing(token, facingId) {
     let response = await fetch(productFacingURL + "/" + facingId, {
         method: 'GET',
@@ -101,8 +95,6 @@ async function getFacing(token, facingId) {
         headers: response.headers
     }
 }
-
-//patch  prodcut facing 
 
 async function updateProductFacing(token, prodcutFacingId){
     let response = await fetch(productFacingURL + '/' + prodcutFacingId, {
@@ -124,7 +116,6 @@ async function updateProductFacing(token, prodcutFacingId){
     }
 }
 
-//delete product facing
 async function deleteProductFacing(token, prodcutFacingId){
     let response = await fetch(productFacingURL + '/' + prodcutFacingId, {
         method: 'DELETE',
@@ -140,7 +131,7 @@ async function deleteProductFacing(token, prodcutFacingId){
         headers: response.headers
     }
 }
-// delete product facing by planogram id
+
 async function deleteProductFacingByPlanogramId(token, planogramId){
     let response = await fetch(productFacingURL + '/' + planogramId, {
         method: 'DELETE',
@@ -157,7 +148,6 @@ async function deleteProductFacingByPlanogramId(token, planogramId){
     }
 }
 
-//delete product
 async function deleteProductFacingByProductId(token, productId){
     let response = await fetch(productFacingURL + '/' + productId, {
         method: 'DELETE',
@@ -174,7 +164,6 @@ async function deleteProductFacingByProductId(token, productId){
     }
 }
 
-//create product
 async function createProduct(token) {
     const response = await fetch(productURL, {
         method: 'POST',
@@ -198,7 +187,6 @@ async function createProduct(token) {
     }
 }
 
-//create planogram
 async function createPlanogram(token) {
     const response = await fetch(planogramUrl, {
         method: 'POST',

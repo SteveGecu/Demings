@@ -4,8 +4,7 @@ const sticthedImageURL = "https://qa.planogram.demingrobotics.com/stitched-image
 const { fileURLToPath } = require('url');
 let fileLocation = fileURLToPath('file:///Users/osman/Desktop/hey.txt');
 
-//STITCHED-IMAGE
-//upload the image //
+
 async function createStitchImage(token){
     const response = await fetch(sticthedImageURL + "/", {
         method: 'POST',
@@ -25,7 +24,6 @@ async function createStitchImage(token){
     }
 }
 
-//get stitched image
 async function getSticthedImage(token) {
     const response = await fetch(sticthedImageURL, {
         method: 'GET',
@@ -44,7 +42,6 @@ async function getSticthedImage(token) {
 
 //download - no need a function
 
-//delete
 async function deleteImage(token, fileName){
     let response = await fetch(sticthedImageURL + '/' + fileName, {
         method: 'DELETE',

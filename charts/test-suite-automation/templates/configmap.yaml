@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-configmap
+data:
+  ENV: {{ .Values.env.name | quote }}
+  CUSTOMER_ID: {{ .Values.testSuiteAutomation.customerId | quote }}
+  STORE_ID: {{ .Values.testSuiteAutomation.storeId | quote }}
+  OBSERVR_RAILS_1_1:  {{ .Values.testSuiteAutomation.observrRails_1_1 | quote }}
+  SLACK_WEBHOOK_URL:   {{ .Values.testSuiteAutomation.slackWebhookUrl | quote }}

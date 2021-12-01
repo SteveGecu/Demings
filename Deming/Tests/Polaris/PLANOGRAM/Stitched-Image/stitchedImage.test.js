@@ -15,7 +15,6 @@ describe('planogram tests', () => {
     //     console.log(uploadedFile);
     // })
 
-    //get stitched images
     it('should return a stiched image status 200', async () => {
         const response = await planogram.getSticthedImage(token);
         expect(response.status).toBe(200);

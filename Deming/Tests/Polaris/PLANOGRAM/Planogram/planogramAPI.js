@@ -2,9 +2,6 @@ const getToken = require('../../getToken');
 const fetch = require("node-fetch");
 const planogramUrl = 'https://qa.planogram.demingrobotics.com/planogram/';
 
-//PLANOGRAM 
-
-//create planogram
 async function createPlanogram(token) {
     const response = await fetch(planogramUrl, {
         method: 'POST',
@@ -23,7 +20,6 @@ async function createPlanogram(token) {
     }
 }
 
-//get planograms
 async function getPlanograms(token) {
     let response = await fetch(planogramUrl, {
         method: 'GET',
@@ -41,7 +37,6 @@ async function getPlanograms(token) {
     }
 }
 
-//get planogram with a specific id
 async function getPlanogram(token, planogramId) {
     let response = await fetch(planogramUrl + planogramId, {
         method: 'GET',
@@ -59,7 +54,6 @@ async function getPlanogram(token, planogramId) {
     }
 }
 
-// update planogram
 async function updatePlanogram(token, planogramId) {
     let response = await fetch(planogramUrl + planogramId, {
         method: 'PATCH',
@@ -76,7 +70,6 @@ async function updatePlanogram(token, planogramId) {
     }
 }
 
-// delete function for planogram
 async function deletePlanogram(planogramId) {
     const response = await fetch(planogramUrl, {
         method: 'DELETE',
