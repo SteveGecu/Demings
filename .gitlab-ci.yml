@@ -60,9 +60,10 @@ qaRovrTest:
     when: always
     reports:
       junit:
-        - ./*junit.xml
+        - *junit.xml
   script:
     - *configure-environment
+    - npm install
     - cp ./orchestrator/* .
     - ./run_orchestrator.sh
   # after_script:
