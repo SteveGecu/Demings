@@ -15,6 +15,8 @@ const ObservrRails = (process.env[observrRailKey] || '').split(',');
 const ProvisioningBaseUrl = `https://${Env}.provisioning.demingrobotics.com/`
 const SISBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`
 const SlackWebHookUrl = process.env.SLACK_WEBHOOK_URL;
+const NotificationType = process.env.NOTIFICATION_TYPE;
+const PipelineId = process.env.CI_PIPELINE_ID || '';
 
 
 // Retreive Okta access token for use with Provisioning service
@@ -107,6 +109,7 @@ async function runDroneTest(drone) {
     json: true,
     useStderr: false,
     displayName: `${drone.droneType} - ${drone.dsn}`,
+    outputFile: `${drone.droneType}_${drone.dsn}_junit.xml`,
     roots: [`./Deming/Tests/${drone.droneType}/`]
   }
 
@@ -205,21 +208,21 @@ async function sendSlackAlert(webhookUrl, report) {
   let body = {
     blocks: [
       {
-        type: "header",
+        type: 'header',
         text: {
-          type: "plain_text",
+          type: 'plain_text',
           text: `${Env.toUpperCase()} Automation Alert`
         }
       },
       {
-        type: "section",
+        type: 'section',
         fields: [
           {
-            type: "mrkdwn",
+            type: 'mrkdwn',
             text: `*Total Drones:*\n${report.summary.totalDrones}`
           },
           {
-            type: "mrkdwn",
+            type: 'mrkdwn',
             text: `*Passed Tests:*\n${report.summary.totalPassedTests}/${report.summary.totalDroneTests}`
           }
         ]
@@ -229,9 +232,9 @@ async function sendSlackAlert(webhookUrl, report) {
 
   alerts.forEach(alrt => 
     body.blocks.push({
-      type: "section",
+      type: 'section',
       text: {
-        type: "mrkdwn",
+        type: 'mrkdwn',
         text: `*${alrt.severity} Alert*:\n${alrt.message}`
       }
     })
@@ -241,6 +244,91 @@ async function sendSlackAlert(webhookUrl, report) {
   await axios.post(webhookUrl, body);
 }
 
+async function sendSlackReport(webhookUrl, report) {
+  let alerts = _evaluateReport(report);
+  let testSummaryUrl = PipelineId ? `<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${PipelineId}/test_report|${PipelineId}>` : '**Not Available**';
+  let overallStatus = report.summary.totalFailedTests == 0 ? 'Success' : 'Failure';
+
+  let body = {
+    blocks: [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: `${Env.toUpperCase()} Test Automation`
+        }
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Overall Status:*\n ${overallStatus}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Environment:*\n${Env}`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Test Summary:*\n`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Execution Time:*\n${report.summary.durationSeconds} sec`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Total Drones:*\n${report.summary.totalDrones}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Skipped Drones:*\n${report.summary.skippedDrones}`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Total Tests:*\n${report.summary.totalDroneTests}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Errors:*\n${report.summary.totalFailedTests}`
+          }
+        ]
+      }
+    ]
+  };
+
+  if(alerts.length) {
+    alertBlock = {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*Critical Alerts*:'
+      }
+    };
+
+    alerts.forEach(alrt => alertBlock.text.text += `\n${alrt.message}`);
+    body.blocks.push(alerts);
+  }
+
+  console.log(JSON.stringify(body));
+  await axios.post(webhookUrl, body);
+}
 
 // Main function to handle the workflow
 (async() => {
@@ -262,9 +350,9 @@ async function sendSlackAlert(webhookUrl, report) {
   for (let key in drones) {
     let drone = drones[key];
 
-    if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
-      continue;
-    }
+    // if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
+    //   continue;
+    // }
 
     let droneType = ObservrRails.includes(drone.railId) ? 'OBSERVR' : 'ROVR';
     drones[key].droneType = droneType;
@@ -284,14 +372,14 @@ async function sendSlackAlert(webhookUrl, report) {
   let end = Date.now();
   report.summary.durationSeconds = Math.round((end - start) / 100) / 10;
 
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-  console.log('########################################################################################');
-  console.info(report.summary);
-  report.drones.forEach(x => {
-    console.log(x);
-  });
-  console.log('########################################################################################');
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+  // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+  // console.log('########################################################################################');
+  // console.info(report.summary);
+  // report.drones.forEach(x => {
+  //   console.log(x);
+  // });
+  // console.log('########################################################################################');
+  // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
   // console.log(JSON.stringify(report));
 
 
@@ -300,5 +388,9 @@ async function sendSlackAlert(webhookUrl, report) {
     return; 
   }
 
-  await sendSlackAlert(SlackWebHookUrl, report);
+  if(NotificationType == 'ALERT') {
+    await sendSlackAlert(SlackWebHookUrl, report);
+  } else {
+    await sendSlackReport(SlackWebHookUrl, report);
+  }
 })();
