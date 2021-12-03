@@ -355,9 +355,9 @@ async function sendSlackReport(webhookUrl, report) {
   for (let key in drones) {
     let drone = drones[key];
 
-    if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
-      continue;
-    }
+    // if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
+    //   continue;
+    // }
 
     let droneType = ObservrRails.includes(drone.railId) ? 'OBSERVR' : 'ROVR';
     drones[key].droneType = droneType;

@@ -67,8 +67,8 @@ qaRovrTest:
     - cp ./orchestrator/* .
     - export ENV='qa'
     - export STORE_ID='6'
-    - export CUSTOMER_ID='1'
-    - export OBSERVR_RAILS='0739633A-0C07-4188-90B5-356D0EEAB88D'
+    - export CUSTOMER_ID='4'
+    - export OBSERVR_RAILS='50B83C6B-F97D-447D-B539-C993D07B249F'
     - node orchestrator.js
     - ls
   # after_script:
