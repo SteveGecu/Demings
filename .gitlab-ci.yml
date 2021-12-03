@@ -65,7 +65,8 @@ qaRovrTest:
     - *configure-environment
     - npm install
     - cp ./orchestrator/* .
-    - ./run_orchestrator.sh
+    - /bin/bash run_orchestrator.sh
+    - ls
   # after_script:
   #   - export TEST_NAME='ROVR'
   #   - *slack-test-results
