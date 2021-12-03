@@ -2,6 +2,7 @@ const axios = require('axios').default;
 const jest = require('jest');
 const stdout = require('mute-stdout');
 const qs = require('qs');
+const fs = require('fs');
 
 const OktaBaseUrl = 'https://spacee.okta.com/';
 const OKTA_CLIENT_ID = '0oaalwk8e4uzCmR8D357';
@@ -97,6 +98,7 @@ async function runDroneTest(drone) {
   delete report.id;
   delete report.createdAt;
 
+  // if the drone doesn't have a dnn skip the test
   if(!drone.dnn) {
     report.isTested = false;
     return report;
@@ -109,7 +111,7 @@ async function runDroneTest(drone) {
     json: true,
     useStderr: false,
     displayName: `${drone.droneType} - ${drone.dsn}`,
-    outputFile: `${drone.droneType}_${drone.dsn}_junit.xml`,
+    // outputFile: `${drone.droneType}_${drone.dsn}_junit.xml`,
     roots: [`./Deming/Tests/${drone.droneType}/`]
   }
 
@@ -132,6 +134,9 @@ async function runDroneTest(drone) {
       });
     }
   });
+
+  // rename the junit xml file so that drone test executions can be referenced individually
+  fs.renameSync('./junit.xml', `./${drone.droneType}_${drone.dsn}_junit.xml`);
   
   return report;
 }
@@ -185,9 +190,9 @@ function _evaluateReport(report) {
   if (report.summary.skippedDrones > 0) {
     let alert = {
       severity: 'P3',
-      message: `The following ${report.summary.skippedDrones} drones were skipped due to not having an assigned DNN:\n`
+      message: `The following ${report.summary.skippedDrones} drones were skipped due to not having an assigned DNN:`
     };
-    report.drones.filter(d => !d.dnn).forEach(d => alert.message += `\n - ${d.dsn}`);
+    report.drones.filter(d => !d.dnn).forEach(d => alert.message += `\n   - ${d.dsn}`);
     alerts.push(alert);
   }
 
@@ -323,7 +328,7 @@ async function sendSlackReport(webhookUrl, report) {
     };
 
     alerts.forEach(alrt => alertBlock.text.text += `\n${alrt.message}`);
-    body.blocks.push(alerts);
+    body.blocks.push(alertBlock);
   }
 
   console.log(JSON.stringify(body));
@@ -350,9 +355,9 @@ async function sendSlackReport(webhookUrl, report) {
   for (let key in drones) {
     let drone = drones[key];
 
-    // if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
-    //   continue;
-    // }
+    if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
+      continue;
+    }
 
     let droneType = ObservrRails.includes(drone.railId) ? 'OBSERVR' : 'ROVR';
     drones[key].droneType = droneType;

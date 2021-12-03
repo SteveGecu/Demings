@@ -35,17 +35,17 @@ variables:
     # load environment variables from file, ignore commented (#) lines
     export $(grep -v '^#' $envFile | xargs)
 
-#     # create kafka configuration file
-#     echo 'creating ~/.config directory to house kafka config file'
-#     mkdir ~/.config
+    # create kafka configuration file
+    echo 'creating ~/.config directory to house kafka config file'
+    mkdir ~/.config
 
-#     echo "Writing kafka config to ~/.config/kafkacat${ENVIRONMENT}.conf"
-#     echo "bootstrap.servers=${BOOTSTRAPSERVERS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
-#     echo "security.protocol=SASL_SSL" >> ~/.config/kafkacat${ENVIRONMENT}.conf
-#     echo "sasl.mechanisms=${SASLMECHANISMS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
-#     echo "sasl.username=${SASLUSERNAME}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
-#     echo "sasl.password=${SASLPASSWORD}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
-#     echo "enable.ssl.certificate.verification=false" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "Writing kafka config to ~/.config/kafkacat${ENVIRONMENT}.conf"
+    echo "bootstrap.servers=${BOOTSTRAPSERVERS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "security.protocol=SASL_SSL" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.mechanisms=${SASLMECHANISMS}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.username=${SASLUSERNAME}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "sasl.password=${SASLPASSWORD}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
+    echo "enable.ssl.certificate.verification=false" >> ~/.config/kafkacat${ENVIRONMENT}.conf
 
 qaRovrTest:
   stage: testSuite
@@ -69,7 +69,7 @@ qaRovrTest:
     - export STORE_ID='6'
     - export CUSTOMER_ID='1'
     - export OBSERVR_RAILS='0739633A-0C07-4188-90B5-356D0EEAB88D'
-    - /bin/bash run_orchestrator.sh
+    - node orchestrator.js
     - ls
   # after_script:
   #   - export TEST_NAME='ROVR'
