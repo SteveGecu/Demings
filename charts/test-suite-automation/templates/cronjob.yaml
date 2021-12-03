@@ -19,7 +19,7 @@ spec:
                 value: {{.Values.image.tag}}
               envFrom:
               - configMapRef:
-                  name: {{.Values.name}}
+                  name: "{{ .Values.name }}-configmap"
           restartPolicy: OnFailure
           imagePullSecrets:
             - name: gitlab-registry
