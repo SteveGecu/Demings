@@ -65,6 +65,10 @@ qaRovrTest:
     - *configure-environment
     - npm install
     - cp ./orchestrator/* .
+    - export ENV='qa'
+    - export STORE_ID='6'
+    - export CUSTOMER_ID='1'
+    - export OBSERVR_RAILS='0739633A-0C07-4188-90B5-356D0EEAB88D'
     - /bin/bash run_orchestrator.sh
     - ls
   # after_script:
