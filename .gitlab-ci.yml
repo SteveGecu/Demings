@@ -48,6 +48,80 @@ variables:
     echo "enable.ssl.certificate.verification=false" >> ~/.config/kafkacat${ENVIRONMENT}.conf
 
 
+.slack-test-results: &slack-test-results
+  - |
+    lastExitCode=$?
+    testCount=$(xmllint --xpath "string(//testsuites/@tests)" junit.xml)
+    errorCount=$(xmllint --xpath "string(//testsuites/@errors)" junit.xml)
+    failureCount=$(xmllint --xpath "string(//testsuites/@failures)" junit.xml)
+    problemCount=$(($errorCount + $failureCount))
+    execTime=$(xmllint --xpath "string(//testsuites/@time)" junit.xml)
+
+    if [[ $lastExitCode = 0 && $problemCount = 0 ]]; then
+      result='Succeeded'
+      emoji=':tada:'
+    else
+      result='Failed'
+      emoji=':skull_and_crossbones:'
+    fi
+
+    body=$(cat  << EOF
+    {
+      "blocks": [
+        {
+          "type": "header",
+          "text": {
+            "type": "plain_text",
+            "text": "${TEST_NAME} Test Automation"
+          }
+        },
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Overall Status:*\n${emoji} ${result}"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Environment:*\n${ENVIRONMENT}"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Test Summary:*\n<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${CI_PIPELINE_ID}/test_report|${CI_PIPELINE_ID}>"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Execution Time:*\n${execTime} sec"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Total Tests:*\n${testCount}"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Errors:*\n${problemCount}"
+            }
+          ]
+        }
+      ]
+    }
+    EOF
+    )
+
+    curl --data-urlencode "payload=$body" ${SLACK_WEBHOOK_URL}
+
+
 # qaDroneTest:
 #   stage: testSuite
 #   rules:
