@@ -97,18 +97,12 @@ function _updateJUnitFileForDrone(droneType, dsn) {
   let droneJUnitFile = `./${droneType}_${dsn}_junit.xml`;
 
   // rename the junit xml file so that drone test executions can be referenced individually
-  fs.renameSync('./junit.xml', droneJUnitFile);
+  // fs.renameSync('./junit.xml', droneJUnitFile);
 
-  fs.readFile(droneJUnitFile, 'utf8', function (err,data) {
-    if (err) {
-      return console.log(err);
-    }
-    var result = data.replace(/testsuite name="/g, `testsuite name="DSN ${dsn} - `);
-
-    fs.writeFile(droneJUnitFile, result, 'utf8', function (err) {
-      if (err) return console.log(err);
-    });
-  });
+  let content = fs.readFileSync('junit.xml', 'utf8', {encoding:'utf8', flag:'r'});
+  let replacedContent = content.replace(/<testsuite name="/g, `<testsuite name="DSN ${dsn} - `);
+  fs.writeFileSync(droneJUnitFile, replacedContent, {encoding:'utf8', flag:'w+'});
+  fs.unlinkSync('junit.xml');
 }
 
 
@@ -132,7 +126,6 @@ async function runDroneTest(drone) {
     json: true,
     useStderr: false,
     displayName: `${drone.droneType} - ${drone.dsn}`,
-    // outputFile: `${drone.droneType}_${drone.dsn}_junit.xml`,
     roots: [`./Deming/Tests/${drone.droneType}/`]
   }
 
