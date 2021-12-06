@@ -11,6 +11,7 @@ const OKTA_CLIENT_SECRET = 'aDtPC4o2NtglSyy6_RAcP4ef4fMYpQ2UPOII7AIf';
 const Env = process.env.ENV
 const StoreId = process.env.STORE_ID;
 const CustomerId = process.env.CUSTOMER_ID;
+const OnlyTestTheseDsns = (process.env.ONLY_TEST_THESE_DSNS || '').split(','); 
 const observrRailKey = `OBSERVR_RAILS_${CustomerId}_${StoreId}`
 const ObservrRails = (process.env[observrRailKey] || '').split(',');
 const ProvisioningBaseUrl = `https://${Env}.provisioning.demingrobotics.com/`
@@ -205,8 +206,8 @@ function _evaluateReport(report) {
 }
 
 
-// Send slack alert to channel based on environment variable
-async function sendSlackAlert(webhookUrl, report) {
+// Send operational alert to Slack channel
+async function sendOperationalAlert(webhookUrl, report) {
   let alerts = _evaluateReport(report);
   if(!alerts.length) { return; }
 
@@ -249,7 +250,9 @@ async function sendSlackAlert(webhookUrl, report) {
   await axios.post(webhookUrl, body);
 }
 
-async function sendSlackReport(webhookUrl, report) {
+
+// Send an overall report of test executions to Slack
+async function sendTestReport(webhookUrl, report) {
   let alerts = _evaluateReport(report);
   let testSummaryUrl = PipelineId ? `<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${PipelineId}/test_report|${PipelineId}>` : '**Not Available**';
   let overallStatus = report.summary.totalFailedTests == 0 ? 'Success' : 'Failure';
@@ -335,6 +338,7 @@ async function sendSlackReport(webhookUrl, report) {
   await axios.post(webhookUrl, body);
 }
 
+
 // Main function to handle the workflow
 (async() => {
   let drones = await getDrones(StoreId);
@@ -355,9 +359,13 @@ async function sendSlackReport(webhookUrl, report) {
   for (let key in drones) {
     let drone = drones[key];
 
-    // if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
-    //   continue;
-    // }
+      // if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
+      //   continue;
+      // }
+
+    if(OnlyTestTheseDsns.length && !OnlyTestTheseDsns.includes(drone.dsn)) {
+      continue;
+    }
 
     let droneType = ObservrRails.includes(drone.railId) ? 'OBSERVR' : 'ROVR';
     drones[key].droneType = droneType;
@@ -394,8 +402,8 @@ async function sendSlackReport(webhookUrl, report) {
   }
 
   if(NotificationType == 'ALERT') {
-    await sendSlackAlert(SlackWebHookUrl, report);
+    await sendOperationalAlert(SlackWebHookUrl, report);
   } else {
-    await sendSlackReport(SlackWebHookUrl, report);
+    await sendTestReport(SlackWebHookUrl, report);
   }
 })();
