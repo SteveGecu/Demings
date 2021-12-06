@@ -8,7 +8,8 @@ const OktaBaseUrl = 'https://spacee.okta.com/';
 const OKTA_CLIENT_ID = '0oaalwk8e4uzCmR8D357';
 const OKTA_CLIENT_SECRET = 'aDtPC4o2NtglSyy6_RAcP4ef4fMYpQ2UPOII7AIf';
 
-const Env = process.env.ENV
+const Env = process.env.ENV;
+const Gateway = process.env.GATEWAY;
 const StoreId = process.env.STORE_ID;
 const CustomerId = process.env.CUSTOMER_ID;
 const OnlyTestTheseDsns = process.env.ONLY_TEST_THESE_DSNS ? process.env.ONLY_TEST_THESE_DSNS.split(',') : []; 
@@ -228,7 +229,7 @@ async function sendOperationalAlert(webhookUrl, report) {
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${Env.toUpperCase()} Automation Alert`
+          text: `${Gateway} Automation Alert`
         }
       },
       {
@@ -274,7 +275,7 @@ async function sendTestReport(webhookUrl, report) {
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${Env.toUpperCase()} Test Automation`
+          text: `${Gateway} Test Automation`
         }
       },
       {

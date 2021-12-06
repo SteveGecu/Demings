@@ -9,6 +9,7 @@ env:
   name: ''
 
 testSuiteAutomation:
+  gateway: ''           # should be pulled from gateway hostname label
   customerId: ''        # should be pulled from gateway labels
   storeId: ''           # should be pulled from gateway labels
   cronSchedule: ''
