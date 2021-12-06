@@ -12,8 +12,7 @@ const Env = process.env.ENV
 const StoreId = process.env.STORE_ID;
 const CustomerId = process.env.CUSTOMER_ID;
 const OnlyTestTheseDsns = (process.env.ONLY_TEST_THESE_DSNS || '').split(','); 
-const observrRailKey = `OBSERVR_RAILS_${CustomerId}_${StoreId}`
-const ObservrRails = (process.env[observrRailKey] || '').split(',');
+const ObservrRails = `OBSERVR_RAILS_${CustomerId}_${StoreId}` in process.env ?process.env[`OBSERVR_RAILS_${CustomerId}_${StoreId}`].split(',') : [];
 const ProvisioningBaseUrl = `https://${Env}.provisioning.demingrobotics.com/`
 const SISBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`
 const SlackWebHookUrl = process.env.SLACK_WEBHOOK_URL;
@@ -296,7 +295,7 @@ async function sendTestReport(webhookUrl, report) {
         fields: [
           {
             type: 'mrkdwn',
-            text: `*Test Summary:*\n`
+            text: `*Test Summary:*\n${testSummaryUrl}`
           },
           {
             type: 'mrkdwn',

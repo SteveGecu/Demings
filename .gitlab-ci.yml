@@ -47,6 +47,33 @@ variables:
     echo "sasl.password=${SASLPASSWORD}" >> ~/.config/kafkacat${ENVIRONMENT}.conf
     echo "enable.ssl.certificate.verification=false" >> ~/.config/kafkacat${ENVIRONMENT}.conf
 
+
+# qaDroneTest:
+#   stage: testSuite
+#   rules:
+#     - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
+#       when: always
+#     - when: never
+#   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+#   tags:
+#     - deming-rovr-gateway-qa-stress-test
+#   artifacts:
+#     when: always
+#     reports:
+#       junit:
+#         - '*junit.xml'
+#   script:
+#     - *configure-environment
+#     - npm install
+#     - cp ./orchestrator/* .
+#     - export ENV='qa'
+#     - export STORE_ID='6'
+#     - export CUSTOMER_ID='4'
+#     - export OBSERVR_RAILS='50B83C6B-F97D-447D-B539-C993D07B249F'
+#     - node orchestrator.js
+#     - ls
+
+
 qaRovrTest:
   stage: testSuite
   rules:
@@ -60,86 +87,81 @@ qaRovrTest:
     when: always
     reports:
       junit:
-        - '*junit.xml'
+        - junit.xml
   script:
     - *configure-environment
     - npm install
-    - cp ./orchestrator/* .
-    - export ENV='qa'
-    - export STORE_ID='6'
-    - export CUSTOMER_ID='4'
-    - export OBSERVR_RAILS='50B83C6B-F97D-447D-B539-C993D07B249F'
-    - node orchestrator.js
-    - ls
-  # after_script:
-  #   - export TEST_NAME='ROVR'
-  #   - *slack-test-results
+    - npm run RovrTests || true
+  after_script:
+    - export TEST_NAME='ROVR'
+    - *slack-test-results
 
-# qaObservrTest:
-#   stage: testSuite
-#   rules:
-#     - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
-#       when: always
-#     - when: never
-#   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
-#   tags:
-#     - deming-rovr-gateway-qa-stress-test
-#   artifacts:
-#     when: always
-#     reports:
-#       junit:
-#         - junit.xml
-#   script:
-#     - *configure-environment
-#     - npm install
-#     - npm run ObservrTests || true
-#   after_script:
-#     - export TEST_NAME='OBSERVR'
-#     - *slack-test-results
 
-# qaRangrTest:
-#   stage: testSuite
-#   rules:
-#     - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
-#       when: always
-#     - when: never
-#   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
-#   tags:
-#     - deming-rovr-gateway-qa-stress-test
-#   artifacts:
-#     when: always
-#     reports:
-#       junit:
-#         - junit.xml
-#   script:
-#     - *configure-environment
-#     - npm install
-#     - npm run RangrTests || true
-#   after_script:
-#     - export TEST_NAME='RANGR'
-#     - *slack-test-results
+qaObservrTest:
+  stage: testSuite
+  rules:
+    - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
+      when: always
+    - when: never
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - deming-rovr-gateway-qa-stress-test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  script:
+    - *configure-environment
+    - npm install
+    - npm run ObservrTests || true
+  after_script:
+    - export TEST_NAME='OBSERVR'
+    - *slack-test-results
 
-# qaPOLARISTest:
-#   stage: testSuite
-#   rules:
-#     - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
-#       when: always
-#     - when: never
-#   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
-#   tags:
-#     - deming-rovr-gateway-qa-stress-test
-#   artifacts:
-#     when: always
-#     reports:
-#       junit:
-#         - junit.xml
-#   script:
-#     - *configure-environment
-#     - npm install
-#     - npm run PolarisTests || true
-#   after_script:
-#     - export TEST_NAME='POLARIS'
-#     - *slack-test-results
+qaRangrTest:
+  stage: testSuite
+  rules:
+    - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
+      when: always
+    - when: never
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - deming-rovr-gateway-qa-stress-test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  script:
+    - *configure-environment
+    - npm install
+    - npm run RangrTests || true
+  after_script:
+    - export TEST_NAME='RANGR'
+    - *slack-test-results
+
+qaPOLARISTest:
+  stage: testSuite
+  rules:
+    - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
+      when: always
+    - when: never
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - deming-rovr-gateway-qa-stress-test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  script:
+    - *configure-environment
+    - npm install
+    - npm run PolarisTests || true
+  after_script:
+    - export TEST_NAME='POLARIS'
+    - *slack-test-results
 
 
 # \/ \/ \/ Build steps for orchestration container \/ \/ \/
