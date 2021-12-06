@@ -11,7 +11,7 @@ const OKTA_CLIENT_SECRET = 'aDtPC4o2NtglSyy6_RAcP4ef4fMYpQ2UPOII7AIf';
 const Env = process.env.ENV
 const StoreId = process.env.STORE_ID;
 const CustomerId = process.env.CUSTOMER_ID;
-const OnlyTestTheseDsns = (process.env.ONLY_TEST_THESE_DSNS || '').split(','); 
+const OnlyTestTheseDsns = process.env.ONLY_TEST_THESE_DSNS ? process.env.ONLY_TEST_THESE_DSNS.split(',') : []; 
 const ObservrRails = `OBSERVR_RAILS_${CustomerId}_${StoreId}` in process.env ?process.env[`OBSERVR_RAILS_${CustomerId}_${StoreId}`].split(',') : [];
 const ProvisioningBaseUrl = `https://${Env}.provisioning.demingrobotics.com/`
 const SISBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`
@@ -370,11 +370,8 @@ async function sendTestReport(webhookUrl, report) {
   for (let key in drones) {
     let drone = drones[key];
 
-      // if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
-      //   continue;
-      // }
-
     if(OnlyTestTheseDsns.length && !OnlyTestTheseDsns.includes(drone.dsn)) {
+      console.log(`Skipping ${drone.dsn} because ONLY_TEST_THESE_DSNS did not include it.`);
       continue;
     }
 
