@@ -100,7 +100,7 @@ function _updateJUnitFileForDrone(droneType, dsn) {
   // fs.renameSync('./junit.xml', droneJUnitFile);
 
   let content = fs.readFileSync('junit.xml', 'utf8', {encoding:'utf8', flag:'r'});
-  let replacedContent = content.replace(/<testcase classname="/g, `<testcase classname="="DSN ${dsn} - `);
+  let replacedContent = content.replace(/<testcase classname="/g, `<testcase classname="DSN ${dsn} - `);
   fs.writeFileSync(droneJUnitFile, replacedContent, {encoding:'utf8', flag:'w+'});
   fs.unlinkSync('junit.xml');
 }
