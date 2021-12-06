@@ -2,6 +2,7 @@ const axios = require('axios').default;
 const jest = require('jest');
 const stdout = require('mute-stdout');
 const qs = require('qs');
+const fs = require('fs');
 
 const OktaBaseUrl = 'https://spacee.okta.com/';
 const OKTA_CLIENT_ID = '0oaalwk8e4uzCmR8D357';
@@ -10,11 +11,13 @@ const OKTA_CLIENT_SECRET = 'aDtPC4o2NtglSyy6_RAcP4ef4fMYpQ2UPOII7AIf';
 const Env = process.env.ENV
 const StoreId = process.env.STORE_ID;
 const CustomerId = process.env.CUSTOMER_ID;
-const observrRailKey = `OBSERVR_RAILS_${CustomerId}_${StoreId}`
-const ObservrRails = (process.env[observrRailKey] || '').split(',');
+const OnlyTestTheseDsns = (process.env.ONLY_TEST_THESE_DSNS || '').split(','); 
+const ObservrRails = `OBSERVR_RAILS_${CustomerId}_${StoreId}` in process.env ?process.env[`OBSERVR_RAILS_${CustomerId}_${StoreId}`].split(',') : [];
 const ProvisioningBaseUrl = `https://${Env}.provisioning.demingrobotics.com/`
 const SISBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`
 const SlackWebHookUrl = process.env.SLACK_WEBHOOK_URL;
+const NotificationType = process.env.NOTIFICATION_TYPE;
+const PipelineId = process.env.CI_PIPELINE_ID || '';
 
 
 // Retreive Okta access token for use with Provisioning service
@@ -88,6 +91,20 @@ function _setEnvironmentVariables(drone) {
 }
 
 
+// Update the JUnit filename and include the DSN to that test results are clear in which drone failed a test
+function _updateJUnitFileForDrone(droneType, dsn) {
+  let droneJUnitFile = `./${droneType}_${dsn}_junit.xml`;
+
+  // rename the junit xml file so that drone test executions can be referenced individually
+  // fs.renameSync('./junit.xml', droneJUnitFile);
+
+  let content = fs.readFileSync('junit.xml', 'utf8', {encoding:'utf8', flag:'r'});
+  let replacedContent = content.replace(/<testcase classname="/g, `<testcase classname="DSN ${dsn} - `);
+  fs.writeFileSync(droneJUnitFile, replacedContent, {encoding:'utf8', flag:'w+'});
+  fs.unlinkSync('junit.xml');
+}
+
+
 // Execute the test suite for a given drone
 // Parse the output (very verbose) the details we care about and return them as a 'report' object
 async function runDroneTest(drone) {
@@ -95,6 +112,7 @@ async function runDroneTest(drone) {
   delete report.id;
   delete report.createdAt;
 
+  // if the drone doesn't have a dnn skip the test
   if(!drone.dnn) {
     report.isTested = false;
     return report;
@@ -129,6 +147,8 @@ async function runDroneTest(drone) {
       });
     }
   });
+
+  _updateJUnitFileForDrone(drone.droneType, drone.dsn);
   
   return report;
 }
@@ -182,9 +202,9 @@ function _evaluateReport(report) {
   if (report.summary.skippedDrones > 0) {
     let alert = {
       severity: 'P3',
-      message: `The following ${report.summary.skippedDrones} drones were skipped due to not having an assigned DNN:\n`
+      message: `The following ${report.summary.skippedDrones} drones were skipped due to not having an assigned DNN:`
     };
-    report.drones.filter(d => !d.dnn).forEach(d => alert.message += `\n - ${d.dsn}`);
+    report.drones.filter(d => !d.dnn).forEach(d => alert.message += `\n   - ${d.dsn}`);
     alerts.push(alert);
   }
 
@@ -197,29 +217,29 @@ function _evaluateReport(report) {
 }
 
 
-// Send slack alert to channel based on environment variable
-async function sendSlackAlert(webhookUrl, report) {
+// Send operational alert to Slack channel
+async function sendOperationalAlert(webhookUrl, report) {
   let alerts = _evaluateReport(report);
   if(!alerts.length) { return; }
 
   let body = {
     blocks: [
       {
-        type: "header",
+        type: 'header',
         text: {
-          type: "plain_text",
+          type: 'plain_text',
           text: `${Env.toUpperCase()} Automation Alert`
         }
       },
       {
-        type: "section",
+        type: 'section',
         fields: [
           {
-            type: "mrkdwn",
+            type: 'mrkdwn',
             text: `*Total Drones:*\n${report.summary.totalDrones}`
           },
           {
-            type: "mrkdwn",
+            type: 'mrkdwn',
             text: `*Passed Tests:*\n${report.summary.totalPassedTests}/${report.summary.totalDroneTests}`
           }
         ]
@@ -229,13 +249,101 @@ async function sendSlackAlert(webhookUrl, report) {
 
   alerts.forEach(alrt => 
     body.blocks.push({
-      type: "section",
+      type: 'section',
       text: {
-        type: "mrkdwn",
+        type: 'mrkdwn',
         text: `*${alrt.severity} Alert*:\n${alrt.message}`
       }
     })
   );
+
+  console.log(JSON.stringify(body));
+  await axios.post(webhookUrl, body);
+}
+
+
+// Send an overall report of test executions to Slack
+async function sendTestReport(webhookUrl, report) {
+  let alerts = _evaluateReport(report);
+  let testSummaryUrl = PipelineId ? `<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${PipelineId}/test_report|${PipelineId}>` : '**Not Available**';
+  let overallStatus = report.summary.totalFailedTests == 0 ? 'Success' : 'Failure';
+
+  let body = {
+    blocks: [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: `${Env.toUpperCase()} Test Automation`
+        }
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Overall Status:*\n ${overallStatus}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Environment:*\n${Env}`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Test Summary:*\n${testSummaryUrl}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Execution Time:*\n${report.summary.durationSeconds} sec`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Total Drones:*\n${report.summary.totalDrones}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Skipped Drones:*\n${report.summary.skippedDrones}`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Total Tests:*\n${report.summary.totalDroneTests}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Errors:*\n${report.summary.totalFailedTests}`
+          }
+        ]
+      }
+    ]
+  };
+
+  if(alerts.length) {
+    alertBlock = {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*Critical Alerts*:'
+      }
+    };
+
+    alerts.forEach(alrt => alertBlock.text.text += `\n${alrt.message}`);
+    body.blocks.push(alertBlock);
+  }
 
   console.log(JSON.stringify(body));
   await axios.post(webhookUrl, body);
@@ -262,7 +370,11 @@ async function sendSlackAlert(webhookUrl, report) {
   for (let key in drones) {
     let drone = drones[key];
 
-    if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
+      // if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
+      //   continue;
+      // }
+
+    if(OnlyTestTheseDsns.length && !OnlyTestTheseDsns.includes(drone.dsn)) {
       continue;
     }
 
@@ -284,14 +396,14 @@ async function sendSlackAlert(webhookUrl, report) {
   let end = Date.now();
   report.summary.durationSeconds = Math.round((end - start) / 100) / 10;
 
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-  console.log('########################################################################################');
-  console.info(report.summary);
-  report.drones.forEach(x => {
-    console.log(x);
-  });
-  console.log('########################################################################################');
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+  // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+  // console.log('########################################################################################');
+  // console.info(report.summary);
+  // report.drones.forEach(x => {
+  //   console.log(x);
+  // });
+  // console.log('########################################################################################');
+  // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
   // console.log(JSON.stringify(report));
 
 
@@ -300,5 +412,9 @@ async function sendSlackAlert(webhookUrl, report) {
     return; 
   }
 
-  await sendSlackAlert(SlackWebHookUrl, report);
+  if(NotificationType == 'ALERT') {
+    await sendOperationalAlert(SlackWebHookUrl, report);
+  } else {
+    await sendTestReport(SlackWebHookUrl, report);
+  }
 })();

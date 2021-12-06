@@ -13,4 +13,5 @@ testSuiteAutomation:
   storeId: ''           # should be pulled from gateway labels
   cronSchedule: ''
   observrRails_1_1: ''  # comma separated string of rail ids for the observers.  The 1_1 indicates customer id and then store id
+  notificationType: ''  # either ALERT for production issues for REPORT for QA testing
   slackWebhookUrl: ''   # webhook url for alert notifications, if nothing is specified no alerts will be sent
