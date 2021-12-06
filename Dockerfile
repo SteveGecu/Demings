@@ -39,7 +39,6 @@ COPY ./package.json .
 COPY ./jest.config.js .
 COPY ./orchestrator/orchestrator.js .
 COPY ./orchestrator/run_orchestrator.sh .
-COPY ./node_modules/ ./node_modules/
 
 RUN npm install .
 RUN ln -s /usr/bin/kafkacat /usr/bin/kcat
