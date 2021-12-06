@@ -43,4 +43,4 @@ COPY ./orchestrator/run_orchestrator.sh .
 RUN npm install .
 RUN ln -s /usr/bin/kafkacat /usr/bin/kcat
 
-SHELL [ "/bin/bash", "./run_orchestrator.sh" ]
+CMD [ "/bin/bash", "./run_orchestrator.sh" ]
