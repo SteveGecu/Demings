@@ -92,6 +92,26 @@ function _setEnvironmentVariables(drone) {
 }
 
 
+// Update the JUnit filename and include the DSN to that test results are clear in which drone failed a test
+function _updateJUnitFileForDrone(droneType, dsn) {
+  let droneJUnitFile = `./${droneType}_${dsn}_junit.xml`;
+
+  // rename the junit xml file so that drone test executions can be referenced individually
+  fs.renameSync('./junit.xml', droneJUnitFile);
+
+  fs.readFile(droneJUnitFile, 'utf8', function (err,data) {
+    if (err) {
+      return console.log(err);
+    }
+    var result = data.replace(/testsuite name="/g, `testsuite name="DSN ${dsn} - `);
+
+    fs.writeFile(droneJUnitFile, result, 'utf8', function (err) {
+      if (err) return console.log(err);
+    });
+  });
+}
+
+
 // Execute the test suite for a given drone
 // Parse the output (very verbose) the details we care about and return them as a 'report' object
 async function runDroneTest(drone) {
@@ -136,8 +156,7 @@ async function runDroneTest(drone) {
     }
   });
 
-  // rename the junit xml file so that drone test executions can be referenced individually
-  fs.renameSync('./junit.xml', `./${drone.droneType}_${drone.dsn}_junit.xml`);
+  _updateJUnitFileForDrone(drone.droneType, drone.dsn);
   
   return report;
 }
