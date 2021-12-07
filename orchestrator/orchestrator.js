@@ -17,7 +17,7 @@ const ObservrRails = `OBSERVR_RAILS_${CustomerId}_${StoreId}` in process.env ?pr
 const ProvisioningBaseUrl = `https://${Env}.provisioning.demingrobotics.com/`
 const SISBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`
 const SlackWebHookUrl = process.env.SLACK_WEBHOOK_URL;
-const NotificationType = process.env.NOTIFICATION_TYPE;
+const NotificationType = (process.env.NOTIFICATION_TYPE || '').toUpperCase();
 const PipelineId = process.env.CI_PIPELINE_ID || '';
 
 
@@ -124,7 +124,10 @@ async function runDroneTest(drone) {
   jestConfig = {
     silent: true,
     json: true,
-    useStderr: false,
+    useStderr: true,
+    verbose: true,
+    testEnvironment: 'node',
+    reporters: ["default", "jest-junit"],
     displayName: `${drone.droneType} - ${drone.dsn}`,
     roots: [`./Deming/Tests/${drone.droneType}/`]
   }
@@ -143,8 +146,14 @@ async function runDroneTest(drone) {
     if(lvl1.numFailingTests > 0) {
       lvl1.testResults.forEach(tr => {
         let suite = tr.ancestorTitles.pop();
+        
+        // ignore tests that failed because a telemetry report didn't exist.  While these are important, they should not generate operational alerts at this level
+        if (tr.failureMessages.length && tr.failureMessages[0].toLowerCase().indexOf('unable to retrieve telemetry report for drone') > -1) { return; }
+
         if(!report.failures[suite]) { report.failures[suite] = []; }
-        report.failures[suite].push(tr.title);
+        report.failures[suite].push({
+          title: tr.title,
+        });
       });
     }
   });
@@ -156,7 +165,7 @@ async function runDroneTest(drone) {
 
 
 // Search drone failures for a partular test case.  If any drones failed the test case, construct the alert message
-function _getAlertByFailedTest(report, severity, testMatch) {
+function _getDronesThatFailedTest(report, severity, testMatch) {
   testMatch = testMatch.toLowerCase();
   let failedDrones = [];
 
@@ -164,14 +173,11 @@ function _getAlertByFailedTest(report, severity, testMatch) {
     // don't bother looking if drone was skipped or if all tests were passed
     if (!drone.isTested || drone.totalFailedTests == 0) { return; }
 
-    console.log(`EVALUATING DRONE ${drone.dsn}`);
     let failedTest = false;
     for(suite in drone.failures) {
       let cnt = drone.failures[suite].filter(tst => { return tst.toLowerCase().indexOf(testMatch) !== -1; }).length;
       if(cnt) { failedTest = true; }
     }
-
-    console.log(`FAILED TEST: ${failedTest}`);
 
     if(failedTest) {
       failedDrones.push(drone.dsn);
@@ -183,7 +189,7 @@ function _getAlertByFailedTest(report, severity, testMatch) {
   if(failedDrones.length > 0) {
     let alert = {
       severity: severity,
-      message: `The following ${failedDrones.length} drones failed the test '${testMatch}':\n`
+      message: `The following ${failedDrones.length} drones failed the test '${testMatch}':`
     };
     failedDrones.forEach(dsn => alert.message += `\n - ${dsn}`);
     return alert;
@@ -209,10 +215,11 @@ function _evaluateReport(report) {
     alerts.push(alert);
   }
 
-  let temperatureAlert = _getAlertByFailedTest(report, 'P3', 'Temperature value should be lower then 85');
-  if(temperatureAlert) {
-    alerts.push(temperatureAlert);
-  }
+  let droneTemperatureAlert = _getDronesThatFailedTest(report, 'P3', 'Temperature value should be lower then 85');
+  if(droneTemperatureAlert) { alerts.push(droneTemperatureAlert); }
+
+  let cameraTemperatureAlert = _getDronesThatFailedTest(report, 'P3', 'Camera temperature should be lower then 60');
+  if(cameraTemperatureAlert) { alerts.push(cameraTemperatureAlert); }
 
   return alerts;
 }
@@ -342,7 +349,7 @@ async function sendTestReport(webhookUrl, report) {
       }
     };
 
-    alerts.forEach(alrt => alertBlock.text.text += `\n${alrt.message}`);
+    alerts.forEach(alrt => alertBlock.text.text += `\n${alrt.message}\n`);
     body.blocks.push(alertBlock);
   }
 
@@ -399,10 +406,13 @@ async function sendTestReport(webhookUrl, report) {
   // console.info(report.summary);
   // report.drones.forEach(x => {
   //   console.log(x);
+  //   for(f in x.failures) {
+  //     console.log(`****${f}****`);
+  //     console.log(x.failures[f]);
+  //   }
   // });
   // console.log('########################################################################################');
   // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-  // console.log(JSON.stringify(report));
 
 
   if(!SlackWebHookUrl) { 
