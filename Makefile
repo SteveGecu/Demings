@@ -16,7 +16,6 @@ run:
 
 run-it:
 	docker run -it \
-		--env ONLY_TEST_THESE_DSNS='001f7b3b4cf0,001f7b1e128d' \
 		--env OBSERVR_RAILS='0739633A-0C07-4188-90B5-356D0EEAB88D' \
 		--env ENV='qa' \
 		--env CUSTOMER_ID='4' \

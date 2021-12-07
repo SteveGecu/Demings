@@ -139,7 +139,7 @@ qaDroneTest:
   script:
     - *configure-environment
     - npm install
-    - cp ./orchestrator/* .
+    - cp ./orchestrator/orchestrator.js .
     - export ENV='qa'
     - export GATEWAY='qa-stressTest'
     - export STORE_ID='6'
