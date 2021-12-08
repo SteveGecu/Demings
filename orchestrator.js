@@ -151,9 +151,7 @@ async function runDroneTest(drone) {
         if (tr.failureMessages.length && tr.failureMessages[0].toLowerCase().indexOf('unable to retrieve telemetry report for drone') > -1) { return; }
 
         if(!report.failures[suite]) { report.failures[suite] = []; }
-        report.failures[suite].push({
-          title: tr.title,
-        });
+        report.failures[suite].push(tr.title);
       });
     }
   });

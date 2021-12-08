@@ -141,12 +141,11 @@ qaDroneTest:
     - npm install
     - cp ./orchestrator/orchestrator.js .
     - export ENV='qa'
-    - export GATEWAY='qa-stressTest'
-    - export STORE_ID='6'
+    - export GATEWAY="${ENVIRONMENT}"
     - export CUSTOMER_ID='4'
-    - export OBSERVR_RAILS='50B83C6B-F97D-447D-B539-C993D07B249F'
+    - export STORE_ID='6'
+    - export NotificationType='REPORT'
     - node orchestrator.js
-    - ls
 
 
 # qaRovrTest:
