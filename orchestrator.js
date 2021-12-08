@@ -14,8 +14,6 @@ const StoreId = process.env.STORE_ID;
 const CustomerId = process.env.CUSTOMER_ID;
 const OnlyTestTheseDsns = process.env.ONLY_TEST_THESE_DSNS ? process.env.ONLY_TEST_THESE_DSNS.split(',') : []; 
 const ObservrRails = `OBSERVR_RAILS_${CustomerId}_${StoreId}` in process.env ?process.env[`OBSERVR_RAILS_${CustomerId}_${StoreId}`].split(',') : [];
-const ProvisioningBaseUrl = `https://${Env}.provisioning.demingrobotics.com/`
-const SISBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`
 const SlackWebHookUrl = process.env.SLACK_WEBHOOK_URL;
 const NotificationType = (process.env.NOTIFICATION_TYPE || '').toUpperCase();
 const PipelineId = process.env.CI_PIPELINE_ID || '';
@@ -41,16 +39,17 @@ async function getOktaToken() {
 
 // Retrieve drones from the Provisioning service based on the StoreId environment variable
 async function getDrones(storeId) {
+  let provisioningBaseUrl = Env === 'prod' ? `https://provisioning.demingrobotics.com/` : `https://${Env}.provisioning.demingrobotics.com/`;
   let oktaToken = await getOktaToken();
   const provisioningRequests = axios.create({
-      baseURL: ProvisioningBaseUrl
+      baseURL: provisioningBaseUrl
   });
 
   provisioningRequests.defaults.headers.common['Authorization'] = `Bearer ${oktaToken}`;
   let response = await provisioningRequests.get(`/drone-provision?storeId=${StoreId}`)
 
   if(response.status != 200) {
-      return Promise.reject(`Unable to retrieve drones for store ${StoreId} from ${provisioningUrl}.  Received ${response.status} instead of expected 200.`)
+      return Promise.reject(`Unable to retrieve drones for store ${StoreId} from ${provisioningBaseUrl}.  Received ${response.status} instead of expected 200.`)
   }
 
   return response.data;
@@ -59,15 +58,16 @@ async function getDrones(storeId) {
 
 // Retrieve active DNN from the Shared Inference Service based on the drone's Rail Id
 async function getDNN(drone) {
+  let sisBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`;
   let response = null;
   try {
-    response = await axios.get(`${SISBaseUrl}api/v1/dnn/provision?railId=${drone.railId}`);
+    response = await axios.get(`${sisBaseUrl}api/v1/dnn/provision?railId=${drone.railId}`);
     return response.data.DnnId;
   } catch (err) {
     if (err.response) {
-      console.error(`Unable to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${SISBaseUrl}.  Received ${err.response.status} instead of expected 200.`)
+      console.error(`Unable to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${sisBaseUrl}.  Received ${err.response.status} instead of expected 200.`)
     } else {
-      console.error(`Error when trying to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${SISBaseUrl}: ${err}`);
+      console.error(`Error when trying to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${sisBaseUrl}: ${err}`);
     }
   }
   return null;
