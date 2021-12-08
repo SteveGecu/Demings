@@ -193,49 +193,49 @@ qaDroneTest:
 #     - export TEST_NAME='OBSERVR'
 #     - *slack-test-results
 
-# qaRangrTest:
-#   stage: testSuite
-#   rules:
-#     - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
-#       when: always
-#     - when: never
-#   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
-#   tags:
-#     - deming-rovr-gateway-qa-stress-test
-#   artifacts:
-#     when: always
-#     reports:
-#       junit:
-#         - junit.xml
-#   script:
-#     - *configure-environment
-#     - npm install
-#     - npm run RangrTests || true
-#   after_script:
-#     - export TEST_NAME='RANGR'
-#     - *slack-test-results
+qaRangrTest:
+  stage: testSuite
+  rules:
+    - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
+      when: always
+    - when: never
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - deming-rovr-gateway-qa-stress-test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  script:
+    - *configure-environment
+    - npm install
+    - npm run RangrTests || true
+  after_script:
+    - export TEST_NAME='RANGR'
+    - *slack-test-results
 
-# qaPOLARISTest:
-#   stage: testSuite
-#   rules:
-#     - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
-#       when: always
-#     - when: never
-#   image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
-#   tags:
-#     - deming-rovr-gateway-qa-stress-test
-#   artifacts:
-#     when: always
-#     reports:
-#       junit:
-#         - junit.xml
-#   script:
-#     - *configure-environment
-#     - npm install
-#     - npm run PolarisTests || true
-#   after_script:
-#     - export TEST_NAME='POLARIS'
-#     - *slack-test-results
+qaPOLARISTest:
+  stage: testSuite
+  rules:
+    - if: $ENVIRONMENT == 'qa-stressTest' && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web")
+      when: always
+    - when: never
+  image: registry.gitlab.com/spacee/spacee-internal-services/spacee-node-ci:latest
+  tags:
+    - deming-rovr-gateway-qa-stress-test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  script:
+    - *configure-environment
+    - npm install
+    - npm run PolarisTests || true
+  after_script:
+    - export TEST_NAME='POLARIS'
+    - *slack-test-results
 
 
 # \/ \/ \/ Build steps for orchestration container \/ \/ \/
