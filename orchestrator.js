@@ -314,7 +314,7 @@ async function sendTestReport(webhookUrl, report) {
         fields: [
           {
             type: 'mrkdwn',
-            text: `*Total Drones:*\n${report.summary.totalDrones}`
+            text: `*Tested Drones:*\n${report.summary.testedDrones}`
           },
           {
             type: 'mrkdwn',
