@@ -46,25 +46,8 @@ async function getRovrRunReportMessage(dsn) {
 
 ////////////////////////////////////////////////////////////////
 
+// updated
 async function getRovrUploadReportMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.minio.media.uploaded.rovr', 10)
-    const sortedMessage = messages.sort((a, b) => {
-        return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
-    })
-    const dsnMessage = sortedMessage.reverse().find(m => m.Key.slice(20, 32) == dsn)
-    return dsnMessage
-}
-
-async function getObservrUploadReportMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.minio.media.uploaded.observr', 10)
-    const sortedMessage = messages.sort((a, b) => {
-        return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
-    })
-    const dsnMessage = sortedMessage.reverse().find(m => m.Key.slice(20, 32) == dsn)
-    return dsnMessage
-}
-
-async function getMediaReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.notification.media.ready.rovr', 10)
     const sortedMessage = messages.sort((a, b) => {
         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
@@ -72,8 +55,8 @@ async function getMediaReadyMessage(dsn) {
     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
-
-async function getObservrMediaReadyMessage(dsn) {
+// updated
+async function getObservrUploadReportMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.notification.media.ready.observr', 10)
     const sortedMessage = messages.sort((a, b) => {
         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
@@ -82,12 +65,32 @@ async function getObservrMediaReadyMessage(dsn) {
     return dsnMessage
 }
 
+// async function getMediaReadyMessage(dsn) {
+//     const messages = await Consumer.getKafkacatMessage('deming.notification.media.ready.rovr', 10)
+//     const sortedMessage = messages.sort((a, b) => {
+//         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
+//     })
+//     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
+//     return dsnMessage
+// }
+
+// async function getObservrMediaReadyMessage(dsn) {
+//     const messages = await Consumer.getKafkacatMessage('deming.notification.media.ready.observr', 10)
+//     const sortedMessage = messages.sort((a, b) => {
+//         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
+//     })
+//     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
+//     return dsnMessage
+// }
+
+// updated
 async function getDetectionReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.object.detection.ready.rovr', 10)
     const sortedMessage = messages.sort((a, b) => {
         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
     })
     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
+
     return dsnMessage
 }
 
@@ -99,7 +102,7 @@ async function getBarcodeDetectionReadyMessage(dsn) {
     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
-
+// updated
 async function getObservrDetectionReadyMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.object.detection.ready.observr', 10)
     const sortedMessage = messages.sort((a, b) => {
@@ -117,7 +120,7 @@ async function getObservrBarcodeDetectionReadyMessage(dsn) {
     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
-
+// updated
 async function getDetectionCompleteMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.object.detection.complete.rovr', 10)
     const sortedMessage = messages.sort((a, b) => {
@@ -135,7 +138,7 @@ async function getBarcodeDetectionCompleteMessage(dsn) {
     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
-
+// updated
 async function getObservrDetectionCompleteMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.object.detection.complete.observr', 10)
     const sortedMessage = messages.sort((a, b) => {
@@ -145,8 +148,18 @@ async function getObservrDetectionCompleteMessage(dsn) {
     return dsnMessage
 }
 
-async function getTrackingCompleteMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.object.detection.tracking.complete', 10)
+// async function getTrackingCompleteMessage(dsn) {
+//     const messages = await Consumer.getKafkacatMessage('deming.object.detection.tracking.complete', 10)
+//     const sortedMessage = messages.sort((a, b) => {
+//         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
+//     })
+//     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
+//     return dsnMessage
+// }
+
+// updated
+async function getGenericDetectionCompleteMessage(dsn) {
+    const messages = await Consumer.getKafkacatMessage('deming.generic.object.detection.complete.rovr', 10)
     const sortedMessage = messages.sort((a, b) => {
         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
     })
@@ -155,15 +168,23 @@ async function getTrackingCompleteMessage(dsn) {
 }
 
 
-async function getReportCreatedMessage(dsn) {
-    const messages = await Consumer.getKafkacatMessage('deming.rovr.rail.product.report.created', 10)
+// async function getReportCreatedMessage(dsn) {
+//     const messages = await Consumer.getKafkacatMessage('deming.rovr.rail.product.report.created', 10)
+//     const sortedMessage = messages.sort((a, b) => {
+//         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
+//     })
+//     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
+//     return dsnMessage
+// }
+
+async function getGenericReportCreatedMessage(dsn) {
+    const messages = await Consumer.getKafkacatMessage('cv.product-report-generated', 10)
     const sortedMessage = messages.sort((a, b) => {
         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
     })
     const dsnMessage = sortedMessage.reverse().find(m => m.data.dsn == dsn)
     return dsnMessage
 }
-
 async function getBarcodeReportCreatedMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('deming.rovr.rail.barcode.report.created', 10)
     const sortedMessage = messages.sort((a, b) => {
@@ -195,8 +216,6 @@ async function getEventStreamMessage(dsn) {
     return dsnMessage
 }
 
-////////
-
 async function getRangersPushCheckInMessage(dsn) {
     const messages = await Consumer.getConfluentKafkacatMessage('pushr.check-in', 10)
     return messages;
@@ -204,8 +223,8 @@ async function getRangersPushCheckInMessage(dsn) {
 
 async function getRangersPushStatusReport(dsn) {
     const messages = await Consumer.getConfluentKafkacatMessage('pushr.status-report', 10)
-    const  pushStatusReportMessage = messages.reverse().find(m => m.statusReportEvent.message.header.deviceSerialNumber == dsn)
-    return pushStatusReportMessage; 
+    const pushStatusReportMessage = messages.reverse().find(m => m.statusReportEvent.message.header.deviceSerialNumber == dsn)
+    return pushStatusReportMessage;
 }
 
 module.exports = {
@@ -214,14 +233,14 @@ module.exports = {
     getRovrRunReportMessage,
     getRovrUploadReportMessage,
     getDetectionReadyMessage,
-    getMediaReadyMessage,
+    //getMediaReadyMessage,
     getDetectionCompleteMessage,
-    getTrackingCompleteMessage,
-    getReportCreatedMessage,
+    //getTrackingCompleteMessage,
+    //getReportCreatedMessage,
     getObservrLogMessage,
     getObservrTelemetryReportMessage,
     getObservrUploadReportMessage,
-    getObservrMediaReadyMessage,
+    //getObservrMediaReadyMessage,
     getObservrDetectionReadyMessage,
     getObservrDetectionCompleteMessage,
     getBarcodeDetectionReadyMessage,
@@ -232,5 +251,7 @@ module.exports = {
     getCompleteBarcodeReport,
     getEventStreamMessage,
     getRangersPushCheckInMessage,
-    getRangersPushStatusReport
+    getRangersPushStatusReport,
+    getGenericDetectionCompleteMessage,
+    getGenericReportCreatedMessage
 }

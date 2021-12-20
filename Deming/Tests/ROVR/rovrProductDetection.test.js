@@ -18,20 +18,30 @@ jest.retryTimes(3)
 
 describe('ROVR Product Detection E2E Tests', () => {
 
-    it('should pass when Notification Center unzipped the file', async () => {
-        const message = await Messenger.getMediaReadyMessage(dsn)
+    it('should pass when ROVR media is uploaded', async () => {
+        const message = await Messenger.getRovrUploadReportMessage(dsn)
+        let a = new Date().valueOf()
+        let b = new Date(message.meta.originEventTimestamp).valueOf()
 
+        expect(a - b).toBeLessThan(60 * 60 * 1000)
         expect(message).toHaveProperty
-        expect(message.meta.type).toEqual('deming.rovr.rail.drone.media.uploaded')
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
+        expect(message.data.video).toHaveProperty
+        expect(message.data.stills).toHaveProperty
+
     })
 
-    it('should pass when correct DNN is assigned to related RailId', async () => {
+    it('should pass when correct DNN is assigned to related Rail Id', async () => {
         const dnnResponse = await fetch(getDnnApi).then(res => res.json())
         const expectedDnnId = process.env.ROVRDNN
+        let newDnn = []
+        const dnn = expectedDnnId.split("").forEach(i => {
+            newDnn.push(i.toUpperCase())
+        })
+        let upperDnn = newDnn.join('')
 
-        expect(dnnResponse.DnnId).toEqual(expectedDnnId)
+        expect(dnnResponse.DnnId).toEqual(upperDnn)
     })
 
     it('should validate dnn id', async () => {
@@ -41,30 +51,44 @@ describe('ROVR Product Detection E2E Tests', () => {
 
     });
 
-    it('should pass when ready for object detection', async () => {
+    it('should pass when media is ready for object detection', async () => {
         const message = await Messenger.getDetectionReadyMessage(dsn)
+        let a = new Date().valueOf()
+        let b = new Date(message.meta.originEventTimestamp).valueOf()
 
+        expect(a - b).toBeLessThan(60 * 60 * 1000)
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('deming.object.detection.ready.rovr')
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
+        expect(message.data.video).toHaveProperty
+        expect(message.data.dnn).toBe(expectedDnnId + '.pt')
     })
 
     it('should pass when object detection is completed', async () => {
-        const detectionCompleteMessage = await Messenger.getDetectionCompleteMessage(dsn)
+        const message = await Messenger.getDetectionCompleteMessage(dsn)
+        let a = new Date().valueOf()
+        let b = new Date(message.meta.originEventTimestamp).valueOf()
 
-        expect(detectionCompleteMessage).toHaveProperty
-        expect(detectionCompleteMessage.data.dsn).toEqual(dsn)
-        expect((detectionCompleteMessage.data.railId)).toEqual(railId)
+        expect(a - b).toBeLessThan(60 * 60 * 1000)
+        expect(message).toHaveProperty
+        expect(message.meta.type).toEqual('deming.object.detection.complete.rovr')
+        expect(message.data.dsn).toEqual(dsn)
+        expect((message.data.railId)).toEqual(railId)
+        expect(message.data.video).toHaveProperty
     })
 
-    it('should pass when object tracking is complete', async () => {
-        const trackingCompleteMessage = await Messenger.getTrackingCompleteMessage(dsn)
+    it('should pass when generic detection is completed', async () => {
+        const message = await Messenger.getGenericDetectionCompleteMessage(dsn)
+        let a = new Date().valueOf()
+        let b = new Date(message.meta.originEventTimestamp).valueOf()
 
-        expect(trackingCompleteMessage).toHaveProperty
-        expect(trackingCompleteMessage.data.dsn).toEqual(dsn)
-        expect((trackingCompleteMessage.data.railId)).toEqual(railId)
-        expect(trackingCompleteMessage.data.distances).toHaveProperty
+        expect(a - b).toBeLessThan(60 * 60 * 1000)
+        expect(message).toHaveProperty
+        expect(message.meta.type).toEqual('deming.generic.object.detection.complete.rovr')
+        expect(message.data.dsn).toEqual(dsn)
+        expect((message.data.railId)).toEqual(railId)
+        expect(message.data.video).toHaveProperty
     })
 
     it('should pass when fetch related facing', async () => {
@@ -74,23 +98,26 @@ describe('ROVR Product Detection E2E Tests', () => {
         expect(expectedProductFacingIdTwo).toEqual('' + facingResponse[1].ProductFacingID)
     })
 
-    it('should pass when product report is generated', async () => {
-        const message = await Messenger.getReportCreatedMessage(dsn)
-
+    it('should pass when generic report is generated', async () => {
+        const message = await Messenger.getGenericReportCreatedMessage(dsn)
         let a = new Date().valueOf()
         let b = new Date(message.meta.originEventTimestamp).valueOf()
 
         expect(a - b).toBeLessThan(60 * 60 * 1000)
         expect(message).toHaveProperty
-        expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
+        expect(message.meta.type).toEqual('cv.product-report-generated')
         expect(message.data.dsn).toEqual(dsn)
-        expect((message.data.railId)).toEqual(railId)
-
+        expect(message.data.rail_id).toEqual(railId)
     })
+    // it('should pass when product report is generated', async () => {
+    //     const message = await Messenger.getReportCreatedMessage(dsn)
+    //     let a = new Date().valueOf()
+    //     let b = new Date(message.meta.originEventTimestamp).valueOf()
 
-    //TODO
-    // it('should validate product report went thru SIS', async () => {
-    //     const message = await Messenger.getCompleteProductReport(railId)
-    //     console.log(JSON.stringify(message));
-    // });
+    //     expect(a - b).toBeLessThan(60 * 60 * 1000)
+    //     expect(message).toHaveProperty
+    //     expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
+    //     expect(message.data.dsn).toEqual(dsn)
+    //     expect(message.data.railId).toEqual(railId)
+    // })
 })
