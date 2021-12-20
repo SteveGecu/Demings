@@ -34,14 +34,15 @@ ENV BOOTSTRAPSERVERS=strimzi-kafka-bootstrap:9092
 
 WORKDIR /usr/src/app
 
-COPY ./node_modules/ ./node_modules/
+COPY ./package*.json ./
+
+RUN npm install .
+
 COPY ./Deming/ ./Deming/
-COPY ./package*.json .
 COPY ./jest.config.js .
 COPY ./orchestrator.js .
 COPY ./orchestrator_run.sh .
 
-# RUN npm install .
 RUN ln -s /usr/bin/kafkacat /usr/bin/kcat
 
 CMD [ "/bin/bash", "./orchestrator_run.sh" ]
