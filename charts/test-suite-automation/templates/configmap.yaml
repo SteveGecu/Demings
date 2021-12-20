@@ -4,7 +4,10 @@ metadata:
   name: {{ .Values.name }}-configmap
 data:
   ENV: {{ .Values.env.name | quote }}
+  GATEWAY: {{ .Values.testSuiteAutomation.gateway | quote }}
   CUSTOMER_ID: {{ .Values.testSuiteAutomation.customerId | quote }}
   STORE_ID: {{ .Values.testSuiteAutomation.storeId | quote }}
   OBSERVR_RAILS_1_1:  {{ .Values.testSuiteAutomation.observrRails_1_1 | quote }}
+  OBSERVR_RAILS_4_6:  {{ .Values.testSuiteAutomation.observrRails_4_6 | quote }}
   SLACK_WEBHOOK_URL:   {{ .Values.testSuiteAutomation.slackWebhookUrl | quote }}
+  NOTIFICATION_TYPE:   {{ .Values.testSuiteAutomation.notificationType | quote }}

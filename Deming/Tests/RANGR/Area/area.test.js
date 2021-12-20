@@ -7,6 +7,18 @@ let areaId
 jest.setTimeout(60000)
 jest.retryTimes(3)
 
+
+async function voidli() {
+    var sonuc = 2 + 2
+    console.log(sonuc);
+}
+
+async function returnlu() {
+    var sonuc = 2 + 2
+    return sonuc
+}
+
+
 describe('RANGR Area Tests', () => {
     it('should create area', async () => {
         const response = await AreaApi.createArea(areaName)
@@ -43,5 +55,14 @@ describe('RANGR Area Tests', () => {
 
         expect(response.status).toBe(200)
         expect(response.body.affected).toEqual(1)
+    });
+
+    it.only('should ', () => {
+
+        voidli()
+
+        //var yeniSonuc = returnlu()
+
+
     });
 })

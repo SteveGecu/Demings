@@ -2,19 +2,21 @@ const axios = require('axios').default;
 const jest = require('jest');
 const stdout = require('mute-stdout');
 const qs = require('qs');
+const fs = require('fs');
 
 const OktaBaseUrl = 'https://spacee.okta.com/';
 const OKTA_CLIENT_ID = '0oaalwk8e4uzCmR8D357';
 const OKTA_CLIENT_SECRET = 'aDtPC4o2NtglSyy6_RAcP4ef4fMYpQ2UPOII7AIf';
 
-const Env = process.env.ENV
+const Env = process.env.ENV;
+const Gateway = process.env.GATEWAY;
 const StoreId = process.env.STORE_ID;
 const CustomerId = process.env.CUSTOMER_ID;
-const observrRailKey = `OBSERVR_RAILS_${CustomerId}_${StoreId}`
-const ObservrRails = (process.env[observrRailKey] || '').split(',');
-const ProvisioningBaseUrl = `https://${Env}.provisioning.demingrobotics.com/`
-const SISBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`
+const OnlyTestTheseDsns = process.env.ONLY_TEST_THESE_DSNS ? process.env.ONLY_TEST_THESE_DSNS.split(',') : []; 
+const ObservrRails = `OBSERVR_RAILS_${CustomerId}_${StoreId}` in process.env ?process.env[`OBSERVR_RAILS_${CustomerId}_${StoreId}`].split(',') : [];
 const SlackWebHookUrl = process.env.SLACK_WEBHOOK_URL;
+const NotificationType = (process.env.NOTIFICATION_TYPE || '').toUpperCase();
+const PipelineId = process.env.CI_PIPELINE_ID || '';
 
 
 // Retreive Okta access token for use with Provisioning service
@@ -37,16 +39,17 @@ async function getOktaToken() {
 
 // Retrieve drones from the Provisioning service based on the StoreId environment variable
 async function getDrones(storeId) {
+  let provisioningBaseUrl = Env === 'prod' ? `https://provisioning.demingrobotics.com/` : `https://${Env}.provisioning.demingrobotics.com/`;
   let oktaToken = await getOktaToken();
   const provisioningRequests = axios.create({
-      baseURL: ProvisioningBaseUrl
+      baseURL: provisioningBaseUrl
   });
 
   provisioningRequests.defaults.headers.common['Authorization'] = `Bearer ${oktaToken}`;
   let response = await provisioningRequests.get(`/drone-provision?storeId=${StoreId}`)
 
   if(response.status != 200) {
-      return Promise.reject(`Unable to retrieve drones for store ${StoreId} from ${provisioningUrl}.  Received ${response.status} instead of expected 200.`)
+      return Promise.reject(`Unable to retrieve drones for store ${StoreId} from ${provisioningBaseUrl}.  Received ${response.status} instead of expected 200.`)
   }
 
   return response.data;
@@ -55,15 +58,16 @@ async function getDrones(storeId) {
 
 // Retrieve active DNN from the Shared Inference Service based on the drone's Rail Id
 async function getDNN(drone) {
+  let sisBaseUrl = `https://shared.${Env}.eastus2.deming.spacee.io/`;
   let response = null;
   try {
-    response = await axios.get(`${SISBaseUrl}api/v1/dnn/provision?railId=${drone.railId}`);
+    response = await axios.get(`${sisBaseUrl}api/v1/dnn/provision?railId=${drone.railId}`);
     return response.data.DnnId;
   } catch (err) {
     if (err.response) {
-      console.error(`Unable to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${SISBaseUrl}.  Received ${err.response.status} instead of expected 200.`)
+      console.error(`Unable to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${sisBaseUrl}.  Received ${err.response.status} instead of expected 200.`)
     } else {
-      console.error(`Error when trying to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${SISBaseUrl}: ${err}`);
+      console.error(`Error when trying to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${sisBaseUrl}: ${err}`);
     }
   }
   return null;
@@ -88,6 +92,20 @@ function _setEnvironmentVariables(drone) {
 }
 
 
+// Update the JUnit filename and include the DSN to that test results are clear in which drone failed a test
+function _updateJUnitFileForDrone(droneType, dsn) {
+  let droneJUnitFile = `./${droneType}_${dsn}_junit.xml`;
+
+  // rename the junit xml file so that drone test executions can be referenced individually
+  // fs.renameSync('./junit.xml', droneJUnitFile);
+
+  let content = fs.readFileSync('junit.xml', 'utf8', {encoding:'utf8', flag:'r'});
+  let replacedContent = content.replace(/<testcase classname="/g, `<testcase classname="DSN ${dsn} - `);
+  fs.writeFileSync(droneJUnitFile, replacedContent, {encoding:'utf8', flag:'w+'});
+  fs.unlinkSync('junit.xml');
+}
+
+
 // Execute the test suite for a given drone
 // Parse the output (very verbose) the details we care about and return them as a 'report' object
 async function runDroneTest(drone) {
@@ -95,6 +113,7 @@ async function runDroneTest(drone) {
   delete report.id;
   delete report.createdAt;
 
+  // if the drone doesn't have a dnn skip the test
   if(!drone.dnn) {
     report.isTested = false;
     return report;
@@ -105,7 +124,10 @@ async function runDroneTest(drone) {
   jestConfig = {
     silent: true,
     json: true,
-    useStderr: false,
+    useStderr: true,
+    verbose: true,
+    testEnvironment: 'node',
+    reporters: ["default", "jest-junit"],
     displayName: `${drone.droneType} - ${drone.dsn}`,
     roots: [`./Deming/Tests/${drone.droneType}/`]
   }
@@ -124,18 +146,24 @@ async function runDroneTest(drone) {
     if(lvl1.numFailingTests > 0) {
       lvl1.testResults.forEach(tr => {
         let suite = tr.ancestorTitles.pop();
+        
+        // ignore tests that failed because a telemetry report didn't exist.  While these are important, they should not generate operational alerts at this level
+        if (tr.failureMessages.length && tr.failureMessages[0].toLowerCase().indexOf('unable to retrieve telemetry report for drone') > -1) { return; }
+
         if(!report.failures[suite]) { report.failures[suite] = []; }
         report.failures[suite].push(tr.title);
       });
     }
   });
+
+  _updateJUnitFileForDrone(drone.droneType, drone.dsn);
   
   return report;
 }
 
 
 // Search drone failures for a partular test case.  If any drones failed the test case, construct the alert message
-function _getAlertByFailedTest(report, severity, testMatch) {
+function _getDronesThatFailedTest(report, severity, testMatch) {
   testMatch = testMatch.toLowerCase();
   let failedDrones = [];
 
@@ -143,14 +171,11 @@ function _getAlertByFailedTest(report, severity, testMatch) {
     // don't bother looking if drone was skipped or if all tests were passed
     if (!drone.isTested || drone.totalFailedTests == 0) { return; }
 
-    console.log(`EVALUATING DRONE ${drone.dsn}`);
     let failedTest = false;
     for(suite in drone.failures) {
       let cnt = drone.failures[suite].filter(tst => { return tst.toLowerCase().indexOf(testMatch) !== -1; }).length;
       if(cnt) { failedTest = true; }
     }
-
-    console.log(`FAILED TEST: ${failedTest}`);
 
     if(failedTest) {
       failedDrones.push(drone.dsn);
@@ -162,7 +187,7 @@ function _getAlertByFailedTest(report, severity, testMatch) {
   if(failedDrones.length > 0) {
     let alert = {
       severity: severity,
-      message: `The following ${failedDrones.length} drones failed the test '${testMatch}':\n`
+      message: `The following ${failedDrones.length} drones failed the test '${testMatch}':`
     };
     failedDrones.forEach(dsn => alert.message += `\n - ${dsn}`);
     return alert;
@@ -182,44 +207,45 @@ function _evaluateReport(report) {
   if (report.summary.skippedDrones > 0) {
     let alert = {
       severity: 'P3',
-      message: `The following ${report.summary.skippedDrones} drones were skipped due to not having an assigned DNN:\n`
+      message: `The following ${report.summary.skippedDrones} drones were skipped due to not having an assigned DNN:`
     };
-    report.drones.filter(d => !d.dnn).forEach(d => alert.message += `\n - ${d.dsn}`);
+    report.drones.filter(d => !d.dnn).forEach(d => alert.message += `\n   - ${d.dsn}`);
     alerts.push(alert);
   }
 
-  let temperatureAlert = _getAlertByFailedTest(report, 'P3', 'Temperature value should be lower then 85');
-  if(temperatureAlert) {
-    alerts.push(temperatureAlert);
-  }
+  let droneTemperatureAlert = _getDronesThatFailedTest(report, 'P3', 'Temperature value should be lower then 85');
+  if(droneTemperatureAlert) { alerts.push(droneTemperatureAlert); }
+
+  let cameraTemperatureAlert = _getDronesThatFailedTest(report, 'P3', 'Camera temperature should be lower then 60');
+  if(cameraTemperatureAlert) { alerts.push(cameraTemperatureAlert); }
 
   return alerts;
 }
 
 
-// Send slack alert to channel based on environment variable
-async function sendSlackAlert(webhookUrl, report) {
+// Send operational alert to Slack channel
+async function sendOperationalAlert(webhookUrl, report) {
   let alerts = _evaluateReport(report);
   if(!alerts.length) { return; }
 
   let body = {
     blocks: [
       {
-        type: "header",
+        type: 'header',
         text: {
-          type: "plain_text",
-          text: `${Env.toUpperCase()} Automation Alert`
+          type: 'plain_text',
+          text: `${Gateway} Automation Alert`
         }
       },
       {
-        type: "section",
+        type: 'section',
         fields: [
           {
-            type: "mrkdwn",
+            type: 'mrkdwn',
             text: `*Total Drones:*\n${report.summary.totalDrones}`
           },
           {
-            type: "mrkdwn",
+            type: 'mrkdwn',
             text: `*Passed Tests:*\n${report.summary.totalPassedTests}/${report.summary.totalDroneTests}`
           }
         ]
@@ -229,13 +255,101 @@ async function sendSlackAlert(webhookUrl, report) {
 
   alerts.forEach(alrt => 
     body.blocks.push({
-      type: "section",
+      type: 'section',
       text: {
-        type: "mrkdwn",
+        type: 'mrkdwn',
         text: `*${alrt.severity} Alert*:\n${alrt.message}`
       }
     })
   );
+
+  console.log(JSON.stringify(body));
+  await axios.post(webhookUrl, body);
+}
+
+
+// Send an overall report of test executions to Slack
+async function sendTestReport(webhookUrl, report) {
+  let alerts = _evaluateReport(report);
+  let testSummaryUrl = PipelineId ? `<https://gitlab.com/spacee/deming/rovr-proj/gateway/test-suite-automation/-/pipelines/${PipelineId}/test_report|${PipelineId}>` : '**Not Available**';
+  let overallStatus = report.summary.totalFailedTests == 0 ? 'Success' : 'Failure';
+
+  let body = {
+    blocks: [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: `${Gateway} Test Automation`
+        }
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Overall Status:*\n ${overallStatus}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Environment:*\n${Env}`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Test Summary:*\n${testSummaryUrl}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Execution Time:*\n${report.summary.durationSeconds} sec`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Tested Drones:*\n${report.summary.testedDrones}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Skipped Drones:*\n${report.summary.skippedDrones}`
+          }
+        ]
+      },
+      {
+        type: 'section',
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Total Tests:*\n${report.summary.totalDroneTests}`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Errors:*\n${report.summary.totalFailedTests}`
+          }
+        ]
+      }
+    ]
+  };
+
+  if(alerts.length) {
+    alertBlock = {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*Critical Alerts*:'
+      }
+    };
+
+    alerts.forEach(alrt => alertBlock.text.text += `\n${alrt.message}\n`);
+    body.blocks.push(alertBlock);
+  }
 
   console.log(JSON.stringify(body));
   await axios.post(webhookUrl, body);
@@ -262,7 +376,8 @@ async function sendSlackAlert(webhookUrl, report) {
   for (let key in drones) {
     let drone = drones[key];
 
-    if(!['72BB78CB-9CF5-475F-B568-FA0AFD3F6C5C','0739633A-0C07-4188-90B5-356D0EEAB88D'].includes(drone.railId)) {
+    if(OnlyTestTheseDsns.length && !OnlyTestTheseDsns.includes(drone.dsn)) {
+      console.log(`Skipping ${drone.dsn} because ONLY_TEST_THESE_DSNS did not include it.`);
       continue;
     }
 
@@ -284,15 +399,18 @@ async function sendSlackAlert(webhookUrl, report) {
   let end = Date.now();
   report.summary.durationSeconds = Math.round((end - start) / 100) / 10;
 
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-  console.log('########################################################################################');
-  console.info(report.summary);
-  report.drones.forEach(x => {
-    console.log(x);
-  });
-  console.log('########################################################################################');
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-  // console.log(JSON.stringify(report));
+  // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+  // console.log('########################################################################################');
+  // console.info(report.summary);
+  // report.drones.forEach(x => {
+  //   console.log(x);
+  //   for(f in x.failures) {
+  //     console.log(`****${f}****`);
+  //     console.log(x.failures[f]);
+  //   }
+  // });
+  // console.log('########################################################################################');
+  // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 
 
   if(!SlackWebHookUrl) { 
@@ -300,5 +418,9 @@ async function sendSlackAlert(webhookUrl, report) {
     return; 
   }
 
-  await sendSlackAlert(SlackWebHookUrl, report);
+  if(NotificationType == 'ALERT') {
+    await sendOperationalAlert(SlackWebHookUrl, report);
+  } else {
+    await sendTestReport(SlackWebHookUrl, report);
+  }
 })();

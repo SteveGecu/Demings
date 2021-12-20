@@ -9,7 +9,7 @@
     "RovrTests": "jest ./Deming/Tests/ROVR",
     "ObservrTests": "jest ./Deming/Tests/OBSERVR",
     "RangrTests": "jest ./Deming/Tests/RANGR",
-    "PolarisTests" : "jest ./Deming/Tests/POLARIS/PLANOGRAM"
+    "PolarisTests": "jest ./Deming/Tests/POLARIS/PLANOGRAM"
   },
   "author": "",
   "license": "ISC",

@@ -1,5 +1,6 @@
 node_modules
-junit.xml
+*junit.xml
 .DS_Store
 rovr_output.json
 Archive
+.DS_Store
