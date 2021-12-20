@@ -2,4 +2,8 @@ node_modules
 *junit.xml
 .DS_Store
 rovr_output.json
+<<<<<<< HEAD
 .DS_Store
+=======
+Archive
+>>>>>>> 791ae95 (some updates)
