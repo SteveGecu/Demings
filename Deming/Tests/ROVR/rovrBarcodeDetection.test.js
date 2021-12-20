@@ -16,15 +16,6 @@ jest.retryTimes(3)
 
 describe('ROVR Barcode Detection E2E Tests', () => {
 
-    it('should pass when Notification Center unzipped the file', async () => {
-        const message = await Messenger.getMediaReadyMessage(dsn)
-
-        expect(message).toHaveProperty
-        expect(message.meta.type).toEqual('deming.rovr.rail.drone.media.uploaded')
-        expect(message.data.dsn).toEqual(dsn)
-        expect((message.data.railId)).toEqual(railId)
-    })
-
     it('should pass when ready for barcode detection', async () => {
         const message = await Messenger.getBarcodeDetectionReadyMessage(dsn)
 
@@ -55,9 +46,4 @@ describe('ROVR Barcode Detection E2E Tests', () => {
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
     })
-    //TODO
-    // it('should validate product report went thru SIS', async () => {
-    //     const message = await Messenger.getCompleteBarcodeReport('0739633A-0C07-4188-90B5-356D0EEAB88D')
-    //     console.log(JSON.stringify(message));
-    // });
 })
