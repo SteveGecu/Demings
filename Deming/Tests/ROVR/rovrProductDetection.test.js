@@ -4,8 +4,6 @@ const fetch = require("node-fetch")
 const dsn = process.env.ROVRDSN
 const railId = process.env.ROVRRAIL_ID
 const dnnId = '5'
-const customerId = process.env.ROVRCUSTOMERID
-const storeId = process.env.RORVRSTOREID
 const getDnnApi = process.env.ROVRDNNAPI + railId
 const getDnnIdApi = process.env.ROVRDNNIDAPI + dnnId
 const getFacingsApi = process.env.ROVRFACINGAPI + railId + '/product-facings'
@@ -29,14 +27,12 @@ describe('ROVR Product Detection E2E Tests', () => {
         expect((message.data.railId)).toEqual(railId)
         expect(message.data.video).toHaveProperty
         expect(message.data.stills).toHaveProperty
-
     })
 
     it('should pass when correct DNN is assigned to related Rail Id', async () => {
         const dnnResponse = await fetch(getDnnApi).then(res => res.json())
-        const expectedDnnId = process.env.ROVRDNN
         let newDnn = []
-        const dnn = expectedDnnId.split("").forEach(i => {
+        expectedDnnId.split("").forEach(i => {
             newDnn.push(i.toUpperCase())
         })
         let upperDnn = newDnn.join('')
@@ -48,7 +44,6 @@ describe('ROVR Product Detection E2E Tests', () => {
         const dnnResponse = await fetch(getDnnIdApi).then(res => res.json())
 
         expect(dnnResponse.DnnTraining.Metadata.prod_map_id).toBe(dnnId)
-
     });
 
     it('should pass when media is ready for object detection', async () => {
@@ -109,15 +104,4 @@ describe('ROVR Product Detection E2E Tests', () => {
         expect(message.data.dsn).toEqual(dsn)
         expect(message.data.rail_id).toEqual(railId)
     })
-    // it('should pass when product report is generated', async () => {
-    //     const message = await Messenger.getReportCreatedMessage(dsn)
-    //     let a = new Date().valueOf()
-    //     let b = new Date(message.meta.originEventTimestamp).valueOf()
-
-    //     expect(a - b).toBeLessThan(60 * 60 * 1000)
-    //     expect(message).toHaveProperty
-    //     expect(message.meta.type).toEqual('deming.rovr.rail.product.report.created')
-    //     expect(message.data.dsn).toEqual(dsn)
-    //     expect(message.data.railId).toEqual(railId)
-    // })
 })
