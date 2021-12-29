@@ -36,7 +36,7 @@ describe('ROVR Product Detection E2E Tests', () => {
             newDnn.push(i.toUpperCase())
         })
         let upperDnn = newDnn.join('')
-
+        console.log(JSON.stringify(dnnResponse))
         expect(dnnResponse.DnnId).toEqual(upperDnn)
     })
 
@@ -88,16 +88,18 @@ describe('ROVR Product Detection E2E Tests', () => {
 
     it('should pass when fetch related facing', async () => {
         const facingResponse = await fetch(getFacingsApi).then(res => res.json())
+        console.log(facingResponse);
 
         expect(expectedProductFacingIdOne).toEqual('' + facingResponse[0].ProductFacingID)
         expect(expectedProductFacingIdTwo).toEqual('' + facingResponse[1].ProductFacingID)
     })
 
-    it('should pass when generic report is generated', async () => {
-        const message = await Messenger.getGenericReportCreatedMessage(dsn)
+    // TODO: accuracy test with output
+    it('should pass when product report is generated', async () => {
+        const message = await Messenger.getProductReportCreatedMessage(dsn)
         let a = new Date().valueOf()
         let b = new Date(message.meta.originEventTimestamp).valueOf()
-
+        console.log(JSON.stringify(message));
         expect(a - b).toBeLessThan(60 * 60 * 1000)
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('cv.product-report-generated')

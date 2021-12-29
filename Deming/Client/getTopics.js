@@ -177,7 +177,7 @@ async function getGenericDetectionCompleteMessage(dsn) {
 //     return dsnMessage
 // }
 
-async function getGenericReportCreatedMessage(dsn) {
+async function getProductReportCreatedMessage(dsn) {
     const messages = await Consumer.getKafkacatMessage('cv.product-report-generated', 10)
     const sortedMessage = messages.sort((a, b) => {
         return new Date(a.meta.originEventTimestamp).valueOf() - new Date(b.meta.originEventTimestamp).valueOf()
@@ -253,5 +253,5 @@ module.exports = {
     getRangersPushCheckInMessage,
     getRangersPushStatusReport,
     getGenericDetectionCompleteMessage,
-    getGenericReportCreatedMessage
+    getProductReportCreatedMessage
 }
