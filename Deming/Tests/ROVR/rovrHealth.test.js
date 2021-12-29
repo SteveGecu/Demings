@@ -21,9 +21,16 @@ describe('ROVR Health Tests', () => {
         expect(data.parsedJson.data.dsn).toEqual(dsn)
     })
 
+    it('should not throw battery error', async () => {
+        const logMessage = await Apis.getRovrLogs(dsn)
+        const data = logMessage.body.hits.hits[0]._source
+
+        expect(data.message).not.toBe('Error writing to address 54 register 15 with value 110528: Error: Invalid word 110528')
+    });
+
     it('Given ROVR should produce Run Report after run', async () => {
         const logMessage = await Apis.getRovrRunReport(dsn)
-        if(logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
 
         const data = logMessage.body.hits.hits[0]._source
         const message = logMessage.body.hits.hits[0]._source.message
@@ -39,7 +46,7 @@ describe('ROVR Health Tests', () => {
 
     it('Given ROVR should produce Telemetry report', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
-        if(logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
 
         const data = logMessage.body.hits.hits[0]._source
         const message = logMessage.body.hits.hits[0]._source.message
@@ -54,7 +61,7 @@ describe('ROVR Health Tests', () => {
 
     it('Battery voltage value should be greater than 3', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
-        if(logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
 
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
@@ -64,7 +71,7 @@ describe('ROVR Health Tests', () => {
 
     it('Temperature value should be lower then 85', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
-        if(logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
 
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
@@ -74,7 +81,7 @@ describe('ROVR Health Tests', () => {
 
     it('Given ROVR disc usage should not be over 50 ', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
-        if(logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
 
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
@@ -84,7 +91,7 @@ describe('ROVR Health Tests', () => {
 
     it('Wifi Signal Level should not be lower the -80', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
-        if(logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
 
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
@@ -94,7 +101,7 @@ describe('ROVR Health Tests', () => {
 
     it('Battery reported capacity should not be lower then 500', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
-        if(logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
 
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
@@ -104,8 +111,8 @@ describe('ROVR Health Tests', () => {
 
     it('Camera temperature should be lower then 60', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
-        if(logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
-        
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
 

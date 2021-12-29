@@ -29,7 +29,7 @@ async function getRovrLogs(dsn) {
                             {
                                 "range": {
                                     "@timestamp": {
-                                        "gte": "now-5m"
+                                        "gte": "now-10m"
                                     }
                                 }
                             },
