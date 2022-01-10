@@ -118,4 +118,14 @@ describe('ROVR Health Tests', () => {
 
         expect(parseInt(telemetryMessage.data.cameraTemperature)).not.toBeGreaterThan(60)
     });
+
+    //
+    it('passedStartupDiagnostics data should be true', async () => {
+        const logMessage = await Apis.getRovrTelemetryReport(dsn)
+        if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
+        const message = logMessage.body.hits.hits[0]._source.message
+        const telemetryMessage = JSON.parse(message)
+        expect(parseInt(telemetryMessage.data.passedStartupDiagnostics)).toBeTruthy();
+    });
+
 })
