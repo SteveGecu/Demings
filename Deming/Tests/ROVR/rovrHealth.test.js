@@ -120,17 +120,16 @@ describe('ROVR Health Tests', () => {
         expect(parseInt(telemetryMessage.data.cameraTemperature)).not.toBeGreaterThan(60)
     });
 
-<<<<<<< HEAD
     //
     it('passedStartupDiagnostics data should be true', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
         if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
+        
         expect(parseInt(telemetryMessage.data.passedStartupDiagnostics)).toBeTruthy();
     });
 
-=======
     it('Mac address should match DSN', async () => {
         const macAdress = await Terminal.getMacAddress()
         console.log(macAdress);
@@ -147,5 +146,4 @@ describe('ROVR Health Tests', () => {
         expect(parseInt(endcapEnvFile)).toEqual(1)
         expect(parseInt(mobileEnvFile)).toEqual(1)
     });
->>>>>>> decf5eb691540e01ddc901e1122c4f46a50ec835
 })
