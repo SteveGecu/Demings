@@ -60,7 +60,7 @@ async function loginAuthentication (page) {
 };
 
 async function invalidCreds (page) {
-  await page.goto('https://polaris-ui.azurewebsites.net/login');
+  await landingPage(page);
 
   await page.click('[aria-label=""]');
   await page.fill('[aria-label=""]', 'randomemail');
