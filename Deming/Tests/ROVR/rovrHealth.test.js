@@ -2,6 +2,7 @@ require('jest')
 require('dotenv').config()
 const Messenger = require('../../Client/getTopics')
 const Apis = require('../../Client/getElastic')
+const Terminal = require('../../Client/GatewayConsumer')
 const { forEach } = require('jszip')
 const dsn = process.env.ROVRDSN
 const railId = process.env.ROVRRAIL_ID
@@ -119,6 +120,7 @@ describe('ROVR Health Tests', () => {
         expect(parseInt(telemetryMessage.data.cameraTemperature)).not.toBeGreaterThan(60)
     });
 
+<<<<<<< HEAD
     //
     it('passedStartupDiagnostics data should be true', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn)
@@ -128,4 +130,22 @@ describe('ROVR Health Tests', () => {
         expect(parseInt(telemetryMessage.data.passedStartupDiagnostics)).toBeTruthy();
     });
 
+=======
+    it('Mac address should match DSN', async () => {
+        const macAdress = await Terminal.getMacAddress()
+        console.log(macAdress);
+
+        expect(macAdress).toBe(dsn)
+    });
+
+    it('data folder test', async () => {
+        const configEnvFile = await Terminal.getConfigFile()
+        const endcapEnvFile = await Terminal.getEndcapFile()
+        const mobileEnvFile = await Terminal.getMobileFile()
+
+        expect(parseInt(configEnvFile)).toEqual(1)
+        expect(parseInt(endcapEnvFile)).toEqual(1)
+        expect(parseInt(mobileEnvFile)).toEqual(1)
+    });
+>>>>>>> decf5eb691540e01ddc901e1122c4f46a50ec835
 })
