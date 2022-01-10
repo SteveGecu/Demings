@@ -4,7 +4,7 @@
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 const config = {
     use: {
-      baseURL: 'https://polaris-ui.azurewebsites.net',
+      baseURL: 'https://polaris-ui.deming.qa.eastus2.spacee.io/login',
       //screenshot: 'only-on-failure',
       //trace: 'retain-on-failure',
     },

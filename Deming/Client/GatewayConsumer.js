@@ -129,13 +129,39 @@ async function getConfluentKafkacatMessage(topic, n = 1) {
     return messages;
 }
 
+async function getMacAddress() {
+    const output = await exec('sshpass -p drwho ssh root@172.20.21.109 "/usr/sbin/wpa_cli status"')
+    const mac = output.stdout.split('\n').find((line) => line.match(/^address=/))
+ 
+    return mac.replace(/:/g, '').substring(8)
+}
 
+async function getConfigFile() {
+    const output = await exec('sshpass -p drwho ssh root@172.20.21.109 "ls /data/config | grep config.env | wc -l"')
+    const mac = output.stdout
+    return mac
+}
 
+async function getMobileFile() {
+    const output = await exec('sshpass -p drwho ssh root@172.20.21.109 "ls /data/config | grep mobile.env | wc -l"')
+    const mac = output.stdout
+    return mac
+}
+
+async function getEndcapFile() {
+    const output = await exec('sshpass -p drwho ssh root@172.20.21.109 "ls /data/config | grep endcap.env | wc -l"')
+    const mac = output.stdout
+    return mac
+}
 module.exports = {
     fetchMessageForDsn,
     fetchMessageForGivenDsn,
     disconnection,
     fetchOneMessage,
     getKafkacatMessage,
-    getConfluentKafkacatMessage
+    getConfluentKafkacatMessage,
+    getMacAddress,
+    getConfigFile,
+    getMobileFile,
+    getEndcapFile
 }
