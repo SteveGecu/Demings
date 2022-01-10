@@ -5,7 +5,7 @@ module.exports = async () => {
     const browser = await chromium.launch();
     const page = await browser.newPage();
     
-    await page.goto('https://polaris-ui.azurewebsites.net/login');
+    await page.goto('https://polaris-ui.deming.qa.eastus2.spacee.io/login');
 
     await page.click('input[name="username"]');
     await page.fill('input[name="username"]', 'felix@spacee.com');
