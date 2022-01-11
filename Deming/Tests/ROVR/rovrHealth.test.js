@@ -2,6 +2,7 @@ require('jest')
 require('dotenv').config()
 const Messenger = require('../../Client/getTopics')
 const Apis = require('../../Client/getElastic')
+const Terminal = require('../../Client/GatewayConsumer')
 const { forEach } = require('jszip')
 const dsn = process.env.ROVRDSN
 const railId = process.env.ROVRRAIL_ID
