@@ -8,10 +8,10 @@ module.exports = async () => {
     await page.goto('https://polaris-ui.deming.qa.eastus2.spacee.io/login');
 
     await page.click('input[name="username"]');
-    await page.fill('input[name="username"]', 'felix@spacee.com');
+    await page.fill('input[name="username"]', 'deming-qa@spacee.com');
 
     await page.click('input[name="password"]');
-    await page.fill('input[name="password"]', 'Testingis4we$0m3');
+    await page.fill('input[name="password"]', 'dJYMc9uFtS');
     
     // Click text=Login
     await Promise.all([
