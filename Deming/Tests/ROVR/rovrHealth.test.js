@@ -127,7 +127,7 @@ describe('ROVR Health Tests', () => {
         const message = logMessage.body.hits.hits[0]._source.message;
         const telemetryMessage = JSON.parse(message);
         //console.log(telemetryMessage.data.passedStartupDiagnostics);
-        expect(parseInt(telemetryMessage.data.passedStartupDiagnostics)).toBeFalsy();
+        expect(telemetryMessage.data.passedStartupDiagnostics).toBeTruthy();
     });
 
     it('Mac address should match DSN', async () => {
