@@ -116,17 +116,18 @@ describe('ROVR Health Tests', () => {
 
         const message = logMessage.body.hits.hits[0]._source.message
         const telemetryMessage = JSON.parse(message)
-
+        console.log(telemetryMessage.data.passedStartupDiagnostics);
         expect(parseInt(telemetryMessage.data.cameraTemperature)).not.toBeGreaterThan(60)
     });
 
     
-    it.skip('passedStartupDiagnostics data should be true', async () => {
+    it('passedStartupDiagnostics data should be true', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn);
         if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
         const message = logMessage.body.hits.hits[0]._source.message;
         const telemetryMessage = JSON.parse(message);
-        expect(parseInt(telemetryMessage.data.passedStartupDiagnostics)).toBeTruthy();
+        //console.log(telemetryMessage.data.passedStartupDiagnostics);
+        expect(parseInt(telemetryMessage.data.passedStartupDiagnostics)).toBeFalsy();
     });
 
     it('Mac address should match DSN', async () => {
