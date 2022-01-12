@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.17.1",
-    "@types/jest": "^26.0.20"
+    "@types/jest": "^26.0.20",
+    "playwright": "^1.17.2"
   }
 }
