@@ -31,13 +31,13 @@ describe('ROVR Product Detection E2E Tests', () => {
 
     it('should pass when correct DNN is assigned to related Rail Id', async () => {
         const dnnResponse = await fetch(getDnnApi).then(res => res.json())
-        let newDnn = []
-        expectedDnnId.split("").forEach(i => {
-            newDnn.push(i.toUpperCase())
-        })
-        let upperDnn = newDnn.join('')
-        console.log(JSON.stringify(dnnResponse))
-        expect(dnnResponse.DnnId).toEqual(upperDnn)
+        // let newDnn = []
+        // expectedDnnId.split("").forEach(i => {
+        //     newDnn.push(i.toUpperCase())
+        // })
+        // let upperDnn = newDnn.join('')
+        // console.log(JSON.stringify(dnnResponse))
+        expect(dnnResponse.DnnPath).toEqual(expectedDnnId)
     })
 
     it('should validate dnn id', async () => {
