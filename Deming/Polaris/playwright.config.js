@@ -11,7 +11,7 @@ const config = {
 
     timeout: 30000,
     //retries: 2,
-    globalSetup: require.resolve('./global-setup'),
+    //globalSetup: require.resolve('./global-setup'),
   };
   
   module.exports = config;
