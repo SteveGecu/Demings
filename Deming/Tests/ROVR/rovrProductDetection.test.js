@@ -57,7 +57,7 @@ describe('ROVR Product Detection E2E Tests', () => {
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.railId)).toEqual(railId)
         expect(message.data.video).toHaveProperty
-        expect(message.data.dnn).toBe(expectedDnnId + '.pt')
+        expect(message.data.dnn).toBe(expectedDnnId)
     })
 
     it('should pass when object detection is completed', async () => {
