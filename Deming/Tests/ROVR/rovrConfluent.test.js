@@ -38,7 +38,7 @@ describe('Rovr Confluent Tests', () => {
 
         expect(a - b).toBeLessThan(60 * 60 * 1000)
         expect(message).toHaveProperty
-        expect(message.meta.type).toEqual('product_report_generated')
+        expect(message.meta.type).toEqual('cv.product-report-generated')
         expect(message.data.dsn).toEqual(dsn)
         expect((message.data.rail_id)).toEqual(railId)
         expect(message.data.detections).toHaveProperty

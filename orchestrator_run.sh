@@ -26,7 +26,7 @@ then
 
     # Update these lines (or comment them out) to configure which drones get tested
     export OBSERVR_RAILS='0739633A-0C07-4188-90B5-356D0EEAB88D'
-    export ONLY_TEST_THESE_DSNS='001f7b3b4d02,001f7b3b4b5a'
+    export ONLY_TEST_THESE_DSNS='001f7b3b4d02,001f7b3b4b5c'
 fi
 
 exit 0
