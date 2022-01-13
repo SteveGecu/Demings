@@ -136,6 +136,10 @@ async function getMacAddress() {
     return mac.replace(/:/g, '').substring(8)
 }
 
+async function addIp(ip) {
+    await exec('ssh-keyscan -H '+ip+' >> ~/.ssh/known_hosts')
+}
+
 async function getConfigFile() {
     const output = await exec('sshpass -p drwho ssh root@172.20.21.109 "ls /data/config | grep config.env | wc -l"')
     const mac = output.stdout
@@ -163,5 +167,6 @@ module.exports = {
     getMacAddress,
     getConfigFile,
     getMobileFile,
-    getEndcapFile
+    getEndcapFile,
+    addIp
 }
