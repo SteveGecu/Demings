@@ -35,7 +35,8 @@
     "wait-for-expect": "^3.0.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.17.1",
     "@types/jest": "^26.0.20",
-    "@playwright/test": "^1.17.2"
+    "playwright": "^1.17.2"
   }
 }
