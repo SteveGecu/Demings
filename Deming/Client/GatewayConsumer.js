@@ -5,7 +5,6 @@ const exec = util.promisify(require('child_process').exec);
 const faker = require('faker');
 const { forEach } = require('jszip');
 const dsn = '001f7b31ddbc'
-const fs = require('fs')
 
 // create consumer by passing creds and configs
 function createConsumer() {
@@ -138,12 +137,9 @@ async function getMacAddress() {
 }
 
 async function addIp(ip) {
-    await exec('ssh-keyscan -H '+ip+' >> ~/.ssh/known_hosts')
-    content = ```
-    HostkeyAlgorithms +ssh-rsa
-    PubkeyAcceptedAlgorithms +ssh-rsa
-    ```
-    await fs.writeFile('~/.ssh/config', content)
+    await exec('mkdir -p ~/.ssh')
+    await exec(`echo 'HostkeyAlgorithms +ssh-rsa\nPubkeyAcceptedAlgorithms +ssh-rsa' > ~/.ssh/config`)
+    await exec('ssh-keyscan -H '+ip+' > ~/.ssh/known_hosts')
 }
 
 async function getConfigFile() {
