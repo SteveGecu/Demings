@@ -5,6 +5,7 @@ const exec = util.promisify(require('child_process').exec);
 const faker = require('faker');
 const { forEach } = require('jszip');
 const dsn = '001f7b31ddbc'
+const fs = require('fs')
 
 // create consumer by passing creds and configs
 function createConsumer() {
@@ -136,6 +137,15 @@ async function getMacAddress() {
     return mac.replace(/:/g, '').substring(8)
 }
 
+async function addIp(ip) {
+    await exec('ssh-keyscan -H '+ip+' >> ~/.ssh/known_hosts')
+    content = ```
+    HostkeyAlgorithms +ssh-rsa
+    PubkeyAcceptedAlgorithms +ssh-rsa
+    ```
+    await fs.writeFile('~/.ssh/config', content)
+}
+
 async function getConfigFile() {
     const output = await exec('sshpass -p drwho ssh root@172.20.21.109 "ls /data/config | grep config.env | wc -l"')
     const mac = output.stdout
@@ -163,5 +173,6 @@ module.exports = {
     getMacAddress,
     getConfigFile,
     getMobileFile,
-    getEndcapFile
+    getEndcapFile,
+    addIp
 }

@@ -76,7 +76,7 @@ describe('OBSERVR Product Detection E2E Tests', () => {
     })
 
     it('should pass when generic report is generated', async () => {
-        const message = await Messenger.getGenericReportCreatedMessage(dsn)
+        const message = await Messenger.getProductReportCreatedMessage(dsn)
 
         let a = new Date().valueOf()
         let b = new Date(message.meta.originEventTimestamp).valueOf()

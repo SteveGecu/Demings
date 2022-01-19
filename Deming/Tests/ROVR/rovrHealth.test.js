@@ -8,11 +8,16 @@ const dsn = process.env.ROVRDSN
 const railId = process.env.ROVRRAIL_ID
 const customerId = process.env.ROVRCUSTOMERID
 const storeId = process.env.ROVRSTOREID
+const rovrIp = process.env.ROVRIP
 
 jest.setTimeout(60000)
 jest.retryTimes(3)
 
 describe('ROVR Health Tests', () => {
+
+    beforeAll(async () => {
+        Terminal.addIp(rovrIp)
+    })
 
     it('Given ROVR should produce logs', async () => {
         const logMessage = await Apis.getRovrLogs(dsn)
@@ -120,7 +125,7 @@ describe('ROVR Health Tests', () => {
         expect(parseInt(telemetryMessage.data.cameraTemperature)).not.toBeGreaterThan(60)
     });
 
-    
+
     it('passedStartupDiagnostics data should be true', async () => {
         const logMessage = await Apis.getRovrTelemetryReport(dsn);
         if (logMessage.body.hits.hits.length == 0) { throw 'Unable to retrieve telemetry report for drone'; }
@@ -131,6 +136,7 @@ describe('ROVR Health Tests', () => {
     });
 
     it('Mac address should match DSN', async () => {
+
         const macAdress = await Terminal.getMacAddress()
         console.log(macAdress);
 
