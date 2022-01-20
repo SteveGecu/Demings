@@ -62,7 +62,7 @@ async function getDNN(drone) {
   let response = null;
   try {
     response = await axios.get(`${sisBaseUrl}api/v1/dnn/provision?railId=${drone.railId}`);
-    return response.data.DnnId;
+    return response.data.DnnPath;
   } catch (err) {
     if (err.response) {
       console.error(`Unable to retrieve DNN for rail ${drone.railId} at store ${StoreId} from ${sisBaseUrl}.  Received ${err.response.status} instead of expected 200.`)
