@@ -99,7 +99,7 @@ describe('ROVR Product Detection E2E Tests', () => {
         const message = await Messenger.getProductReportCreatedMessage(dsn)
         let a = new Date().valueOf()
         let b = new Date(message.meta.originEventTimestamp).valueOf()
-        console.log(JSON.stringify(message));
+    
         expect(a - b).toBeLessThan(60 * 60 * 1000)
         expect(message).toHaveProperty
         expect(message.meta.type).toEqual('cv.product-report-generated')
